@@ -4,7 +4,7 @@
 !
 
 Object  musicBox "music box"
-  with  name 'music' 'box' 'access' 'plate' 'simple' 'button' 'device',
+  with  name 'music' 'box' 'access' 'plate' 'simple' 'switch' 'device',
         invent [;
             if (self.openedFirstTime == false) {
                 print "a music box";
@@ -52,7 +52,7 @@ Object  musicBox "music box"
             Examine:
                 player.advanceGravity = false;
                 if (self.spitOn) "The music box got blasted pretty good when the alien spit on the hovering disk. The box melts in a pool of acid along with the table.";
-                print "The music box is nothing more than a set of speakers with one simple button on top to operate it. ";
+                print "The music box is nothing more than a set of speakers with a switch on the side to operate it. ";
                 if (self has open) {
                     if (battery in self) "The access plate is open, and there's a battery inside.";
                     "On the back of it, the access plate is open.";
@@ -74,14 +74,20 @@ Object  musicBox "music box"
             PutOn:
                 if (self.spitOn) "You don't want to touch that. It's melting in a pool of acid.";
                 if (self in vortexBag && second has supporter) "You don't want to leave that behind. You'll be able to sell it later once you get off the ship.";
-            SwitchOn, Push:
+            SwitchOn, Push, Turn:
                 if (self.spitOn) "You don't want to touch that. It's melting in a pool of acid.";
+                if (DistanceToAlien() > 0) {
+                    if (alien.hitFirstTime) "The alien is close. You don't want to do that.";
+                    "Something is close. You don't want to do that.";
+                }
                 if (self.listenedOnce) "You know it already works. There's no need to do that.";
                 if (battery in self) {
                     self.listenedOnce = true;
                     "The soft music of Mozart begins to play in the room, but you quickly turn it off. This is no time to relax.";
                 }
                 "The device is silent, but the battery has been removed.";
+            SwitchOff:
+                "That's already off.";
             Open:
                 if (self.spitOn) "You don't want to touch that. It's melting in a pool of acid.";
                 self.openedFirstTime = true;

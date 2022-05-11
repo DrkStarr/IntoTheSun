@@ -106,7 +106,7 @@
                   rtrue;
           ];
 
-! 10/31/21
+! 03/25/22
 
   StObj   -> forwardCompanionwayDeckACanister "coolant canister"
     with  name 'coolant' 'canister' 'large' 'cylinder' 'seal' 'hole',
@@ -128,4 +128,6 @@
                   if (forwardStarboardJunctionDeckC.pipesBlown) ", but fail to hear it crash into the deck. The sound of venting gas from below is too loud.";
                   iMonsterDestination = FWDCOMPDECKC;
                   ". It bounces off metal a few times on the way down before hitting bottom. That should attract the xenomorph to the lowest parts of the ship.";
+              Open:
+                  "At the top of the canister, the seal's cracked. The gas has already been vented.";
           ];

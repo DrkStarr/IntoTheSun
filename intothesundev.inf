@@ -73,11 +73,11 @@
   Constant MAX_CARRIED=50;
   Constant GTOTALROOMS=35;
   Constant GTOTALOBJS=27;
-  Constant GPLOPCODE=36;  ! Instructions Of Z-Code
-  Constant GOPCPH=8;
-  Constant GOPCSPH=6;
-  Constant GOPCODE=5;
-  Constant GTWORDS=826;   ! Dictionary Entries
+  Constant GPLOPCODE=37;  ! Instructions Of Z-Code
+  Constant GOPCPH=4;
+  Constant GOPCSPH=3;
+  Constant GOPCODE=7;
+  Constant GTWORDS=835;   ! Dictionary Entries
   Constant DIALECT_US;
 
 ! ***********************
@@ -169,6 +169,7 @@
   Global iIncreaseSpeed = 0;              ! Speeds Up The Alien Over Time
   Global iOldAlienDistance=5;   ! Starts off high so it will always trigger the Alien coming at the player the first time
   Global iPipesBlown=0;         ! Tests for blowing the pipes on C deck
+  Global iXenoKnows=0;          ! Used to reset PXF - The xenomorph's faster than that.
   Global mPos=0;                ! Used to increment to monster_move array
 
   Replace DrawStatusLine;
@@ -1683,7 +1684,7 @@
         style fixed;
         print "FORWARD      [F]^";
         print "AFT          [A]^";
-        print "STARBOARD    [SB] [S]^";
+        print "STARBOARD    [S] [SB]^";
         print "PORT         [P]^";
         print "UP           [U]^";
         print "DOWN         [D]^";
