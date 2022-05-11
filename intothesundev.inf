@@ -1,0 +1,2123 @@
+
+! Warnings about gravity that get pushed out should say something about the broken pipe if the player is on C deck
+! If player is within steam sound
+
+! Changes: 05/06/2022
+! TYPE CODE / ENTER CODE / UNLOCK DOOR WITH CODE / SET CODE TO DOOR / SET DOOR TO CODE all work
+! If player leaves the ship too early, the game asks the if they really want to
+
+! Changes: 04/22/2022
+! Gravity does not increase when looking at any object or using L in a room
+! Created an Array for the Alien's movement that locks in the path, UNDO doesn't change the Alien's choice of movement
+
+! Changes: 03/26/2022
+! Made The Alien Referred To As HE
+! Pressing call button on Deck A will bring the alien to Aft Junction Deck A
+! Added the coolant canister - can be pushed into ladder well
+! INSERT <OBJECT> INTO BAG - calls the alien if it's asleep
+! THROW <OBJECT> AT ALIEN - returns something interesting, unless in the bag
+! Drop crowbar into ladder well, drawing the alien to the bottom room
+! Player can not hear through the pipe break - no warnings on the other side
+! Added Meta Verbs like HELP and VERBS
+! Switched the Port & Starboard Shuttle Bays - so the missing shuttle is on the correct side
+
+! Changes: 02/23/2022
+! Alien Warnings: They now happen 4 rooms out and tell the player if the alien coming or going from them - Wade Clarke
+! Environmental Hazard: The pipes will break when you walk past them 3 times - Drew Cook
+! Stun Baton: Can be used one time against the alien
+! Can drop the stun baton in a ladder well, drawing the alien to the bottom room - Drew Cook
+! Cleaned up text, fixed bugs
+
+! ---------------------------------------------------------------------------- !
+! Turns To Complete (old): 262
+! Turns To Complete (now): 171
+!
+! INTO THE SUN
+! PROGRAMMER: Dark Star
+! DATE STARTED: 8-Oct-2021
+! DATE COMPLETED:
+! TARGET RELEASE DATE: 28-Sept-2022
+!
+
+! Treaty of Babel
+! command line: bable -ifid "GAMENAME.z8"
+
+! Array UUID_ARRAY string "UUID://ZCODE-1-220928-E691//";
+! #ifdef UUID_ARRAY; #endif;
+
+  Constant Story "Into The Sun";
+  Constant Headline "^A Text Adventure by Dark Star
+                     ^Copyright (c) 2022 by Infodarkness Productions
+                     ^(First-time players should type ~RULES~)^";
+
+! *** Alien should be randomized at the beginning ***
+! *** When the player hits the alien, it hides for two rounds ***
+! *** Then it jumps into a random room, destroys the stuff, and moves on ***
+! *** When that alien is encountered again, hit him with the cattle prod ***
+! *** Rinse and repeat until no more charges are left in the rod ***
+! *** One hit with the sledgehammer is possible ***
+! *** One hit with the stun baton is possible ***
+! *** October, 2268.
+
+!  Constant AMUSING_PROVIDED;
+!  Constant DEATH_MENTION_UNDO;   HANDLE WITH player.mentionUndo CHANGED IN: englishderelict.h
+!  Constant NO_SCORE;
+!  Constant SETMONSTERLOC;
+!  Constant PRINTMONSTERLOC;
+!  Constant PRINTBACKEND;  !    *** Prints Debug Information ***
+!  Constant PRINTPATH;     !    *** Prints the Alien's Path in game *** New Command: PATH
+!  Constant ALIENLOC;      !    *** Prints the Alien's Location *** New Command: ALIEN LOC / MONSTER LOC
+!  Constant TESTING;       !    Locks in a path for the Alien, so the game can be Debugged
+  Constant DESTROYOBJECTS;
+  Constant MAX_SCORE=25;
+  Constant MAX_CARRIED=50;
+  Constant GTOTALROOMS=35;
+  Constant GTOTALOBJS=27;
+  Constant GPLOPCODE=36;  ! Instructions Of Z-Code
+  Constant GOPCPH=8;
+  Constant GOPCSPH=6;
+  Constant GOPCODE=5;
+  Constant GTWORDS=826;   ! Dictionary Entries
+  Constant DIALECT_US;
+
+! ***********************
+! Rooms The Alien Goes To
+! ***********************
+  Constant INFRMRY=1;
+  Constant HYPRSLPVLT=2;
+  Constant PORTSHTTLBY=3;
+  Constant STARBRDSHTTLBY=4;
+  Constant SCIENCECRRDR=5;
+  Constant CAPTQRTRS=6;
+  Constant MAINTNNCGRGE=7;
+  Constant CONTROLRM=8;
+  Constant LOUNGE=9;
+  Constant WEAPONSLCKER=10;
+  Constant FOODLCKER=11;
+  Constant BRDG=12;
+  Constant FWDJUNDECKC=13;
+  Constant FWDCOMPDECKC=14;
+  Constant AFTCOMPDECKC=15;
+  Constant AFTJNCTNDECKA=16;
+  Constant MONSTERTOTAL=10;  ! Index Number = Number of Places - 1 : Bridge is Not Part of the count
+  Constant ALIENMOVEMENT=50; ! Alien Movement Percentage 50% = 50 : 60% = 40 : 70% = 30
+
+  Constant RETURN_FORWARD = 1;
+  Constant RETURN_AFT = 2;
+  Constant RETURN_PORT = 3;
+  Constant RETURN_STARBOARD = 4;
+  Constant RETURN_ABOVE = 5;
+  Constant RETURN_BELOW = 6;
+  Constant RETURN_NEAR = 1;
+  Constant RETURN_FAR = 2;
+  Constant RETURN_DISTANT = 3;
+
+  Constant SPEEDINCREASE = 7; ! Used to increase the Alien's movement speed over time: # of turns for 1 tick down
+  Constant BLOWN_PIPES = 2;  ! The number of times the player can walk by the pipes in deck C before they blow + 1 : True if # > BLOWN_PIPES
+
+! Place Holders
+! ph001 - unused
+! ph002 - unused
+! ph003
+! ph004
+! ph005
+! ph006
+! ph007
+! ph008
+! ph009
+! ph010
+! ph011
+! ph012
+! ph013
+! ph014
+! ph015
+! ph016
+! ph017 - dataReader - information
+! ph018 - aftStarboardJunctionDeckCPipes : forwardCompanionwayDeckCPipes
+! ph019 - aftStarboardJunctionDeckCPipes : forwardCompanionwayDeckCPipes
+! ph020 - aftStarboardJunctionDeckCPipes : forwardCompanionwayDeckCPipes
+! ph021 - aftStarboardJunctionDeckCPipes : forwardCompanionwayDeckCPipes
+! ph022 - aftStarboardJunctionDeckCPipes : forwardCompanionwayDeckCPipes
+! ph023 - d_obj - water
+! ph024 - d_obj - liquid
+
+
+
+! door_code 0 - The random number need to open the doors
+! door_code 1 - Controls the Food Locker Door
+! door_code 2 - Controls the Weapons Locker Door
+! door_code 3 - Controls the Bridge Door
+
+  Array door_code --> 4;
+  Array monster_loc --> 11;
+  Array monster_move --> 99;
+
+! Global Variables - 61 left / Max 233 - 172           Entangled: 219(14)
+
+  Global iRoom=0;               ! counts the number of rooms
+  Global iCattleProdCharge=3;   ! number of charges in the cattle prod
+  Global iGravityForce=0;
+  Global iGravityDecimal=0;
+  Global iProgressiveGravity=3; ! used in the space between gravity tics
+  Global iTime=0;               ! used to increment gravity over time in Player Object
+  Global iAlienHiding=0;        ! Allows the alien to hide for two turns
+  Global iMonsterLoc=1;         ! Keeps Track of Current Monster Location - Needs to have a value of 1
+  Global iMonsterDestination=0; ! Keeps Track of the Monster's Destination
+  Global oldPlayerLoc;          ! Keeps the location of the player - Used in a test to see whether they move or not
+  Global iAlienSpeed = ALIENMOVEMENT;     ! Speeds Up The Alien Over Time
+  Global iAlienMovement = ALIENMOVEMENT;  ! Sets The Movement Speed For The Alien
+  Global iIncreaseSpeed = 0;              ! Speeds Up The Alien Over Time
+  Global iOldAlienDistance=5;   ! Starts off high so it will always trigger the Alien coming at the player the first time
+  Global iPipesBlown=0;         ! Tests for blowing the pipes on C deck
+  Global mPos=0;                ! Used to increment to monster_move array
+
+  Replace DrawStatusLine;
+  Replace AttackSub;
+  Replace BlowSub;
+  Replace BurnSub;
+  Replace ScoreSub;
+
+  Include "Parser";
+  Include "VerbLib";
+
+  Release 1;
+
+! ---------------------------------------------------------------------------- !
+!       ABBREVIATIONS
+!
+
+
+! ---------------------------------------------------------------------------- !
+!       CLASSES
+!
+
+! 01/28/14
+
+  Class  Room
+   with  before [ alienDistance;
+             Dig:
+                 "Not through the deck.";
+             Jump:
+                 "What are you trying to do? Attract the xenomorph?";
+             Listen:
+                 alienDistance = DistanceToAlien();
+                 if (alienDistance ~= 0) {
+                     player.suppressAlienCloseBy = true;
+                     if (player.alienIsMoving) {
+                         if (alienDistance ~= 0) {
+                             player.printCloseBy = true;
+                             player.printFirstStop = true;
+                             if (alienDistance == 1) {
+                                 if (player.printAlienClose) {
+                                     player.printAlienClose = false;
+                                     "Something is moving through these corridors, but it's close. Too close.";
+                                 } else {
+                                     player.printAlienClose = true;
+                                     "Whatever is making noise is close, and you're brave to be so near.";
+                                 }
+                             } else {
+                                 ! ******************************
+                                 ! Print Alien Is Close To Player
+                                 ! ******************************
+                                 ! *************************
+                                 ! Alien Is Coming At Player
+                                 ! *************************
+                                 if (iOldAlienDistance > alienDistance) {
+                                     ! Save Distance To Know If The Alien Is Getting Closer
+                                     iOldAlienDistance = alienDistance;
+                                     switch (alienDistance) {
+                                         2: switch (DirectionAlienIsIn()) {
+                                                RETURN_FORWARD: return DisplayListenAlienWarningComing(RETURN_FORWARD, RETURN_NEAR);
+                                                RETURN_AFT: return DisplayListenAlienWarningComing(RETURN_AFT, RETURN_NEAR);
+                                                RETURN_PORT: return DisplayListenAlienWarningComing(RETURN_PORT, RETURN_NEAR);
+                                                RETURN_STARBOARD: return DisplayListenAlienWarningComing(RETURN_STARBOARD, RETURN_NEAR);
+                                                RETURN_ABOVE: return DisplayListenAlienWarningComing(RETURN_ABOVE, RETURN_NEAR);
+                                                RETURN_BELOW: return DisplayListenAlienWarningComing(RETURN_BELOW, RETURN_NEAR);
+                                            }
+                                         3: switch (DirectionAlienIsIn()) {
+                                                RETURN_FORWARD: return DisplayListenAlienWarningComing(RETURN_FORWARD, RETURN_FAR);
+                                                RETURN_AFT: return DisplayListenAlienWarningComing(RETURN_AFT, RETURN_FAR);
+                                                RETURN_PORT: return DisplayListenAlienWarningComing(RETURN_PORT, RETURN_FAR);
+                                                RETURN_STARBOARD: return DisplayListenAlienWarningComing(RETURN_STARBOARD, RETURN_FAR);
+                                                RETURN_ABOVE: return DisplayListenAlienWarningComing(RETURN_ABOVE, RETURN_FAR);
+                                                RETURN_BELOW: return DisplayListenAlienWarningComing(RETURN_BELOW, RETURN_FAR);
+                                            }
+                                         4: switch (DirectionAlienIsIn()) {
+                                                RETURN_FORWARD: return DisplayListenAlienWarningComing(RETURN_FORWARD, RETURN_DISTANT);
+                                                RETURN_AFT: return DisplayListenAlienWarningComing(RETURN_AFT, RETURN_DISTANT);
+                                                RETURN_PORT: return DisplayListenAlienWarningComing(RETURN_PORT, RETURN_DISTANT);
+                                                RETURN_STARBOARD: return DisplayListenAlienWarningComing(RETURN_STARBOARD, RETURN_DISTANT);
+                                                RETURN_ABOVE: return DisplayListenAlienWarningComing(RETURN_ABOVE, RETURN_DISTANT);
+                                                RETURN_BELOW: return DisplayListenAlienWarningComing(RETURN_BELOW, RETURN_DISTANT);
+                                            }
+                                     }
+                                 }
+                                 ! **********************
+                                 ! Alien Is Matching Pace
+                                 ! **********************
+                                 if (iOldAlienDistance == alienDistance) {
+                                     ! Save Distance To Know If The Alien Is Getting Closer
+                                     iOldAlienDistance = alienDistance;
+                                     switch (alienDistance) {
+                                         2: switch (DirectionAlienIsIn()) {
+                                                RETURN_FORWARD: return DisplayListenAlienWarning(RETURN_FORWARD, RETURN_NEAR);
+                                                RETURN_AFT: return DisplayListenAlienWarning(RETURN_AFT, RETURN_NEAR);
+                                                RETURN_PORT: return DisplayListenAlienWarning(RETURN_PORT, RETURN_NEAR);
+                                                RETURN_STARBOARD: return DisplayListenAlienWarning(RETURN_STARBOARD, RETURN_NEAR);
+                                                RETURN_ABOVE: return DisplayListenAlienWarning(RETURN_ABOVE, RETURN_NEAR);
+                                                RETURN_BELOW: return DisplayListenAlienWarning(RETURN_BELOW, RETURN_NEAR);
+                                            }
+                                         3: switch (DirectionAlienIsIn()) {
+                                                RETURN_FORWARD: return DisplayListenAlienWarning(RETURN_FORWARD, RETURN_FAR);
+                                                RETURN_AFT: return DisplayListenAlienWarning(RETURN_AFT, RETURN_FAR);
+                                                RETURN_PORT: return DisplayListenAlienWarning(RETURN_PORT, RETURN_FAR);
+                                                RETURN_STARBOARD: return DisplayListenAlienWarning(RETURN_STARBOARD, RETURN_FAR);
+                                                RETURN_ABOVE: return DisplayListenAlienWarning(RETURN_ABOVE, RETURN_FAR);
+                                                RETURN_BELOW: return DisplayListenAlienWarning(RETURN_BELOW, RETURN_FAR);
+                                            }
+                                         4: switch (DirectionAlienIsIn()) {
+                                                RETURN_FORWARD: return DisplayListenAlienWarning(RETURN_FORWARD, RETURN_DISTANT);
+                                                RETURN_AFT: return DisplayListenAlienWarning(RETURN_AFT, RETURN_DISTANT);
+                                                RETURN_PORT: return DisplayListenAlienWarning(RETURN_PORT, RETURN_DISTANT);
+                                                RETURN_STARBOARD: return DisplayListenAlienWarning(RETURN_STARBOARD, RETURN_DISTANT);
+                                                RETURN_ABOVE: return DisplayListenAlienWarning(RETURN_ABOVE, RETURN_DISTANT);
+                                                RETURN_BELOW: return DisplayListenAlienWarning(RETURN_BELOW, RETURN_DISTANT);
+                                            }
+                                     }
+                                 }
+                                 ! *******************
+                                 ! Alien Is Retreating
+                                 ! *******************
+                                 if (iOldAlienDistance < alienDistance) {
+                                     ! Save Distance To Know If The Alien Is Getting Closer
+                                     iOldAlienDistance = alienDistance;
+                                     switch (alienDistance) {
+                                         2: switch (DirectionAlienIsIn()) {
+                                                RETURN_FORWARD: return DisplayListenAlienWarningGoing(RETURN_FORWARD, RETURN_NEAR);
+                                                RETURN_AFT: return DisplayListenAlienWarningGoing(RETURN_AFT, RETURN_NEAR);
+                                                RETURN_PORT: return DisplayListenAlienWarningGoing(RETURN_PORT, RETURN_NEAR);
+                                                RETURN_STARBOARD: return DisplayListenAlienWarningGoing(RETURN_STARBOARD, RETURN_NEAR);
+                                                RETURN_ABOVE: return DisplayListenAlienWarningGoing(RETURN_ABOVE, RETURN_NEAR);
+                                                RETURN_BELOW: return DisplayListenAlienWarningGoing(RETURN_BELOW, RETURN_NEAR);
+                                            }
+                                         3: switch (DirectionAlienIsIn()) {
+                                                RETURN_FORWARD: return DisplayListenAlienWarningGoing(RETURN_FORWARD, RETURN_FAR);
+                                                RETURN_AFT: return DisplayListenAlienWarningGoing(RETURN_AFT, RETURN_FAR);
+                                                RETURN_PORT: return DisplayListenAlienWarningGoing(RETURN_PORT, RETURN_FAR);
+                                                RETURN_STARBOARD: return DisplayListenAlienWarningGoing(RETURN_STARBOARD, RETURN_FAR);
+                                                RETURN_ABOVE: return DisplayListenAlienWarningGoing(RETURN_ABOVE, RETURN_FAR);
+                                                RETURN_BELOW: return DisplayListenAlienWarningGoing(RETURN_BELOW, RETURN_FAR);
+                                            }
+                                         4: switch (DirectionAlienIsIn()) {
+                                                RETURN_FORWARD: return DisplayListenAlienWarningGoing(RETURN_FORWARD, RETURN_DISTANT);
+                                                RETURN_AFT: return DisplayListenAlienWarningGoing(RETURN_AFT, RETURN_DISTANT);
+                                                RETURN_PORT: return DisplayListenAlienWarningGoing(RETURN_PORT, RETURN_DISTANT);
+                                                RETURN_STARBOARD: return DisplayListenAlienWarningGoing(RETURN_STARBOARD, RETURN_DISTANT);
+                                                RETURN_ABOVE: return DisplayListenAlienWarningGoing(RETURN_ABOVE, RETURN_DISTANT);
+                                                RETURN_BELOW: return DisplayListenAlienWarningGoing(RETURN_BELOW, RETURN_DISTANT);
+                                            }
+                                     }
+                                 }
+                             }
+                         }
+                     } else {
+                         if (player.printCloseBy) {
+                             if (player.printFirstStop) {
+                                 player.printFirstStop = false;
+                                 "Did it stop? You don't hear the noise, but you know it's still there.";
+                             } else {
+                                 if (DistanceToAlien() > 3) {
+                                     "You don't hear the noise anymore, but it's still lurking.";
+                                 } else {
+                                     "You don't hear the noise anymore, but you feel it's close.";
+                                 }
+                             }
+                         }
+                     }
+                     "Now and then, you hear the ship cry out as pressure crushes in.";
+                 } else {
+                     "Now and then, you hear the ship cry out as pressure crushes in.";
+                 }
+             Smell:
+                 if (noun == outfit) "It doesn't smell, even when you toot one out. Instead, the suit scrubs the air while it feeds you oxygen.";
+                 if (noun == player) "You don't smell, even when you toot one out. Instead, the suit scrubs the air while it feeds you oxygen.";
+                 "You can't smell anything through your suit.";
+         ],
+   has   light;
+
+! 01/28/14
+
+  Class  RoomObj
+   with  describe [;
+             rtrue;
+         ],
+         before [;
+             Enter:
+                "You need to tell me which direction to go in.";
+             Go:
+                 "You're already here.";
+             Exit:
+                 <<Exit location>>;
+             Search:
+                 return L__M(##Search, 4);
+             Take, Remove, Turn, PushDir, Push, Pull:
+                 "You can't do that to the room.";
+         ],
+   has   concealed static;
+
+! 12/03/20
+
+  Class  OutRch  ! ??? - Read
+   with  before [;
+             Blow:
+                 "You can't blow through your suit. The polymer seals in your environment.";
+             Go:
+                 "You're as close as you're going to get.";
+             Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
+                 "You can't do that from here.";
+             Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
+                 "You can't do that from here.";
+         ],
+   has   concealed static;
+
+! 10/14/21
+
+  Class  StObj
+   with  before [;
+              Go:
+                  "You are already here.";
+              Blow:
+                  "You can't blow through your suit. The polymer seals in your environment.";
+              Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
+                  "You need to loot the ship, not mess with ", (the) self, ".";
+              Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
+                  "You need to loot the ship, not mess with ", (the) self, ".";
+         ],
+   has   concealed static;
+
+! 03/05/22
+
+  Class  AcidObj
+   with  before [;
+             Attack:
+                 if (second == yellowFlashcard || second == redFlashcard)
+                     "You would lose the flashcard the moment it touched the acid. It's made out of thin plastic.";
+                 if (second == dataReader)
+                     "If you hit that with the data reader, acid would fly up into your face before you could dodge out of the way, burning straight through your skull.";
+                 if (second == battery)
+                     "The battery would be consumed by the acid. You'd lose your hand before you could pull way.";
+                 if (second == stunBaton)
+                     "The acid would kick up the moment you struck it with the baton, falling onto your torse as it burns through your organs. After that, it wouldn't take long to die.";
+                 if (second == sledgehammer)
+                     "You could bring down the hammer, but the acid would splash all over the room, covering half yourself. The pain would be incredible as it seared through your flesh.";
+                 if (second == crowbar)
+                     "If you hit the acid with that, the bar would melt in your hand as your flesh dissolves away.";
+                 if (second == cattleProd)
+                     "You could hit it with the rod, but the metal couldn't withstand the acid. You'd lose the primitive weapon.";
+                 if (second == nothing) "If you hit that, you'd lose your arm. Then it would splash on your face only to burn through your skull.";
+                 "You don't want to hit the acid with that. It would splash up into your face, burning it off. You'd scream through melting acid.";
+             Go:
+                 "You are already here.";
+             Blow:
+                 "You can't blow through your suit. The polymer seals in your environment.";
+             Taste:
+                 "You best not. You wouldn't have a tongue left if you tried that.";
+             Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
+                 "You would burn yourself horribly if you touched that.";
+             Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
+                 "You would burn yourself horribly if you touched that.";
+
+         ],
+   has   concealed static;
+
+! 10/25/21
+
+  Class  NoHelp
+   with  before [;
+             Blow:
+                "You can't blow through your suit. The polymer seals in your environment.";
+             Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
+                 "That's not going to help.";
+             Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
+                 "That's not going to help.";
+         ],
+   has   concealed static;
+
+! 10/28/21
+
+  Class  NotThr
+   with  before [;
+             Blow:
+                "You can't blow through your suit. The polymer seals in your environment.";
+             Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
+                 "But it's not there.";
+             Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
+                 "But it's not there.";
+         ],
+   has   concealed static;
+
+! 12/11/21
+
+  Class  NHSeen
+   with  before [;
+             Blow:
+                "You can't blow through your suit. The polymer seals in your environment.";
+             Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
+                 "That's not going to help.";
+             Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
+                 "That's not going to help.";
+         ],
+   has   static;
+
+! ---------------------------------------------------------------------------- !
+!       ROOMS
+!
+
+  Include "r_ForwardCorridorDeckB";
+  Include "r_StarboardJunctionDeckB";
+  Include "r_ForwardCompanionwayDeckB";
+  Include "r_ScienceCorridorDeckB";
+  Include "r_ForwardPortJunctionDeckB";
+  Include "r_MaintenanceLiftDeckB";
+  Include "r_PassagewayDeckB";
+  Include "r_ForwardStarboardJunctionDeckB";
+  Include "r_FoodLockerCorridorDeckB";
+  Include "r_AftCompanionwayDeckB";
+  Include "r_AftJunctionDeckB";
+  Include "r_PortShuttleBay";
+  Include "r_StarboardShuttleBay";
+  Include "r_ForwardCompanionwayDeckC";
+  Include "r_MaintenanceGarage";
+  Include "r_ForwardStarboardJunctionDeckC";
+  Include "r_AftPortJunctionDeckC";
+  Include "r_AftStarboardJunctionDeckC";
+  Include "r_AftCompanionwayDeckC";
+  Include "r_ForwardCompanionwayDeckA";
+  Include "r_Galley";
+  Include "r_CaptainsQuarters";
+  Include "r_Infirmary";
+  Include "r_HypersleepVault";
+  Include "r_AftJunctionDeckA";
+  Include "r_PersonalLockerRoom";
+  Include "r_ControlRoom";
+  Include "r_MaintenanceLiftDeckA";
+  Include "r_InstrumentationBay";
+  Include "r_ClawChamber";
+  Include "r_Bridge";
+  Include "r_ComputerRoom";
+  Include "r_FoodStorage";
+  Include "r_WeaponsLocker";
+  Include "r_CrewLounge";
+
+! ---------------------------------------------------------------------------- !
+!       PLAYER OBJECT
+!
+
+  Include "p_Player";
+
+! ---------------------------------------------------------------------------- !
+!       OBJECTS IN GAME
+!
+
+  Include "o_Outfit";
+  Include "o_CattleProd";
+  Include "o_VortexBag";
+  Include "o_Extinguisher";
+  Include "o_Spacesuit";
+  Include "o_GoldDrone";
+  Include "o_Sledgehammer";
+  Include "o_Knitter";
+  Include "o_Necklace";
+  Include "o_KaBar";
+  Include "o_DataReader";
+  Include "o_Crowbar";
+  Include "o_Laptop";
+  Include "o_YellowFlashcard";
+  Include "o_RedFlashcard";
+  Include "o_Camera";
+  Include "o_Lens";
+  Include "o_Trinket";
+  Include "o_TrooperArmor";
+  Include "o_StunBaton";
+  Include "o_Wine";
+  Include "o_Battery";
+  Include "o_MusicBox";
+  Include "o_Medkit";
+  Include "o_CoreAI";
+  Include "o_NutrientProcessor";
+  Include "o_Hologram";
+
+! ---------------------------------------------------------------------------- !
+!       NON-TAKEABLE OBJECTS IN GAME
+!
+  Include "o_Pod";
+
+! ---------------------------------------------------------------------------- !
+!       NPC OBJECTS
+!
+
+  Include "npc_Alien";
+
+! ---------------------------------------------------------------------------- !
+!       UTILITY ROUTINES
+!
+
+  [ Initialise tempCode tempNumber iap iran itest ifail ofail;
+        lookmode = 2;
+        player = SelfPlayer;
+        notify_mode = false;
+
+        door_code-->0 = 0;  !  Door to the DOOR CODE
+        door_code-->1 = 0;  !  Door to the FOOD LOCKER
+        door_code-->2 = 0;  !  Door to the WEAPONS LOCKER
+        door_code-->3 = 0;  !  Door to the BRIDGE
+
+        ! Generate the 4 digit random number used in door_code
+        tempCode = 0;
+        tempNumber = (random(8)+1) * 1000;
+        tempCode = tempCode + tempNumber;
+        tempNumber = random(9) * 100;
+        tempCode = tempCode + tempNumber;
+        tempNumber = random(9) * 10;
+        tempCode = tempCode + tempNumber;
+        tempNumber = random(9);
+        tempCode = tempCode + tempNumber;
+
+        door_code-->0 = tempCode;
+
+        ! Populates the Array for Alien Location
+        iap = 0;
+        while (iap < 11) {
+            ofail = true;
+            while (ofail == true) {
+                itest = 0;
+                ifail = false;
+                iran = random(11);
+                while (itest < 11) {
+                    if (iran == monster_loc-->itest) ifail = true;
+                    itest++;
+                }
+                if (ifail == true) ofail = true;
+                else ofail = false;
+            }
+            monster_loc-->iap = iran;
+            iap++;
+        }
+
+        ! Populates the Monster Movement Array
+        iap = 0;
+        while (iap < 99) {
+            monster_move-->iap = random(100);
+            iap++;
+        }
+
+        #Ifdef TESTING;
+        ! Monster Movement
+        monster_move-->0 = 9;
+        monster_move-->1 = 93;
+        monster_move-->2 = 33;
+        monster_move-->3 = 75;
+        monster_move-->4 = 49;
+        monster_move-->5 = 64;
+        monster_move-->6 = 14;
+        monster_move-->7 = 31;
+        monster_move-->8 = 48;
+        monster_move-->9 = 25;
+        monster_move-->10 = 53;
+        monster_move-->11 = 39;
+        monster_move-->12 = 64;
+        monster_move-->13 = 94;
+        monster_move-->14 = 84;
+        monster_move-->15 = 60;
+        monster_move-->16 = 95;
+        monster_move-->17 = 63;
+        monster_move-->18 = 74;
+        monster_move-->19 = 79;
+        monster_move-->20 = 51;
+        monster_move-->21 = 14;
+        monster_move-->22 = 67;
+        monster_move-->23 = 17;
+        monster_move-->24 = 76;
+        monster_move-->25 = 12;
+        monster_move-->26 = 16;
+        monster_move-->27 = 73;
+        monster_move-->28 = 44;
+        monster_move-->29 = 17;
+        monster_move-->30 = 50;
+        monster_move-->31 = 48;
+        monster_move-->32 = 56;
+        monster_move-->33 = 98;
+        monster_move-->34 = 27;
+        monster_move-->35 = 81;
+        monster_move-->36 = 2;
+        monster_move-->37 = 8;
+        monster_move-->38 = 2;
+        monster_move-->39 = 55;
+        monster_move-->40 = 44;
+        monster_move-->41 = 53;
+        monster_move-->42 = 14;
+        monster_move-->43 = 37;
+        monster_move-->44 = 41;
+        monster_move-->45 = 65;
+        monster_move-->46 = 74;
+        monster_move-->47 = 30;
+        monster_move-->48 = 17;
+        monster_move-->49 = 29;
+        monster_move-->50 = 78;
+        monster_move-->51 = 72;
+        monster_move-->52 = 93;
+        monster_move-->53 = 93;
+        monster_move-->54 = 1;
+        monster_move-->55 = 68;
+        monster_move-->56 = 70;
+        monster_move-->57 = 80;
+        monster_move-->58 = 92;
+        monster_move-->59 = 78;
+        monster_move-->60 = 60;
+        monster_move-->61 = 85;
+        monster_move-->62 = 82;
+        monster_move-->63 = 17;
+        monster_move-->64 = 97;
+        monster_move-->65 = 18;
+        monster_move-->66 = 54;
+        monster_move-->67 = 20;
+        monster_move-->68 = 96;
+        monster_move-->69 = 80;
+        monster_move-->70 = 28;
+        monster_move-->71 = 82;
+        monster_move-->72 = 4;
+        monster_move-->73 = 83;
+        monster_move-->74 = 36;
+        monster_move-->75 = 15;
+        monster_move-->76 = 92;
+        monster_move-->77 = 33;
+        monster_move-->78 = 99;
+        monster_move-->79 = 94;
+        monster_move-->80 = 66;
+        monster_move-->81 = 30;
+        monster_move-->82 = 22;
+        monster_move-->83 = 23;
+        monster_move-->84 = 30;
+        monster_move-->85 = 1;
+        monster_move-->86 = 47;
+        monster_move-->87 = 65;
+        monster_move-->88 = 72;
+        monster_move-->89 = 81;
+        monster_move-->90 = 100;
+        monster_move-->91 = 44;
+        monster_move-->92 = 100;
+        monster_move-->93 = 40;
+        monster_move-->94 = 91;
+        monster_move-->95 = 45;
+        monster_move-->96 = 6;
+        monster_move-->97 = 96;
+        monster_move-->98 = 58;
+
+        ! Monster Path
+        monster_loc-->0 = INFRMRY;
+        monster_loc-->1 = MAINTNNCGRGE;
+        monster_loc-->2 = CONTROLRM;
+        monster_loc-->3 = WEAPONSLCKER;
+        monster_loc-->4 = STARBRDSHTTLBY;
+        monster_loc-->5 = PORTSHTTLBY;
+        monster_loc-->6 = HYPRSLPVLT;
+        monster_loc-->7 = CAPTQRTRS;
+        monster_loc-->8 = LOUNGE;
+        monster_loc-->9 = SCIENCECRRDR;
+        monster_loc-->10 = FOODLCKER;
+        #EndIf;
+
+        #Ifdef PRINTMONSTERLOC;
+        iap = 0;
+        print "^^";
+        while (iap < 11) {
+            print monster_loc-->iap;
+            iap++;
+        }
+        print "^^";
+        #EndIf;
+
+        style roman; font on;
+
+        location = forwardCorridorDeckB;
+
+        ! MOVE OBJECTS
+        move outfit to player;
+        move vortexBag to player;
+        move cattleProd to forwardCorridorDeckB;
+        move extinguisher to portShuttleBay;
+        move spacesuit to starboardShuttleBay;
+        move drone to clawChamber;
+        move sledgehammer to maintenanceGarage;
+        move knitter to infirmary;
+        move necklace to hypersleepVault;
+        move kabar to captainsQuarters;
+        move dataReader to personalLockerRoom;
+        move laptop to controlRoomDeckCBench;
+        move lens to instrumentationBay;
+        move camera to instrumentationBay;
+        move trinket to bridge;
+        move trooperArmor to weaponsLocker;
+        move stunBaton to weaponsLocker;
+        move pod to forwardPortJunctionDeckB;
+        move wine to foodStorage;
+        move battery to musicBox;
+        move musicBox to crewLoungeStand;
+        move medkit to infirmaryCabinet;
+        move coreAI to computerRoomPanel;
+        move nutrientProcessor to galley;
+        move hologram to personalLockerRoomLocker;
+
+        ! Alien never goes to Personal Locker Room - Data Reader
+
+        #Ifdef PRINTBACKEND;
+        ! Put the Alien in a random room at the start of the game
+        switch (monster_loc-->0) {
+            INFRMRY:
+                print "Infirmary";
+            HYPRSLPVLT:
+                print "Hypersleep Vault";
+            PORTSHTTLBY:
+                print "Port Shuttle Bay";
+            STARBRDSHTTLBY:
+                print "Starboard Shuttle Bay";
+            SCIENCECRRDR:
+                print "Science Corridor";
+            CAPTQRTRS:
+                print "Captain's Quarters";
+            MAINTNNCGRGE:
+                print "Maintenance Garage";
+            LOUNGE:
+                print "Crew Lounge";
+            default:
+                print "Control Room";
+        }
+        #EndIf;
+
+        ! MOVE NPCs
+        ! Put the Alien in a random room at the start of the game
+        switch (monster_loc-->0) {
+            INFRMRY: move alien to infirmary;
+            HYPRSLPVLT: move alien to hypersleepVault;
+            PORTSHTTLBY: move alien to portShuttleBay;
+            STARBRDSHTTLBY: move alien to starboardShuttleBay;
+            SCIENCECRRDR: move alien to scienceCorridorDeckB;
+            CAPTQRTRS: move alien to captainsQuarters;
+            MAINTNNCGRGE: move alien to maintenanceGarage;
+            LOUNGE: move alien to crewLounge;
+            default: move alien to controlRoomDeckC;
+        }
+
+        #Ifdef PRINTBACKEND;
+        print "^^Temp Code: ", door_code-->0;
+        #EndIf;
+
+        ! INTRO TEXT
+        print "^^October, 2268. Two months sitting on the cold side of Mercury, using battery power to stay
+        in the shade, but the radar has failed to find anything. Nothing to scavenge. Nothing to pay the
+        bills. Satellites make some of the best salvage. The stuff you can pull off might have value. But
+        since you don't have enough to repair and refuel the Kratos, you'll take whatever's out there.^";
+        PageBreak();
+        print "^Then something hits the radar, finally. And not a tiny blip like a satellite, but
+        a large return that shows a huge ship. Yes. Sitting in the sun's blind spot might have paid off.
+        It looks like a derelict, and she should be full of lootable goods. Drifting like this, it seems like
+        the crew abandoned her. She's fair game this close to the sun.^";
+        PageBreak();
+        print "^As you hook up to the docking ring, you look over the controls and notice, as expected, that
+        you are still drifting. It's time to loot this vessel before you can't get out of the gravity well.^";
+        PageBreak();
+        rtrue;
+  ];
+
+  [ DeathMessage;
+        switch (deadflag) {
+            3: print " Game Over ";
+        }
+  ];
+
+  [ PrintRank;
+        print ", and have been to ", iRoom, " out of ", GTOTALROOMS, " rooms, earning you the title of ";
+        if (score >= 25) "Businessman.";
+        if (score >= 20) "Merchant.";
+        if (score >= 15) "Trader.";
+        if (score >= 10) "Scavenger.";
+        if (score >= 5) "Junk Dealer.";
+        "Freeloader.";
+  ];
+
+! ---------------------------------------------------------------------------- !
+!       SELF DEFINED ROUTINES
+!
+
+  [ DrawStatusLine width posa posb;
+        @split_window 2; @set_window 1; style reverse;
+        width = 0->33; posa = width-26; posb = width-6;
+        ! Draw Status Lines
+        @set_cursor 1 1; spaces (0->33);
+        @set_cursor 2 1; spaces (0->33);
+
+        ! Print Location
+        @set_cursor 1 2;
+
+        switch(location) {
+            computerRoom:
+                if (computerRoomChair.playerSit) print "Computer Room - Deck A (on the chair)";
+                else print "Computer Room - Deck A";
+            default:
+                PrintShortName(location);
+        }
+
+        ! Print Gravity
+        if (width > 40) {
+            @set_cursor 1 posb; print iGravityForce, ".", iGravityDecimal, "g";
+        }
+
+        ! Print Exits
+        @set_cursor 2 1;
+        switch(location) {
+            forwardCorridorDeckB:
+                print " Exits: Fore, Aft";
+            starboardJunctionDeckB:
+                print " Exits: Fore, Port";
+            aftStarboardJunctionDeckC:
+                if (forwardStarboardJunctionDeckC.pipesBlown) print " Exits: Port";
+                else print " Exits: Fore, Port";
+            forwardCompanionwayDeckB:
+                print " Exits: Fore, Starboard, Up, Down";
+            scienceCorridorDeckB:
+                if (scienceCorridorDeckBHatch.hatchOpen) print " Exits: Aft, Port";
+                else print " Exits: Aft";
+            aftJunctionDeckB:
+                print " Exits: Fore, Port, Starboard";
+            maintenanceLiftDeckA:
+                print " Exits: Starboard, Down";
+            maintenanceLiftDeckB:
+                print " Exits: Starboard, Up";
+            portShuttleBay, instrumentationBay, weaponsLocker, infirmary:
+                print " Exits: Starboard";
+            forwardPortJunctionDeckB:
+                if (maintenanceLiftDeckB.isGateClosed) print " Exits: Aft";
+                else print " Exits: Port, Aft";
+            passagewayDeckB:
+                if (weaponsLocker.alienWrecked) {
+                    print " Exits: Forward, Port, Starboard";
+                } else {
+                    if (passagewayDeckBDoor.isDoorOpen) print " Exits: Forward, Port, Starboard";
+                    else print " Exits: Forward, Starboard";
+                }
+            forwardStarboardJunctionDeckC:
+                print " Exits: Aft, Port";
+            forwardStarboardJunctionDeckB:
+                print " Exits: Aft, Starboard";
+            foodLockerCorridorDeckB:
+                if (foodStorage.alienWrecked) {
+                    print " Exits: Fore, Port, Starboard";
+                } else {
+                    if (foodLockerCorridorDeckBDoor.isDoorOpen) print " Exits: Fore, Port, Starboard";
+                    else print " Exits: Fore, Port";
+                }
+            aftPortJunctionDeckC:
+                print " Exits: Starboard";
+            aftCompanionwayDeckB:
+                print " Exits: Aft, Port, Starboard, Down";
+            starboardShuttleBay, captainsQuarters, personalLockerRoom, computerRoom, foodStorage, hypersleepVault, crewLounge:
+                print " Exits: Port";
+            forwardCompanionwayDeckC:
+                if (forwardStarboardJunctionDeckC.pipesBlown) print " Exits: Aft, Up";
+                else print " Exits: Aft, Starboard, Up";
+            aftCompanionwayDeckC:
+                print " Exits: Aft, Port, Starboard, Up";
+            maintenanceGarage:
+                if (maintenanceGarageDoor.isDoorOpen) print " Exits: Fore, Aft";
+                else print " Exits: Fore";
+            forwardCompanionwayDeckA:
+                print " Exits: Fore, Aft, Port, Starboard, Down";
+            galley:
+                if (forwardCorridorDeckADoor.isDoorUnlocked) print " Exits: Fore, Aft, Starboard";
+                else print " Exits: Aft, Starboard";
+            controlRoomDeckC, clawChamber:
+                print " Exits: Fore";
+            aftJunctionDeckA:
+                if (maintenanceLiftDeckA.isGateClosed) print " Exits: Fore, Starboard";
+                else print " Exits: Fore, Port, Starboard";
+            bridge:
+                if (bridgeHatch.hatchOpen) print " Exits: Aft, Starboard";
+                else print " Exits: Aft";
+        }
+        @set_cursor 1 1; style roman; @set_window 0;
+  ];
+
+  [ EndGamePayout tempPayout lineBreak testBreak;
+        testBreak = true;
+        if (OnlyCattleProd()) lineBreak = 1;
+        else lineBreak = 2;
+        tempPayout = ItemPayout();
+        if (EndGameLoot()) {
+            print "^Once you make planetfall, you head to a flea market in California where you know you can move almost anything.^^";
+            print "You try to sell the vortex bag, but no one will take such a hot item. ";
+            print "From a local farmer, you get 75 dollars for the cattle prod. ";
+            ! ******************************************
+            ! Line Breaks Used To Separate The Info Dump
+            ! ******************************************
+
+            ! ******************************************
+            !               SLEDGEHAMMER
+            ! ******************************************
+            if (sledgehammer in player || sledgehammer in vortexBag) {
+                lineBreak++;
+                print "From the same farmer, you get another 25 dollars for the sledgehammer. ";
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !                 CROWBAR
+            ! ******************************************
+            if (crowbar in player || crowbar in vortexBag) {
+                lineBreak++;
+                print "From a handyman, you get 60 dollars for the crowbar. ";
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !           KA-BAR & TROOPER ARMOR
+            ! ******************************************
+            if (kabar in vortexBag) {
+                lineBreak++;
+                print "From an old grizzled Marine, you get 275 dollars for the Ka-Bar. ";
+                if (trooperArmor in vortexBag) {
+                    lineBreak++;
+                    print "From the same Marine, you get another 150 dollars for the trooper armor. ";
+                }
+            } else {
+                if (trooperArmor in vortexBag) {
+                    lineBreak++;
+                    print "From an old grizzled Marine, you get 150 dollars for the trooper armor. ";
+                }
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !          TISSUE KNITTER & MEDKIT
+            ! ******************************************
+            if (knitter in vortexBag) {
+                lineBreak++;
+                print "From an aging midwife, you get 155 dollars for the tissue knitter. ";
+                if (medkit in vortexBag) {
+                    lineBreak++;
+                    print "From the same midwife, you get another 75 dollars for the medkit. ";
+                }
+            } else {
+                if (medkit in vortexBag) {
+                    lineBreak++;
+                    print "From an aging midwife, you get 75 dollars for the medkit. ";
+                }
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !               EXTINGUISHER
+            ! ******************************************
+            if (extinguisher in vortexBag) {
+                lineBreak++;
+                print "From an independent salesman, you get 120 dollars for the extinguisher. ";
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !            OVERSIZED SPACESUIT
+            ! ******************************************
+            if (spacesuit in vortexBag) {
+                lineBreak++;
+                print "You manage to find a collector, getting 250 dollars for the oversized spacesuit. ";
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !              DRONE & NECKLACE
+            ! ******************************************
+            if (drone in vortexBag) {
+                lineBreak++;
+                print "From a realtor, you get 450 dollars for the gold drone. ";
+                if (necklace in vortexBag) {
+                    lineBreak++;
+                    print "From the same realtor, you get another 230 dollars for the necklace. ";
+                }
+            } else {
+                if (necklace in vortexBag) {
+                    lineBreak++;
+                    print "From a realtor, you get 230 dollars for the necklace. ";
+                }
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !           DATA READER & HOLOGRAM
+            ! ******************************************
+            if (dataReader in player || dataReader in vortexBag) {
+                lineBreak++;
+                print "You don't get much for the data reader, 50 dollars from an experienced star pilot. ";
+                if (hologram in vortexBag) {
+                    lineBreak++;
+                    print "From the same pilot, you get another 75 dollars for the hologram. ";
+                }
+            } else {
+                if (hologram in vortexBag) {
+                    lineBreak++;
+                    print "You don't get much for the hologram, 75 dollars from an experienced star pilot. ";
+                }
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !                   CORE AI
+            ! ******************************************
+            if (coreAI in vortexBag) {
+                lineBreak++;
+                print "From a headstrong researcher, you get 200 dollars for the insane AI. ";
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !             NUTRIENT PROCESSOR
+            ! ******************************************
+            if (nutrientProcessor in vortexBag) {
+                lineBreak++;
+                print "From a doomsday prepper, you get 175 dollars for the nutrient processor. ";
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !            LAPTOP & MUSIC BOX
+            ! ******************************************
+            if (laptop in vortexBag) {
+                lineBreak++;
+                print "You find a naive teenager getting 85 dollars for the laptop. ";
+                if (musicBox in vortexBag) {
+                    lineBreak++;
+                    print "The same teenager gives you another 50 dollars for the music box. ";
+                }
+            } else {
+                if (musicBox in vortexBag) {
+                    lineBreak++;
+                    print "You find a naive teenager getting 50 dollars for the music box. ";
+                }
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !           CAMERA & LENS
+            ! ******************************************
+            if (camera in vortexBag) {
+                lineBreak++;
+                print "You fail to find an astronomer, but an amateur photographer buys the camera for 175 dollars. ";
+                if (lens in vortexBag) {
+                    lineBreak++;
+                    print "From the same photographer, you get another 75 dollars for the lens. ";
+                }
+            } else {
+                if (lens in vortexBag) {
+                    lineBreak++;
+                    print "You fail to find an astronomer, but an amateur photographer buys the lens for 75 dollars. ";
+                }
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !            TRINKET & RARE WINE
+            ! ******************************************
+            if (trinket in vortexBag) {
+                lineBreak++;
+                print "From an art collector, you get 125 dollars for the silver-coated trinket. ";
+                if (wine in vortexBag) {
+                    lineBreak++;
+                    print "From the art collector, you get another 225 dollars for the rare wine. ";
+                }
+            } else {
+                if (wine in vortexBag) {
+                    lineBreak++;
+                    print "From an art collector, you get 225 dollars for the rare wine. ";
+                }
+            }
+            if (lineBreak > 2) {
+                lineBreak = 0;
+                print "^^";
+            }
+
+            ! ******************************************
+            !                 STUN BATON
+            ! ******************************************
+            if (stunBaton in vortexBag) {
+                lineBreak = 0;
+                print "From some one claiming to be an officer of the law, you hand over the stun baton for free.^^";
+            }
+
+            !**************************************
+            ! The Final Page Break Before End Game
+            !**************************************
+            if (lineBreak > 0) {
+                print "^^";
+            }
+
+            if (tempPayout >= 3000) {
+                deadflag = 2;
+                tempPayout = tempPayout - 3000;
+                if (tempPayout == 0) "You made a total of 3,000 adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                if (tempPayout < 100) "You made a total of 3,0", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                "You made a total of 3,", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+            } else {
+                if (tempPayout >= 2000) {
+                    deadflag = 2;
+                    tempPayout = tempPayout - 2000;
+                    if (tempPayout == 0) "You made a total of 2,000 adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                    if (tempPayout < 100) "You made a total of 2,0", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                    "You made a total of 2,", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                } else {
+                    if (tempPayout >= 1000) {
+                        deadflag = 2;
+                        tempPayout = tempPayout - 1000;
+                        if (tempPayout == 0) "You made a total of 1,000 adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
+                        if (tempPayout < 100) "You made a total of 1,0", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
+                        if (tempPayout < 500) "You made a total of 1,", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
+                        "You made a total of 1,", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. You even pocketed some extra cash for a beer or two. You still live the scavenger's life.";
+                    } else {
+                        deadflag = 3;
+                        if (tempPayout > 500) {
+                            "You made a total of ", tempPayout, " adjusted dollars from that run, and even though you'll be able to repair the Kratos, you still won't be able to refuel her. Your life as a scavenger is over.";
+                        }
+                        "You made a total of ", tempPayout, " adjusted dollars from that run and won't be able to repair the Kratos. Your life as a scavenger is over.";
+                    }
+                }
+            }
+        } else {
+            deadflag = 3;
+            "^You made nothing from that run and won't be able to refuel or repair the Kratos. Your life as a scavenger is over.";
+        }
+  ];
+
+  [ OnlyCattleProd;
+        if (extinguisher in vortexBag) rfalse;
+        if (spacesuit in vortexBag) rfalse;
+        if (drone in vortexBag) rfalse;
+        if (sledgehammer in player || sledgehammer in vortexBag) rfalse;
+        if (knitter in vortexBag) rfalse;
+        if (necklace in vortexBag) rfalse;
+        if (kabar in vortexBag) rfalse;
+        if (dataReader in player || dataReader in vortexBag) rfalse;
+        if (laptop in vortexBag) rfalse;
+        if (crowbar in player || crowbar in vortexBag) rfalse;
+        if (redFlashcard in player || redFlashcard in vortexBag) rfalse;
+        if (yellowFlashcard in player || yellowFlashcard in vortexBag) rfalse;
+        if (camera in vortexBag) rfalse;
+        if (lens in vortexBag) rfalse;
+        if (trinket in vortexBag) rfalse;
+        if (trooperArmor in vortexBag) rfalse;
+        if (stunBaton in vortexBag) rfalse;
+        if (wine in vortexBag) rfalse;
+        if (musicBox in vortexBag) rfalse;
+        if (battery in player || battery in vortexBag) rfalse;
+        if (medkit in vortexBag) rfalse;
+        if (coreAI in vortexBag) rfalse;
+        if (nutrientProcessor in vortexBag) rfalse;
+        if (hologram in vortexBag) rfalse;
+
+        if (cattleProd in player) rtrue;
+  ];
+
+  ! Max Payout: 3100
+  [ ItemPayout tempPay;
+        tempPay = 0;
+
+        if (cattleProd in player || cattleProd in vortexBag) tempPay = tempPay + 75;
+        if (extinguisher in vortexBag) tempPay = tempPay + 120;
+        if (spacesuit in vortexBag) tempPay = tempPay + 250;
+        if (drone in vortexBag) tempPay = tempPay + 450;
+        if (sledgehammer in player || sledgehammer in vortexBag) tempPay = tempPay + 25;
+        if (knitter in vortexBag) tempPay = tempPay + 155;
+        if (necklace in vortexBag) tempPay = tempPay + 230;
+        if (kabar in vortexBag) tempPay = tempPay + 275;
+        if (dataReader in player || dataReader in vortexBag) tempPay = tempPay + 50;
+        if (laptop in vortexBag) tempPay = tempPay + 85;
+        if (crowbar in player || crowbar in vortexBag) tempPay = tempPay + 60;
+        if (camera in vortexBag) tempPay = tempPay + 175;
+        if (lens in vortexBag) tempPay = tempPay + 75;
+        if (trinket in vortexBag) tempPay = tempPay + 125;
+        if (trooperArmor in vortexBag) tempPay = tempPay + 150;
+        if (wine in vortexBag) tempPay = tempPay + 225;
+        if (musicBox in vortexBag) tempPay = tempPay + 50;
+        if (medkit in vortexBag) tempPay = tempPay + 75;
+        if (coreAI in vortexBag) tempPay = tempPay + 200;
+        if (nutrientProcessor in vortexBag) tempPay = tempPay + 175;
+        if (hologram in vortexBag) tempPay = tempPay + 75;
+
+        return tempPay;
+  ];
+
+  [ EndGameLoot;
+        ! rtrue = any loot, really, anything
+
+        if (cattleProd in player || cattleProd in vortexBag) rtrue;
+        if (extinguisher in vortexBag) rtrue;
+        if (spacesuit in vortexBag) rtrue;
+        if (drone in vortexBag) rtrue;
+        if (sledgehammer in player || sledgehammer in vortexBag) rtrue;
+        if (knitter in vortexBag) rtrue;
+        if (necklace in vortexBag) rtrue;
+        if (kabar in vortexBag) rtrue;
+        if (dataReader in player || dataReader in vortexBag) rtrue;
+        if (laptop in vortexBag) rtrue;
+        if (crowbar in player || crowbar in vortexBag) rtrue;
+        if (camera in vortexBag) rtrue;
+        if (lens in vortexBag) rtrue;
+        if (trinket in vortexBag) rtrue;
+        if (trooperArmor in vortexBag) rtrue;
+        if (stunBaton in vortexBag) rtrue;
+        if (wine in vortexBag) rtrue;
+        if (musicBox in vortexBag) rtrue;
+        if (battery in vortexBag) rtrue;
+        if (medkit in vortexBag) rtrue;
+        if (coreAI in vortexBag) rtrue;
+        if (nutrientProcessor in vortexBag) rtrue;
+        if (hologram in vortexBag) rtrue;
+        if (redFlashcard in vortexBag) rtrue;
+        if (yellowFlashcard in vortexBag) rtrue;
+
+        rfalse;
+  ];
+
+  [ EmptyBag;
+        ! rtrue = any loot, really, anything in the vortex bag
+
+        if (cattleProd in vortexBag) rtrue;
+        if (extinguisher in vortexBag) rtrue;
+        if (spacesuit in vortexBag) rtrue;
+        if (drone in vortexBag) rtrue;
+        if (sledgehammer in vortexBag) rtrue;
+        if (knitter in vortexBag) rtrue;
+        if (necklace in vortexBag) rtrue;
+        if (kabar in vortexBag) rtrue;
+        if (dataReader in vortexBag) rtrue;
+        if (laptop in vortexBag) rtrue;
+        if (crowbar in vortexBag) rtrue;
+        if (camera in vortexBag) rtrue;
+        if (lens in vortexBag) rtrue;
+        if (trinket in vortexBag) rtrue;
+        if (trooperArmor in vortexBag) rtrue;
+        if (stunBaton in vortexBag) rtrue;
+        if (wine in vortexBag) rtrue;
+        if (musicBox in vortexBag) rtrue;
+        if (battery in vortexBag) rtrue;
+        if (medkit in vortexBag) rtrue;
+        if (coreAI in vortexBag) rtrue;
+        if (nutrientProcessor in vortexBag) rtrue;
+        if (hologram in vortexBag) rtrue;
+        if (redFlashcard in vortexBag) rtrue;
+        if (yellowFlashcard in vortexBag) rtrue;
+
+        rfalse;
+  ];
+
+  [ LootAmount iTest;
+        ! rfalse = discouraged by what little loot you could find
+        iTest = 0;
+
+        if (cattleProd in player || cattleProd in vortexBag) iTest++;
+        if (extinguisher in vortexBag) iTest++;
+        if (spacesuit in vortexBag) iTest++;
+        if (drone in vortexBag) iTest++;
+        if (sledgehammer in player || sledgehammer in vortexBag) iTest++;
+        if (knitter in vortexBag) iTest++;
+        if (necklace in vortexBag) iTest++;
+        if (kabar in vortexBag) iTest++;
+        if (dataReader in player || dataReader in vortexBag) iTest++;
+        if (laptop in vortexBag) iTest++;
+        if (crowbar in player || crowbar in vortexBag)  iTest++;
+        if (camera in vortexBag) iTest++;
+        if (lens in vortexBag) iTest++;
+        if (trinket in vortexBag) iTest++;
+        if (trooperArmor in vortexBag) iTest++;
+        if (stunBaton in vortexBag) iTest++;
+        if (wine in vortexBag) iTest++;
+        if (musicBox in vortexBag) iTest++;
+        if (medkit in vortexBag) iTest++;
+        if (coreAI in vortexBag) iTest++;
+        if (nutrientProcessor in vortexBag) iTest++;
+        if (hologram in vortexBag) iTest++;
+
+        if (iTest > 5) rtrue;
+        rfalse;
+  ];
+
+  [ GreatRun iTest;
+        ! rfalse = fail to win, not enough stuff to sell off
+        iTest = 0;
+
+        if (cattleProd in player || cattleProd in vortexBag) iTest++;
+        if (extinguisher in vortexBag) iTest++;
+        if (spacesuit in vortexBag) iTest++;
+        if (drone in vortexBag) iTest++;
+        if (sledgehammer in player || sledgehammer in vortexBag) iTest++;
+        if (knitter in vortexBag) iTest++;
+        if (necklace in vortexBag) iTest++;
+        if (kabar in vortexBag) iTest++;
+        if (dataReader in player || dataReader in vortexBag) iTest++;
+        if (laptop in vortexBag) iTest++;
+        if (crowbar in player || crowbar in vortexBag)  iTest++;
+        if (camera in vortexBag) iTest++;
+        if (lens in vortexBag) iTest++;
+        if (trinket in vortexBag) iTest++;
+        if (trooperArmor in vortexBag) iTest++;
+        if (stunBaton in vortexBag) iTest++;
+        if (wine in vortexBag) iTest++;
+        if (musicBox in vortexBag) iTest++;
+        if (medkit in vortexBag) iTest++;
+        if (coreAI in vortexBag) iTest++;
+        if (nutrientProcessor in vortexBag) iTest++;
+        if (hologram in vortexBag) iTest++;
+
+        if (iTest > 15) rtrue;
+        rfalse;
+  ];
+
+! Cody Gaisser said it was easier than he thought to navigate the vessel, ship directions could be confusing
+! Cody found you could not climb the ladders
+
+  [ CreditsSub;
+        player.advanceGravity = false;
+        style fixed;
+        print "^Author:
+        ^                 Dark Star
+        ^^Testers:
+        ^                 Wade Clarke
+        ^                 Drew Cook
+        ^                 Cody Gaisser
+        ^";
+
+        print "^Special Thanks:
+        ^                 Graham Nelson
+        ^                 Jacqueline Ashwell
+        ^                 Mathbrush";
+        style roman;
+        "";
+  ];
+
+  [ ItemFirstTaken;
+        if (alien.sleeping) {
+            alien.sleeping = false;
+            player.alienMove = true;
+            iMonsterDestination = monster_loc-->1;
+            return AlienDestroysFirstRoom(monster_loc-->0);
+        }
+        rtrue;
+  ];
+
+  [ ItemWake;
+        if (alien.sleeping) {
+            alien.sleeping = false;
+            player.alienMove = true;
+            return AlienWakes(monster_loc-->0);
+        }
+        rtrue;
+  ];
+
+  [ PageBreak i;
+        i = KeyCharPrimitive();
+        if (i == 'q') rtrue;
+        rfalse;
+  ];
+
+  [ AIOutput iap;
+        iap = 0;
+        print "^^Intruder Location: ";
+        while (iap < 11) {
+            switch (monster_loc-->iap) {
+                INFRMRY: print "!";
+                HYPRSLPVLT: print "[";
+                PORTSHTTLBY: print "#";
+                STARBRDSHTTLBY: print "$";
+                SCIENCECRRDR: print "%";
+                CAPTQRTRS: print "]";
+                MAINTNNCGRGE: print "&";
+                CONTROLRM: print "*";
+                LOUNGE: print "-";
+                FOODLCKER: print "+";
+                WEAPONSLCKER: print "?";
+            }
+            iap++;
+        }
+  ];
+
+  #Ifdef PRINTPATH;
+  [ PathSub iap;
+        iap = 0;
+        while (iap < 11) {
+            switch (monster_loc-->iap) {
+                INFRMRY:
+                    print "Infirmary^";
+                HYPRSLPVLT:
+                    print "Hypersleep Vault^";
+                PORTSHTTLBY:
+                    print "Port Shuttle Bay^";
+                STARBRDSHTTLBY:
+                    print "Starboard Shuttle Bay^";
+                SCIENCECRRDR:
+                    print "Science Corridor^";
+                CAPTQRTRS:
+                    print "Captain's Quarters^";
+                MAINTNNCGRGE:
+                    print "Maintenance Garage^";
+                CONTROLRM:
+                    print "Control Room^";
+                LOUNGE:
+                    print "Crew Lounge^";
+                WEAPONSLCKER:
+                    print "Weapon's Locker^";
+                FOODLCKER:
+                    print "Food Locker^";
+            }
+            iap++;
+        }
+        rtrue;
+  ];
+  #EndIf;
+
+  #Ifdef ALIENLOC;
+  [ AlienLocationSub;
+        switch (parent(alien)) {
+            aftCompanionwayDeckB: "Aft Companionway - Deck B";
+            aftCompanionwayDeckC: "Aft Companionway - Deck C";
+            aftJunctionDeckA: "Aft Junction - Deck A";
+            aftJunctionDeckB: "Aft Junction - Deck B";
+            aftPortJunctionDeckC: "Aft-Port Junction - Deck C";
+            aftStarboardJunctionDeckC: "Aft-Starboard Junction - Deck C";
+            bridge: "Bridge - Deck A";
+            captainsQuarters: "Captain's Quarters - Deck A";
+            clawChamber: "Claw Chamber - Deck C";
+            computerRoom: "Computer Room - Deck A";
+            controlRoomDeckC: "Engineering Control Room - Deck C";
+            crewLounge: "Crew Lounge - Deck B";
+            foodLockerCorridorDeckB: "Starboard-Side Passageway - Deck B";
+            foodStorage: "Food Locker - Deck B";
+            forwardCompanionwayDeckA: "Forward Companionway - Deck A";
+            forwardCompanionwayDeckB: "Forward Companionway - Deck B";
+            forwardCompanionwayDeckC: "Forward Companionway - Deck C";
+            forwardCorridorDeckB: "Forward Corridor - Deck B";
+            forwardPortJunctionDeckB: "Forward-Port Junction - Deck B";
+            forwardStarboardJunctionDeckB: "Forward-Starboard Junction - Deck B";
+            forwardStarboardJunctionDeckC: "Forward-Starboard Junction - Deck C";
+            galley: "Galley - Deck A";
+            hypersleepVault: "Hypersleep Vault - Deck A";
+            infirmary: "Infirmary - Deck A";
+            instrumentationBay: "Instrumentation Bay - Deck B";
+            maintenanceGarage: "Maintenance Garage - Deck C";
+            maintenanceLiftDeckA: "Maintenance Lift - Deck A";
+            maintenanceLiftDeckB: "Maintenance Lift - Deck B";
+            passagewayDeckB: "Port-Side Passageway - Deck B";
+            personalLockerRoom: "Personal Locker Room - Deck A";
+            portShuttleBay: "Port Shuttle Bay - Deck B";
+            scienceCorridorDeckB: "Science Corridor - Deck B";
+            starboardJunctionDeckB: "Starboard Junction - Deck B";
+            starboardShuttleBay: "Starboard Shuttle Bay - Deck B";
+            weaponsLocker: "Weapons Locker - Deck B";
+        }
+  ];
+  #EndIf;
+
+
+  [ PlayerOnBridge;
+        if (player in bridge) rtrue;
+        if (player in computerRoom) rtrue;
+        rfalse;
+  ];
+
+  [ StandingDeath;
+        deadflag = 1;
+        "^^Standing there doing nothing, the xenomorph swings at you, its large fist striking your skull. The concussion takes you to your knees. Then it slashes, cutting you across the chest. It doesn't take long before you bleed out, only to be crushed from the pressure of the sun.";
+  ];
+
+  [ AboutGameSub;
+        player.advanceGravity = false;
+        print "^        Welcome to Into The Sun, a game that finds its roots in WUMPUS.
+        The story was started at the beginning of October 2021 and is my third interactive fiction
+        game. This piece is inspired by Alien, a sci-fi horror movie by Ridley Scott from 1979. You could
+        call this one fanfiction. It all takes place on the Nostromo, a large tug from the film.
+        The warrant officer didn't destroy it. She lied about the condition of the ship.^^";
+        ! PageBreak();
+        print "        This piece also takes inspiration from The Curse of the Scarab by Nils Fagerburg,
+        which has its roots in Captain Verdeterre's Plunder and Sugarlawn. But unlike all of those games,
+        I'm not going for a comedic tone.^^";
+        ! PageBreak();
+        print "        The game should take no longer than a half hour to play, but be careful. You can
+        die in it. If you read the RULES, you know that you only have so long to loot the ship. So
+        please pay attention to the gravity. It increases over time, but not when you look at something.
+        You can see it in the upper right-hand corner of the interpreter or by typing GRAVITY.^^";
+        print "Disclaimer:^";
+        print "        I do not own Alien or any related characters. The Alien series is created by
+        Dan O'Bannon and owned by 20th Century Studios. This story is intended for entertainment purposes
+        only. I am not making a profit from the story. All the rights of the original Alien world belong
+        to 20th Century Studios. This story is fanfiction and is meant only for fun.^^";
+        ! PageBreak();
+        print "        Into The Sun contains a total of ", GTOTALROOMS, " rooms with ", GTOTALOBJS,
+        " objects, ", GTWORDS, " words, and an OpCode length of ", GPLOPCODE, ",", GOPCPH, GOPCSPH, GOPCODE, ".^^";
+        print "        If you have any questions, please contact the author via email:
+        darkstar@@64infodarkness.com^^";
+        ! PageBreak();
+        CreditsSub();
+  ];
+
+  [ AskAboutTopicSub; "There's no one here to answer that question."; ];
+
+  [ AskForTopicSub; "There's no one here to meet that request."; ];
+
+  [ AskCreatureForSub; "They don't understand."; ];
+
+  [ AttackSub; "That's not going to get you very far."; ];
+
+  [ BlowSub; "You can't blow through your suit. The polymer seals in your environment."; ];
+
+  [ BurnSub; "Not in this derelict. Who knows what the atmosphere here would do if you could start a fire?"; ];
+
+  [ CompassRoseSub;
+        player.advanceGravity = false;
+        "This game does not use standard compass directions. Please check the VERBS.";
+  ];
+
+  [ EnterDoorCodeSub;
+        if (dataReader.knowDoorCode) "You can't do that here.";
+        "You don't know any codes.";
+  ];
+
+  [ GravitySub printGravity printDecimal;
+        printGravity = iGravityForce;
+        printDecimal = iGravityDecimal;
+
+        if (iTime == iProgressiveGravity-1) {
+            printDecimal++;
+            if (printDecimal == 10) {
+                printDecimal = 0;
+                printGravity++;
+            }
+        }
+        if (player.gravityVerbAlreadySeen) "The gravity is currently at ", printGravity, ".", printDecimal, "g";
+        player.gravityVerbAlreadySeen = true;
+        "The gravity gets stronger every moment that passes by, but not when you look at something. It's currently at ", printGravity, ".", printDecimal, "g";
+  ];
+
+  [ HelpSub;
+        player.advanceGravity = false;
+        "If you need help with the rules, type RULES. If you need help with the verbs, type VERBS. If you want to know more about the game, type ABOUT.";
+  ];
+
+  [ KickSub; "You don't want to kick that. You'd scuff up your boots."; ];
+
+  [ ReadSub; <<Examine noun>>; ];
+
+  [ RulesSub;
+        player.advanceGravity = false;
+        "The rules are simple. You're here to loot the ship before you can't escape
+        the gravity well. 9g. No more.^^The twist is there's a xenomorph onboard
+        that will destroy the loot you're trying to take. In a different take on WUMPUS,
+        you have charges in the cattle prod to keep the creature at bay. However,
+        the alien is asleep and will wake up when you walk in on it or take the
+        first item other than the cattle prod.^^Random elements are set at the beginning
+        of the game.^^- Good Luck";
+  ];
+
+  [ ScoreSub;
+        if (iRoom == 1) {
+            if (sline2 == 1) "There is no score in this game, but if you're keeping track, you've been to ", iRoom, " room in ", sline2, " turn.";
+            "There is no score in this game, but if you're keeping track, you've been to ", iRoom, " room in ", sline2, " turns.";
+        }
+        "There is no score in this game, but if you're keeping track, you've been to ", iRoom, " rooms in ", sline2, " turns.";
+  ];
+
+  [ SetCodeSub;
+        if (dataReader.knowDoorCode) "That doesn't accept codes.";
+        "You don't know any codes.";
+  ];
+
+  [ SitRoomSub; "You need to loot the ship, not relax."; ];
+
+  [ TalkSub; "You can only do that to something animate."; ];
+
+  [ TellAboutTopicSub; "There's no one here to talk to."; ];
+
+  [ VerbsSub;
+        player.advanceGravity = false;
+        print "Here are the common verbs used in this game.^^";
+        style fixed;
+        print "FORWARD      [F]^";
+        print "AFT          [A]^";
+        print "STARBOARD    [SB] [S]^";
+        print "PORT         [P]^";
+        print "UP           [U]^";
+        print "DOWN         [D]^";
+        print "IN^";
+        print "OUT^";
+        print "^";
+        print "EXAMINE      [X]^";
+        print "INVENTORY    [I]^";
+        print "TAKE^";
+        print "ATTACK^";
+        print "BREAK <X> WITH <Y>^";
+        print "ENTER <N> INTO <Y>^";
+        print "PRY <X> WITH <Y>^";
+        print "PUT <X> INTO <Y>^";
+        print "^";
+        print "OPEN^";
+        print "DROP^";
+        print "PUSH^";
+        print "READ^";
+        print "GRAVITY^^";
+        print "ABOUT^";
+        print "RULES";
+        style roman;
+        "";
+  ];
+
+
+  [ XyzzySub;
+        "You think you hear a fizzle and a pop, but being in space for so long has played tricks on your mind.";
+  ];
+
+  [ ZorkSub; "Gesundheit!"; ];
+
+  Include "GrammarDerelict";
+
+! ---------------------------------------------------------------------------- !
+!       VERBS
+!
+Verb 'n' 'north' 'south' 'e' 'east' 'w' 'west' 'ne' 'northeast' 'nw' 'northwest' 'se' 'southeast' 'sw' 'southwest'
+    *                                           -> CompassRose;
+
+#Ifdef ALIENLOC;
+Verb 'alien' 'monster'
+    * 'loc'                                     -> AlienLocation;
+#EndIf;
+
+Verb 'answer' 'say' 'shout' 'speak'
+    * topic 'to' creature                       -> Answer;
+
+Verb 'ask'
+    * creature 'about' topic                    -> Ask
+    * creature 'for' topic                      -> AskCreatureFor
+    * creature 'to' topic                       -> AskTo
+    * 'that' creature topic                     -> AskTo
+    * creature topic                            -> Ask
+    * 'about' topic                             -> AskAboutTopic
+    * 'for' topic                               -> AskForTopic
+    * topic                                     -> AskAboutTopic;
+
+Verb 'attack' 'break' 'crack' 'destroy'
+     'fight' 'hit' 'kill' 'murder' 'poke' 'prod' 'punch'
+     'smash' 'tear' 'thump' 'torture' 'wreck'
+    * noun                                      -> Attack
+    * noun 'with' noun                          -> Attack;
+
+Verb 'blow'
+    * noun                                      -> Blow;
+
+Verb 'bother' 'curses' 'darn' 'drat'
+    *                                           -> Mild
+    * topic                                     -> Mild;
+
+Verb 'burn' 'light'
+    * noun                                      -> Burn
+    * noun 'with' held                          -> Burn;
+
+Verb 'buy' 'purchase'
+    * noun                                      -> Buy;
+
+Verb 'climb' 'scale'
+    * noun                                      -> Climb
+    * 'up'/'over' noun                          -> Climb;
+
+Verb 'carry'
+    * multi                                     -> Take
+    * multiinside 'from'/'off' noun             -> Remove
+    * 'inventory'                               -> Inv;
+
+Verb 'close' 'cover' 'shut'
+    * noun                                      -> Close
+    * 'up' noun                                 -> Close
+    * 'off' noun                                -> SwitchOff;
+
+Verb 'consult'
+    * noun 'about' topic                        -> Consult
+    * noun 'on' topic                           -> Consult;
+
+Verb 'credits' 'credit'
+    *                                           -> Credits;
+
+Verb 'cut' 'chop' 'prune' 'slice'
+    * noun                                      -> Cut
+    * 'through' noun                            -> Cut;
+
+Verb 'dig'
+    * noun                                      -> Dig
+    * noun 'with' held                          -> Dig
+    * 'in' noun                                 -> Dig
+    * 'in' noun 'with' held                     -> Dig;
+
+Verb 'disrobe' 'doff' 'shed'
+    * multi                                     -> Disrobe;
+
+Verb 'drink' 'sip' 'swallow'
+    * noun                                      -> Drink;
+
+Verb 'drop' 'discard'
+    * multiheld                                 -> Drop
+    * multiexcept 'in'/'into'/'down' noun       -> Insert
+    * multiexcept 'on'/'onto' noun              -> PutOn;
+
+Verb 'throw'
+    * noun                                      -> ThrowAt
+    * noun 'at'/'against'/'on'/'onto'/'in' noun -> ThrowAt;
+
+Verb 'eat'
+    * held                                      -> Eat;
+
+Verb 'empty'
+    * noun                                      -> Empty
+    * 'out' noun                                -> Empty
+    * noun 'out'                                -> Empty
+    * noun 'to'/'into'/'on'/'onto' noun         -> EmptyT;
+
+Verb 'enter' 'cross'
+    *                                           -> GoIn
+    * 'code'                                    -> EnterDoorCode
+    * noun                                      -> Enter
+    * number 'in'/'into' noun                   -> SetTo reverse
+    * 'code' 'in'/'into' noun                   -> SetCode;
+
+Verb 'examine' 'x//' 'check' 'describe' 'watch'
+    * noun                                      -> Examine;
+
+Verb 'exit' 'out' 'outside'
+    *                                           -> Exit
+    * noun                                      -> Exit;
+
+Verb 'fill'
+    * noun                                      -> Fill
+    * noun 'from' noun                          -> Fill;
+
+Verb 'get'
+    * 'out'/'off'/'up' 'of'/'from' noun         -> Exit
+    * multi                                     -> Take
+    * 'in'/'into'/'on'/'onto' noun              -> Enter
+    * 'off' noun                                -> GetOff
+    * multiinside 'from'/'off' noun             -> Remove;
+
+Verb 'give' 'feed' 'offer' 'pay'
+    * creature held                             -> Give reverse
+    * held 'to' creature                        -> Give
+    * 'over' held 'to' creature                 -> Give;
+
+Verb 'go' 'run' 'walk'
+    *                                           -> VagueGo
+    * noun=ADirection                           -> Go
+    * noun                                      -> Enter
+    * 'out'/'outside'                           -> Exit
+    * 'in'/'inside'                             -> GoIn
+    * 'into'/'in'/'inside'/'through' noun       -> Enter
+    * 'to' noun                                 -> Go;
+
+Verb 'gravity'
+    *                                           -> Gravity;
+
+Verb 'help' 'hint' 'hints'
+    *                                           -> Help;
+
+Verb 'hold'
+    * multi                                     -> Take
+    * multiinside 'from'/'off' noun             -> Remove
+    * 'inventory'                               -> Inv;
+
+Verb 'in' 'inside'
+    *                                           -> GoIn;
+
+Verb 'info' 'about'
+    *                                           -> AboutGame
+    * 'game'                                    -> AboutGame
+    * 'the' 'game'                              -> AboutGame;
+
+Verb 'input'
+    * number 'into' noun                        -> SetTo reverse;
+
+Verb 'insert'
+    * multiexcept 'in'/'into' noun              -> Insert;
+
+Verb 'inventory' 'inv' 'i//'
+    *                                           -> Inv
+    * 'tall'                                    -> InvTall
+    * 'wide'                                    -> InvWide;
+
+Verb 'jump' 'hop' 'skip'
+    *                                           -> Jump
+    * 'in' noun                                 -> JumpIn
+    * 'into' noun                               -> JumpIn
+    * 'on' noun                                 -> JumpOn
+    * 'upon' noun                               -> JumpOn
+    * 'over' noun                               -> JumpOver;
+
+Verb 'kick'
+    * noun                                      -> Kick;
+
+Verb 'kiss' 'embrace' 'hug'
+    * creature                                  -> Kiss;
+
+Verb 'leave'
+    *                                           -> VagueGo
+    * noun=ADirection                           -> Go
+    * noun                                      -> Exit
+    * 'into'/'in'/'inside'/'through' noun       -> Enter;
+
+Verb 'listen' 'hear'
+    *                                           -> Listen
+    * noun                                      -> Listen
+    * 'to' noun                                 -> Listen;
+
+Verb 'lock'
+    * noun 'with' held                          -> Lock;
+
+Verb 'look' 'l//'
+    *                                           -> Look
+    * 'at' noun                                 -> Examine
+    * 'inside'/'in'/'into'/'through'/'out' noun -> Search
+    * 'under' noun                              -> LookUnder
+    * 'up' topic 'in' noun                      -> Consult
+    * noun=ADirection                           -> Examine
+    * 'to' noun=ADirection                      -> Examine;
+
+Verb 'no'
+    *                                           -> No;
+
+Verb 'open' 'uncover' 'undo' 'unwrap'
+    * noun                                      -> Open
+    * noun 'with' noun                          -> Unlock;
+
+#Ifdef PRINTPATH;
+Verb 'path'
+    *                                           -> Path;
+#EndIf;
+
+
+Verb 'peel'
+    * noun                                      -> Take
+    * 'off' noun                                -> Take;
+
+Verb 'pick'
+    * 'up' multi                                -> Take
+    * multi 'up'                                -> Take;
+
+Verb 'pray'
+    *                                           -> Pray;
+
+Verb 'pry' 'prise' 'prize' 'lever' 'jemmy' 'force'
+    * noun 'with' noun                          -> Unlock
+    * 'apart'/'open' noun 'with' noun           -> Unlock
+    * noun 'apart'/'open' 'with' noun           -> Unlock;
+
+Verb 'pull' 'drag'
+    * noun                                      -> Pull;
+
+Verb 'push' 'clear' 'move' 'press' 'shift'
+    * noun                                      -> Push
+    * noun noun                                 -> PushDir
+    * noun 'to' noun                            -> Transfer;
+
+Verb 'put'
+    * multiexcept 'in'/'inside'/'into' noun     -> Insert
+    * multiexcept 'on'/'onto'/'over' noun       -> PutOn
+    * 'on' multiheld                            -> Wear
+    * 'down' multiheld                          -> Drop
+    * multiheld 'down'                          -> Drop;
+
+Verb 'read'
+    * noun                                      -> Read
+    * 'about' topic 'in' noun                   -> Consult
+    * topic 'in' noun                           -> Consult;
+
+Verb 'remove'
+    * worn                                      -> Disrobe
+    * multi                                     -> Remove
+    * multiinside 'from' noun                   -> Remove;
+
+Verb 'rub' 'clean' 'dust' 'polish' 'scrub'
+     'shine' 'sweep' 'wipe'
+    * noun                                      -> Rub;
+
+Verb 'rules'
+    *                                           -> Rules;
+
+Verb 'search'
+    * noun                                      -> Search;
+
+Verb 'set' 'adjust'
+    * noun                                      -> Set
+    * 'code' 'to' noun                          -> SetCode
+    * noun 'to' number                          -> SetTo
+    * noun 'to' 'code'                          -> SetCode;
+
+Verb 'show' 'display' 'present'
+    * creature held                             -> Show reverse
+    * held 'to' creature                        -> Show;
+
+Verb 'shit' 'damn' 'fuck' 'sod'
+    *                                           -> Strong
+    * topic                                     -> Strong;
+
+Verb 'sing'
+    *                                           -> Sing;
+
+Verb 'sit' 'lie'
+    *                                           -> SitRoom
+    * 'down'                                    -> SitRoom
+    * 'on' 'top' 'of' noun                      -> Enter
+    * 'on'/'in'/'inside' noun                   -> Enter;
+
+Verb 'sleep' 'nap'
+    *                                           -> Sleep;
+
+Verb 'smell' 'sniff'
+    *                                           -> Smell
+    * noun                                      -> Smell;
+
+Verb 'sorry'
+    *                                           -> Sorry;
+
+Verb 'squeeze' 'squash'
+    * noun                                      -> Squeeze;
+
+Verb 'stand'
+    *                                           -> Exit
+    * 'up'                                      -> Exit
+    * 'on' noun                                 -> Enter;
+
+Verb 'swim' 'dive'
+    *                                           -> Swim;
+
+Verb 'swing'
+    * noun                                      -> Swing
+    * 'on' noun                                 -> Swing;
+
+Verb 'switch' 'flip'
+    * noun                                      -> SwitchOn
+    * noun 'on'                                 -> SwitchOn
+    * noun 'off'                                -> SwitchOff
+    * 'on' noun                                 -> SwitchOn
+    * 'off' noun                                -> SwitchOff;
+
+Verb 'take'
+    * multi                                     -> Take
+    * 'off' multiheld                           -> Disrobe
+    * multiinside 'from'/'off' noun             -> Remove
+    * 'inventory'                               -> Inv;
+
+Verb 'talk'
+    * 'to' creature                             -> Talk;
+
+Verb 'taste'
+    * noun                                      -> Taste;
+
+Verb 'tell'
+    * creature 'about' topic                    -> Tell
+    * creature 'to' topic                       -> AskTo
+    * creature topic                            -> Tell
+    * 'about' topic                             -> TellAboutTopic
+    * topic                                     -> TellAboutTopic;
+
+Verb 'think'
+    *                                           -> Think;
+
+Verb 'tie' 'attach' 'connect' 'fasten' 'fix'
+    * noun                                      -> Tie
+    * noun 'to' noun                            -> Tie;
+
+Verb 'touch' 'feel' 'fondle' 'grope'
+    * noun                                      -> Touch
+    * noun 'to' noun                            -> Touch;
+
+Verb 'transfer'
+    * noun 'to' noun                            -> Transfer;
+
+Verb 'turn' 'rotate' 'screw' 'twist' 'unscrew'
+    * noun                                      -> Turn
+    * noun 'on'                                 -> SwitchOn
+    * noun 'off'                                -> SwitchOff
+    * 'on' noun                                 -> SwitchOn
+    * 'off' noun                                -> SwitchOff;
+
+Verb 'type'
+    * 'code'                                    -> EnterDoorCode
+    * number 'in'/'into' noun                   -> SetTo reverse
+    * 'code' 'in'/'into' noun                   -> SetCode;
+
+Verb 'unlock'
+    * noun 'with' noun                          -> Unlock;
+
+Verb 'verb' 'verbs'
+    *                                           -> Verbs;
+
+Verb 'wait' 'z//'
+    *                                           -> Wait;
+
+Verb 'wake' 'awake' 'awaken'
+    *                                           -> Wake
+    * 'up'                                      -> Wake
+    * creature                                  -> WakeOther
+    * creature 'up'                             -> WakeOther
+    * 'up' creature                             -> WakeOther;
+
+Verb 'wave'
+    *                                           -> WaveHands
+    * noun                                      -> Wave
+    * noun 'at' noun                            -> Wave
+    * 'at' noun                                 -> WaveHands;
+
+Verb 'wear' 'don'
+    * multiheld                                 -> Wear;
+
+Verb 'yes' 'y//'
+    *                                           -> Yes;
+
+Verb 'xyzzy' 'plugh' 'plover'
+    *                                           -> XYZZY;
+
+Verb 'zork'
+    *                                           -> Zork;
