@@ -1,0 +1,124 @@
+a
+p
+d
+s
+a
+p
+in
+open locker
+take all
+f
+sb
+f
+p
+kill alien
+in
+open desk with bar
+take all
+f
+u
+u
+a
+s
+take reader
+put yellow in reader
+x screen
+p
+press call
+
+p
+d
+sb
+a
+enter code into door
+in
+take all
+wear armor
+s
+s
+s
+enter code into door
+s
+take all
+p
+f
+s
+take box
+open it
+take battery
+i
+p
+a
+p
+kill alien with prod
+i
+take baton
+drop baton in well
+a
+sb
+take spacesuit
+kill alien
+take baton
+p
+p
+take extinguisher
+s
+f
+p
+f
+p
+u
+sb
+f
+sb
+x necklace
+take it
+p
+f
+sb
+take knife
+open desk with bar
+take orange
+put orange in reader
+g
+p
+x reader
+enter code into door
+f
+kill alien
+f
+hit hatch with hammer
+take trinket
+in
+sit
+press key
+x message
+open panel
+take ai
+out
+out
+z
+z
+z
+z
+z
+z
+z
+a
+take processor
+a
+push canister
+d
+f
+hit hatch with hammer
+in
+take all
+sb
+a
+sb
+kill alien
+sb
+x rod
+i
+f
+f

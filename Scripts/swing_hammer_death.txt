@@ -1,0 +1,43 @@
+a
+p
+u
+p
+hit alien
+sb
+d
+d
+in
+take all
+i
+hit alien
+x prod
+take it
+f
+sb
+a
+p
+in
+hit alien
+take all
+i
+x prod
+f
+u
+a
+f
+sb
+f
+sb
+take box
+p
+a
+p
+a
+hit alien
+take hammer
+i
+sb
+take suit
+g
+i
+hit alien
