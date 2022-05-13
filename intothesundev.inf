@@ -766,7 +766,7 @@
         move musicBox to crewLoungeStand;
         move medkit to infirmaryCabinet;
         move coreAI to computerRoomPanel;
-        move nutrientProcessor to galley;
+        move nutrientProcessor to galleyCounter;
         move hologram to personalLockerRoomLocker;
 
         ! Alien never goes to Personal Locker Room - Data Reader
@@ -1648,14 +1648,18 @@
 
   [ ReadSub; <<Examine noun>>; ];
 
+! Amanda B suggested that I pull this text.
+
+! The twist is there's a xenomorph onboard
+! that will destroy the loot you're trying to take. In a different take on WUMPUS,
+! you have charges in the cattle prod to keep the creature at bay. However,
+! the alien is asleep and will wake up when you walk in on it or take the
+! first item other than the cattle prod.
+
   [ RulesSub;
         player.advanceGravity = false;
         "The rules are simple. You're here to loot the ship before you can't escape
-        the gravity well. 9g. No more.^^The twist is there's a xenomorph onboard
-        that will destroy the loot you're trying to take. In a different take on WUMPUS,
-        you have charges in the cattle prod to keep the creature at bay. However,
-        the alien is asleep and will wake up when you walk in on it or take the
-        first item other than the cattle prod.^^Random elements are set at the beginning
+        the gravity well. 9g. No more.^^Random elements are set at the beginning
         of the game.^^- Good Luck";
   ];
 
@@ -1684,8 +1688,8 @@
         style fixed;
         print "FORWARD      [F]^";
         print "AFT          [A]^";
-        print "STARBOARD    [S] [SB]^";
-        print "PORT         [P]^";
+        print "STARBOARD    [S] [SB] (right)^";
+        print "PORT         [P]      (left)^";
         print "UP           [U]^";
         print "DOWN         [D]^";
         print "IN^";
@@ -1823,8 +1827,8 @@ Verb 'enter' 'cross'
     *                                           -> GoIn
     * 'code'                                    -> EnterDoorCode
     * noun                                      -> Enter
-    * number 'in'/'into' noun                   -> SetTo reverse
-    * 'code' 'in'/'into' noun                   -> SetCode;
+    * number 'in'/'into'/'on' noun              -> SetTo reverse
+    * 'code' 'in'/'into'/'on' noun              -> SetCode;
 
 Verb 'examine' 'x//' 'check' 'describe' 'watch'
     * noun                                      -> Examine;

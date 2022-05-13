@@ -5,12 +5,6 @@
 
 Object  nutrientProcessor "nutrient processor"
   with  name 'nutrient' 'processor' 'bulky' 'unit',
-        describe [;
-            if (self in galley) {
-                "^Along the port bulkhead, a nutrient processor sits in the corner of this room.";
-            }
-            rtrue;
-        ],
         before [;
             Attack:
                 "Are you really going to break the stuff you're trying to loot?";

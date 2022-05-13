@@ -14,11 +14,13 @@
                   player.advanceGravity = false;
               }
               player.inCorridor = false;
-              "With one large table in the middle, this room serves as the galley for the ship.
+              print "With one large table in the middle, this room serves as the galley for the ship.
               But something happened here, and someone tried to clean it up. Even in this light,
               you can see dried blood underneath the table.^^Forward, there's an automated door
               to the bridge. You can see the panel next to it lit up. Starboard, there's a torn-down
-              hatch. Aft, you can go back to the companionway.";
+              hatch. Aft, you can go back to the companionway";
+              if (nutrientProcessor in galleyCounter)".^^Along the port bulkhead, a nutrient processor sits on top of a counter.";
+              ".";
           ],
           n_to [;
               if (alien in self) return PXF();
@@ -73,8 +75,8 @@
 
 ! 12/01/21
 
-  NoHelp  -> forwardCorridorDeckAPanel "panel"
-    with  name 'security' 'panel' 'code' 'pad' 'input',
+  Object  -> forwardCorridorDeckAPanel "panel"
+    with  name 'security' 'panel' 'pad' 'input',
           before [;
               Examine:
                   player.advanceGravity = false;
@@ -90,8 +92,8 @@
                   if (forwardCorridorDeckADoor.isDoorUnlocked) "The door's unlocked. You don't need to do that.";
                   if (second == 10000) "Please enter a four digit number.";
                   if (second == 0) {
-                      door_code-->2 = 0;
-                      "You clear the code on the panel.";
+                      door_code-->3 = 0;
+                      "You clear the panel.";
                   }
                   door_code-->3 = second;
                   if (second == door_code-->0) {
@@ -99,10 +101,10 @@
                       "The locks disengage with a loud hiss as excess gas on the bridge is vented -
                       the smoke around you swirls and churns in its wake.";
                   }
-                  if (door_code-->3 < 10) "You set the code to 000", door_code-->3, ".";
-                  if (door_code-->3 < 100) "You set the code to 00", door_code-->3, ".";
-                  if (door_code-->3 < 1000) "You set the code to 0", door_code-->3, ".";
-                  "You set the code to ", second, ".";
+                  if (door_code-->3 < 10) "You set the panel to 000", door_code-->3, ".";
+                  if (door_code-->3 < 100) "You set the panel to 00", door_code-->3, ".";
+                  if (door_code-->3 < 1000) "You set the panel to 0", door_code-->3, ".";
+                  "You set the panel to ", second, ".";
               SetCode:
                   if (forwardCorridorDeckADoor.isDoorUnlocked) "The door's unlocked. You now have access to the heart of the ship.";
                   if (dataReader.knowDoorCode) {
@@ -116,7 +118,14 @@
                   "It doesn't work like that. You need to type in the numbers. Try: SET PANEL TO XXXX";
               Unlock:
                   "That's not what is locked. The door is.";
-          ];
+              Blow:
+                 "You can't blow through your suit. The polymer seals in your environment.";
+              Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
+                  "That's not going to help.";
+              Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
+                  "That's not going to help.";
+          ],
+     has  static scenery;
 
 ! 12/01/21
 
@@ -217,3 +226,25 @@
               Take:
                   "The hatch has been ripped apart. There's not much to take, and it's worthless.";
           ];
+
+! 05/12/22
+
+  StObj   -> galleyCounter "counter"
+    with  name 'counter',
+          before [;
+              Examine:
+                  if (nutrientProcessor in self)
+                      "Looking over the counter, you see a nutrient processor - a large device that takes up the corner of this room.";
+                  "Looking over the counter, you see only dust, a layer of soot that has settled in.";
+              Go:
+                  "You are already here.";
+              Take:
+                  "The counter is part of the ship. It isn't going anywhere.";
+              Open:
+                  "It's more of a utility surface than a storage area. There are no drawers on it.";
+              Search:
+                  if (nutrientProcessor in self)
+                      "The nutrient processor is on the counter.";
+                  "The counter is empty.";
+          ],
+     has  supporter;

@@ -90,8 +90,8 @@
 
 ! 10/26/21
 
-  NoHelp  -> foodLockerCorridorDeckBPanel "panel"
-    with  name 'security' 'panel' 'code' 'pad' 'input' 'screen',
+  Object  -> foodLockerCorridorDeckBPanel "panel"
+    with  name 'security' 'panel' 'pad' 'input' 'screen',
           before [;
               Examine:
                   player.advanceGravity = false;
@@ -110,7 +110,7 @@
                   if (second == 10000) "Please enter a four digit number.";
                   if (second == 0) {
                       door_code-->1 = 0;
-                      "You clear the code on the panel.";
+                      "You clear the panel.";
                   }
                   door_code-->1 = second;
                   if (second == door_code-->0) {
@@ -118,10 +118,10 @@
                       foodLockerCorridorDeckBDoor.isDoorOpen = true;
                       "With a loud hiss, the locks disengage. Smoke swirls at the top, and the door opens.";
                   }
-                  if (door_code-->1 < 10) "You set the code to 000", door_code-->1, ".";
-                  if (door_code-->1 < 100) "You set the code to 00", door_code-->1, ".";
-                  if (door_code-->1 < 1000) "You set the code to 0", door_code-->1, ".";
-                  "You set the code to ", second, ".";
+                  if (door_code-->1 < 10) "You set the panel to 000", door_code-->1, ".";
+                  if (door_code-->1 < 100) "You set the panel to 00", door_code-->1, ".";
+                  if (door_code-->1 < 1000) "You set the panel to 0", door_code-->1, ".";
+                  "You set the panel to ", second, ".";
               SetCode:
                   if (foodStorage.alienWrecked) "The panel has been spit on. Acid boils through the screen. So you're not setting the code to anything.";
                   if (foodLockerCorridorDeckBDoor.isDoorOpen) "The door's open. You don't need to do that.";
@@ -139,7 +139,15 @@
                   if (foodStorage.alienWrecked) "The panel has been spit on. Acid boils through the screen. But the door has been ripped off and is already open.";
                   if (foodLockerCorridorDeckBDoor.isDoorOpen) "The door is already open.";
                   "That's not what is locked. The door is.";
-          ];
+              Blow:
+                 "You can't blow through your suit. The polymer seals in your environment.";
+              Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
+                  "That's not going to help.";
+              Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
+                  "That's not going to help.";
+          ],
+     has  static scenery;
+
 
 ! 10/26/21
 
