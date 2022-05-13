@@ -20,8 +20,8 @@
 
 System_file;
 
-#Ifndef LIBRARY_ENGLISH;	! if this file is already included,
-				! don't try to include it again.
+#Ifndef LIBRARY_ENGLISH;        ! if this file is already included,
+                                ! don't try to include it again.
 
 ! ------------------------------------------------------------------------------
 !   Part I.   Preliminaries
@@ -51,62 +51,42 @@ CompassDirection -> e_obj  with short_name "starboard", door_dir e_to,
                                 name 's//' 'sb' 'starboard' 'star';
 CompassDirection -> w_obj  with short_name "port",      door_dir w_to,
                                 name 'p//' 'port';
-
-!CompassDirection -> n_obj  with short_name "north",     door_dir n_to,
-!                                name 'n//' 'north';
-!CompassDirection -> s_obj  with short_name "south",     door_dir s_to,
-!                                name 's//' 'south';
-!CompassDirection -> e_obj  with short_name "east",      door_dir e_to,
-!                                name 'e//' 'east';
-!CompassDirection -> w_obj  with short_name "west",      door_dir w_to,
-!                                name 'w//' 'west';
-!CompassDirection -> ne_obj with short_name "northeast", door_dir ne_to,
-!                                name 'ne'  'northeast';
-!CompassDirection -> nw_obj with short_name "northwest", door_dir nw_to,
-!                                name 'nw'  'northwest';
-!CompassDirection -> se_obj with short_name "southeast", door_dir se_to,
-!                                name 'se'  'southeast';
-!CompassDirection -> sw_obj with short_name "southwest", door_dir sw_to,
-!                                name 'sw'  'southwest';
-
-
-
 CompassDirection -> u_obj  with short_name "up above",  door_dir u_to,
                                 name 'u//' 'up' 'ceiling' 'above' 'sky',
                     description [;
-												if (player in forwardCompanionwayDeckC || player in aftCompanionwayDeckC) "In the center of the ceiling, a ladder well will take you to the deck above.";
-												if (player in forwardCompanionwayDeckB) "In the center of the ceiling, a ladder well gives you access to the ship.";
-												if (player in infirmary) "The ring of lights that wrap around this room creates an orange glow.";
-												if (PlayerInCorridorCDeck()) "The ceiling is made from grated metal that makes up the floor deck above.";
-												"There's nothing special about the ceiling.";
+                        if (player in forwardCompanionwayDeckC || player in aftCompanionwayDeckC) "In the center of the ceiling, a ladder well will take you to the deck above.";
+                        if (player in forwardCompanionwayDeckB) "In the center of the ceiling, a ladder well gives you access to the ship.";
+                        if (player in infirmary) "The ring of lights that wrap around this room creates an orange glow.";
+                        if (PlayerInCorridorCDeck()) "The ceiling is made from grated metal that makes up the floor deck above.";
+                        "There's nothing special about the ceiling.";
                     ],
-										before [;
-												Climb:
-														if (player in forwardCompanionwayDeckA) "You're already on the top deck.";
-														if (player in forwardCompanionwayDeckB) return PlayerTo(forwardCompanionwayDeckA,2);
-														if (player in forwardCompanionwayDeckC) return PlayerTo(forwardCompanionwayDeckB,2);
-														if (player in aftCompanionwayDeckB) "This is the rear of the ship, and the top deck back here. The ladder well doesn't go any higher.";
-														if (player in aftCompanionwayDeckC) return PlayerTo(aftCompanionwayDeckB,2);
-										];
+                    before [;
+                        Climb:
+                            if (player in forwardCompanionwayDeckA) "You're already on the top deck.";
+                            if (player in forwardCompanionwayDeckB) return PlayerTo(forwardCompanionwayDeckA,2);
+                            if (player in forwardCompanionwayDeckC) return PlayerTo(forwardCompanionwayDeckB,2);
+                            if (player in aftCompanionwayDeckB) "This is the rear of the ship, and the top deck back here. The ladder well doesn't go any higher.";
+                            if (player in aftCompanionwayDeckC) return PlayerTo(aftCompanionwayDeckB,2);
+                    ];
 CompassDirection -> d_obj  with short_name "deck",    door_dir d_to,
                                 name 'd//' 'down' 'floor' 'below' 'ground' 'deck' 'ph023' 'ph024' 'grate' 'grated' 'irregular' 'metal' 'plating' 'grating',
                     description [;
-												if (player in forwardCompanionwayDeckA || player in forwardCompanionwayDeckB) "In the center of the floor, a ladder well gives you access to the ship.";
-												if (player in aftCompanionwayDeckB) "In the center of the floor, a ladder well will take you to the deck below.";
-												if (player in forwardCorridorDeckB) "The deck is covered in blood and guts. Whatever hit this guy slammed into him hard. You'll have to walk around it.";
-												if (PlayerInCorridorBDeck()) "The deck is made from grated metal that lets liquids pass through to the deck below.";
-												if (PlayerInCorridorCDeck() || player in forwardCompanionwayDeckC || player in aftCompanionwayDeckC) "The deck is made from grated metal that lets liquids pass through - the shallow space below has a bit of water.";
-												if (player.inCorridor) "The deck is made from grated metal that lets liquids pass through to the decks below.";
-												"There's nothing special about the floor. It's made from irregular metal plating.";
+                        if (player in forwardCompanionwayDeckA || player in forwardCompanionwayDeckB) "In the center of the floor, a ladder well gives you access to the ship.";
+                        if (player in aftCompanionwayDeckB) "In the center of the floor, a ladder well will take you to the deck below.";
+                        if (player in forwardCorridorDeckB) "The deck is covered in blood and guts. Whatever hit this guy slammed into him hard. You'll have to walk around it.";
+                        if (PlayerInCorridorBDeck()) "The deck is made from grated metal that lets liquids pass through to the deck below.";
+                        if (PlayerInCorridorCDeck() || player in forwardCompanionwayDeckC || player in aftCompanionwayDeckC) "The deck is made from grated metal that lets liquids pass through - the shallow space below has a bit of water.";
+                        if (player.inCorridor) "The deck is made from grated metal that lets liquids pass through to the decks below.";
+                        "There's nothing special about the floor. It's made from irregular metal plating.";
                     ],
-										before [;
-												Climb:
-														if (player in forwardCompanionwayDeckA) return PlayerTo(forwardCompanionwayDeckB,2);
-														if (player in forwardCompanionwayDeckB) return PlayerTo(forwardCompanionwayDeckC,2);
-														if (player in forwardCompanionwayDeckC) "You're already on the bottom deck.";
-														if (player in aftCompanionwayDeckB) return PlayerTo(aftCompanionwayDeckC,2);
-														if (player in aftCompanionwayDeckC) "You're already on the bottom deck.";
-										];
+                    before [;
+                        Climb:
+                            if (player in forwardCompanionwayDeckA) return PlayerTo(forwardCompanionwayDeckB,2);
+                            if (player in forwardCompanionwayDeckB) return PlayerTo(forwardCompanionwayDeckC,2);
+                            if (player in forwardCompanionwayDeckC) "You're already on the bottom deck.";
+                            if (player in aftCompanionwayDeckB) return PlayerTo(aftCompanionwayDeckC,2);
+                            if (player in aftCompanionwayDeckC) "You're already on the bottom deck.";
+                    ];
 #Endif; ! WITHOUT_DIRECTIONS
 
 CompassDirection -> in_obj  with short_name "inside",  door_dir in_to;
@@ -434,17 +414,17 @@ Constant COMMA__TX      = ", ";
 Constant COLON__TX      = ":";
 
 ! For EnterSub()
-Constant STAND__TX	= 'stand';
-Constant SIT__TX	= 'sit';
-Constant LIE__TX	= 'lie';
+Constant STAND__TX        = 'stand';
+Constant SIT__TX        = 'sit';
+Constant LIE__TX        = 'lie';
 
 Constant LIBERROR__TX   = "Library error ";
 Constant TERP__TX       = "Interpreter ";
 Constant VER__TX        = "Version ";
 Constant STDTERP__TX    = "Standard interpreter ";
-Constant TERPVER__TX	= "Interpreter version ";
-Constant LIBSER__TX	= "Library Serial Number ";
-Constant VM__TX		= "VM ";
+Constant TERPVER__TX        = "Interpreter version ";
+Constant LIBSER__TX        = "Library Serial Number ";
+Constant VM__TX                = "VM ";
 Constant RELEASE__TX    = "Release ";
 Constant SERNUM__TX     = "Serial number ";
 Constant INFORMV__TX    = "Inform v";
@@ -460,12 +440,12 @@ Constant LIBRARYV__TX   = " Library v";
 ! Accusative
 [ ThatOrThose obj;
     if (obj == player) {
-	if (player provides narrative_voice) {
-	    if (player.narrative_voice == 1) { print "me"; return; }
-	    if (player.narrative_voice == 3) { CDefart(player); return; }
-	}
-	print "you";
-	return;
+        if (player provides narrative_voice) {
+            if (player.narrative_voice == 1) { print "me"; return; }
+            if (player.narrative_voice == 3) { CDefart(player); return; }
+        }
+        print "you";
+        return;
     }
     if (obj has pluralname)       { print "those"; return; }
     if (obj has female)           { print "her"; return; }
@@ -477,12 +457,12 @@ Constant LIBRARYV__TX   = " Library v";
 ! Accusative
 [ ItOrThem obj;
     if (obj == player) {
-	if (player provides narrative_voice) {
-	    if (player.narrative_voice == 1) { print "myself"; return; }
-	    if (player.narrative_voice == 3) { CDefart(player); return; }
-	}
-	print "yourself";
-	return;
+        if (player provides narrative_voice) {
+            if (player.narrative_voice == 1) { print "myself"; return; }
+            if (player.narrative_voice == 3) { CDefart(player); return; }
+        }
+        print "yourself";
+        return;
     }
     if (obj has pluralname)       { print "them"; return; }
     if (obj has female)           { print "her"; return; }
@@ -494,17 +474,17 @@ Constant LIBRARYV__TX   = " Library v";
 ! Nominative
 [ CThatOrThose obj;
     if (obj == player) {
-	if (player provides narrative_voice) {
-	    if (player.narrative_voice == 1) { print "I"; return; }
-	    if (player.narrative_voice == 3) { CDefart(player); return; }
-	}
-	print "You";
-	return;
+        if (player provides narrative_voice) {
+            if (player.narrative_voice == 1) { print "I"; return; }
+            if (player.narrative_voice == 3) { CDefart(player); return; }
+        }
+        print "You";
+        return;
     }
-    if (obj has pluralname)		{ print "Those"; return; }
-    if (obj has female)			{ print "She"; return; }
+    if (obj has pluralname)                { print "Those"; return; }
+    if (obj has female)                        { print "She"; return; }
     if (obj has male or animate) {
-        if (obj hasnt neuter)		{ print "He"; return; }
+        if (obj hasnt neuter)                { print "He"; return; }
     }
     print "That";
 ];
@@ -512,17 +492,17 @@ Constant LIBRARYV__TX   = " Library v";
 ! Nominative
 [ CTheyreOrThats obj;
     if (obj == player) {
-	if (player provides narrative_voice) {
-	    if (player.narrative_voice == 1) { Tense("I'm", "I was"); return; }
-	    if (player.narrative_voice == 3) { CDefart(player); Tense("'s", " was"); return; }
-	}
-	Tense("You're", "You were");
-	return;
+        if (player provides narrative_voice) {
+            if (player.narrative_voice == 1) { Tense("I'm", "I was"); return; }
+            if (player.narrative_voice == 3) { CDefart(player); Tense("'s", " was"); return; }
+        }
+        Tense("You're", "You were");
+        return;
     }
-    if (obj has pluralname)		{ Tense("They're", "They were"); return; }
-    if (obj has female)			{ Tense("She's", "She was"); return; }
+    if (obj has pluralname)                { Tense("They're", "They were"); return; }
+    if (obj has female)                        { Tense("She's", "She was"); return; }
     if (obj has male or animate) {
-        if (obj hasnt neuter)		{ Tense("He's", "He was"); return; }
+        if (obj hasnt neuter)                { Tense("He's", "He was"); return; }
     }
     Tense("That's", "That was");
 ];
@@ -558,20 +538,20 @@ Constant LIBRARYV__TX   = " Library v";
     }
    else
         if (obj has pluralname) {
-	    if (nocaps)
-		print (the) obj;
-	    else
-		print (The) obj;
-	    print " ", (string) v2;
-	    return;
-	}
+            if (nocaps)
+                print (the) obj;
+            else
+                print (The) obj;
+            print " ", (string) v2;
+            return;
+        }
         else {
-	    if (nocaps)
-		print (the) obj;
-	    else
-		print (The) obj;
-	    print " ", (string) v3; return;
-	}
+            if (nocaps)
+                print (the) obj;
+            else
+                print (The) obj;
+            print " ", (string) v3; return;
+        }
 ];
 
 [ CSubjectVoice obj v1 v2 v3 past;
@@ -613,7 +593,7 @@ Constant LIBRARYV__TX   = " Library v";
           default: RunTimeError(16, player.narrative_voice);
         }
         if (nocaps) { print "you ", (string) v2; return; }
-	print "You ", (string) v2; return;
+        print "You ", (string) v2; return;
     }
     SubjectNotPlayer(obj, reportage, nocaps, v2, v3);
 ];
@@ -645,7 +625,7 @@ Constant LIBRARYV__TX   = " Library v";
         }
         if (nocaps) Tense("you aren't", "you weren't");
         else Tense("You aren't", "You weren't");
-	return;
+        return;
     }
     SubjectNotPlayer(obj, reportage, nocaps, "aren't", "isn't", "wasn't");
 ];
@@ -1152,9 +1132,9 @@ Constant LIBRARYV__TX   = " Library v";
               ENGLISH_BIT+RECURSE_BIT+PARTINV_BIT+TERSE_BIT+CONCEAL_BIT+WORKFLAG_BIT);
             if (x1 ~= location) "."; else " here.";
         7:  if (player.inCorridor) "You can't see anything unusual in that direction because of the smoke that hangs in the air.";
-						if (player in bridge || player in computerRoom) "There's no smoke up here, and you don't notice anything unusual in that direction.";
-						if (player in maintenanceGarage || player in clawChamber) "The smoke's heavier in this room, and you can't see anything in that direction.";
-						"The smoke's thinner in this room, and you don't notice anything unusual in that direction.";
+                                                if (player in bridge || player in computerRoom) "There's no smoke up here, and you don't notice anything unusual in that direction.";
+                                                if (player in maintenanceGarage || player in clawChamber) "The smoke's heavier in this room, and you can't see anything in that direction.";
+                                                "The smoke's thinner in this room, and you don't notice anything unusual in that direction.";
     }
   LookUnder: switch (n) {
         1:  print "But it";
@@ -1167,13 +1147,13 @@ Constant LIBRARYV__TX   = " Library v";
         1:  "(considering the first sixteen objects only)^";
         2:  "Nothing to do.";
         3:  print " "; CSubjectVerb(player, false, false, "died", "have died", "has died");
-	    print " ";
+            print " ";
         4:  print " "; CSubjectVerb(player, false, false, "won", "have won", "has won");
             print " ";
         5:  print "^Would you like to RESTART, RESTORE a saved game";
             if (player.mentionUndo) {
             print ", UNDO your last move";
-						}
+                                                }
             if (TASKS_PROVIDED == 0) print ", give the FULL score for that game";
             if (deadflag == 2 && AMUSING_PROVIDED == 0)
                 print ", see some suggestions for AMUSING things to do";
@@ -1392,33 +1372,33 @@ Constant LIBRARYV__TX   = " Library v";
         2:  DecideAgainst();
     }
   RunTimeError: print "** ";
-	switch (n) {
-	1:  print "Preposition not found (this should not occur)";
-	2:  print "Property value not routine or string: ~", (property) x2,
-		"~ of ~", (name) x1, "~ (", x1, ")";
-	3:  print "Entry in property list not routine or string: ~",
-		(property) x2, "~ list of ~", (name) x1, "~ (", x1, ")";
-	4:  print "Too many timers/daemons are active simultaneously.
-		The limit is the library constant MAX_TIMERS
-		(currently ", MAX_TIMERS, ") and should be increased";
-	5:  print "Object ~", (name) x1, "~ has no ~", (property) x2,
-		"~ property";
-	7:  print "The object ~", (name) x1, "~ can only be used as a player
-		object if it has the ~number~ property";
-	8:  print "Attempt to take random entry from an empty table array";
-	9:  print x1, " is not a valid direction property number";
-	10: print "The player-object is outside the object tree";
-	11: print "The room ~", (name) x1, "~ has no ~", (property) x2,
-		"~ property";
-	12: print "Tried to set a non-existent pronoun using SetPronoun";
-	13: print "A 'topic' token can only be followed by a preposition";
-	14: print "Overflowed buffer limit of ", x1,
-		" using '@@64output_stream 3' ", (string) x2;
-	15: print "LoopWithinObject broken because the object ",
-		(name) x1, " was moved while the loop passed through it.";
-	16: print "Attempt to use illegal narrative_voice of ", x1, ".";
-	default:
-	    print "(unexplained)";
+        switch (n) {
+        1:  print "Preposition not found (this should not occur)";
+        2:  print "Property value not routine or string: ~", (property) x2,
+                "~ of ~", (name) x1, "~ (", x1, ")";
+        3:  print "Entry in property list not routine or string: ~",
+                (property) x2, "~ list of ~", (name) x1, "~ (", x1, ")";
+        4:  print "Too many timers/daemons are active simultaneously.
+                The limit is the library constant MAX_TIMERS
+                (currently ", MAX_TIMERS, ") and should be increased";
+        5:  print "Object ~", (name) x1, "~ has no ~", (property) x2,
+                "~ property";
+        7:  print "The object ~", (name) x1, "~ can only be used as a player
+                object if it has the ~number~ property";
+        8:  print "Attempt to take random entry from an empty table array";
+        9:  print x1, " is not a valid direction property number";
+        10: print "The player-object is outside the object tree";
+        11: print "The room ~", (name) x1, "~ has no ~", (property) x2,
+                "~ property";
+        12: print "Tried to set a non-existent pronoun using SetPronoun";
+        13: print "A 'topic' token can only be followed by a preposition";
+        14: print "Overflowed buffer limit of ", x1,
+                " using '@@64output_stream 3' ", (string) x2;
+        15: print "LoopWithinObject broken because the object ",
+                (name) x1, " was moved while the loop passed through it.";
+        16: print "Attempt to use illegal narrative_voice of ", x1, ".";
+        default:
+            print "(unexplained)";
     }
     print " **";
   Save: switch (n) {
