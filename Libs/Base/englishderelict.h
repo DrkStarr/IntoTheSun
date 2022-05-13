@@ -1131,10 +1131,10 @@ Constant LIBRARYV__TX   = " Library v";
             WriteListFrom(child(x1),
               ENGLISH_BIT+RECURSE_BIT+PARTINV_BIT+TERSE_BIT+CONCEAL_BIT+WORKFLAG_BIT);
             if (x1 ~= location) "."; else " here.";
-        7:  if (player.inCorridor) "You can't see anything unusual in that direction because of the smoke that hangs in the air.";
-                                                if (player in bridge || player in computerRoom) "There's no smoke up here, and you don't notice anything unusual in that direction.";
-                                                if (player in maintenanceGarage || player in clawChamber) "The smoke's heavier in this room, and you can't see anything in that direction.";
-                                                "The smoke's thinner in this room, and you don't notice anything unusual in that direction.";
+        7:  if (player.inCorridor) "Because of the smoke that hangs in the air, you can't see anything unusual in that direction.";
+            if (player in bridge || player in computerRoom) "There's no smoke up here, and you don't notice anything unusual in that direction.";
+            if (player in maintenanceGarage || player in clawChamber) "The smoke's heavier in this room, and you can't see anything in that direction.";
+            "The smoke's thinner in this room, and you don't notice anything unusual in that direction.";
     }
   LookUnder: switch (n) {
         1:  print "But it";
