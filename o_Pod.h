@@ -10,12 +10,18 @@ Object  pod "pod"
         ],
         before [;
             Attack:
+                if (second == cattleProd) <<Prod self>>;
+                if (second == nothing) {} else {
+                    if (parent(second) == vortexBag) "", (The) second, " is in the bag. You leave it be.";
+                }
                 if (self.touchedAlready)
                     "The pod's not a threat. It's not even alive.";
                 move forwardPortJunctionDeckBDust to forwardPortJunctionDeckB;
                 remove self;
-                "You reach out, hitting the pod, not knowing what to expect. Your hand goes right through as
-                it crumbles to dust. Whatever was inside died a long time ago.";
+                if (second == nothing)
+                    "You reach out, hitting the pod, not knowing what to expect. Your hand goes right through as
+                    it crumbles to dust. Whatever was inside died a long time ago.";
+                "You reach out, hitting the pod, not knowing what to expect. ", (The) second, " goes right through as it crumbles to dust. Whatever was inside died a long time ago.";
             Burn:
 
             Eat:
@@ -55,6 +61,8 @@ Object  pod "pod"
                 It doesn't react. So you push a little harder. But because the husk is
                 so dry, your fingers break through the surface. Instinctively, you pull
                 back your hand.";
+             Prod:
+                "The pod looks dry and brittle. There's no need to waste a charge.";
         ],
         brokenPod false,
         touchedAlready false,

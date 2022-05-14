@@ -157,6 +157,8 @@
                   if (self.isDoorOpen) "The door's open, giving you access to what little the ship has.";
                   "The door to port is labeled ~Weapons Locker,~ and has a security panel next to it.
                   As you look at it a little closer, you see a spot of dried blood on it.";
+              Search:
+                  if (weaponsLocker.alienWrecked) "You can't do that from here. You need to enter the locker first.";
               Enter:
                   if (alien in passagewayDeckB) return PXF();
                   if (self.isDoorOpen || weaponsLocker.alienWrecked) {

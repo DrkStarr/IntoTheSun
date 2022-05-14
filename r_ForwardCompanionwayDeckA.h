@@ -113,13 +113,14 @@
           before [;
               Examine:
                   player.advanceGravity = false;
-                  if (self in forwardCompanionwayDeckC)
-                      "The coolant canister slammed into the deck, and found a hole in the metal grating. The cylinder holds liquid nitrogen under pressure. But the seal is broken. The canister used.";
-                  "The coolant canister is a large cylinder, like a scuba tank, that holds liquid nitrogen under pressure. But the seal is broken. The canister used.";
+                  if (self in forwardCompanionwayDeckC) "The coolant canister slammed into the deck and found a hole in the metal grating, getting stuck in the spit-on deck.";
+                  "The coolant canister is a large cylinder, like a scuba tank, that holds liquid nitrogen under pressure. But the seal is broken - the canister used.";
               Take, Pull:
                   if (self in forwardCompanionwayDeckC)
                       "The canister lodge itself into the deck. You can't pull it out.";
-                  "The seal is broken. The canister is empty and worthless.";
+                  if (self.triedToTake) "The seal is broken. The canister is empty and worthless.";
+                  self.triedToTake = true;
+                  "The seal is broken. The canister is empty and worthless. But it might be used for something else.";
               Push:
                   if (self in forwardCompanionwayDeckC) "That's not going to help. You're wasting your time down here.";
                   if (alien.sleeping) "That would make a lot of noise if you pushed it into the ladder well. It's best you don't disturb the ship.";
@@ -130,4 +131,5 @@
                   ". It bounces off metal a few times on the way down before hitting bottom. That should attract the xenomorph to the lowest parts of the ship.";
               Open:
                   "At the top of the canister, the seal's cracked. The gas has already been vented.";
-          ];
+          ],
+          triedToTake false;

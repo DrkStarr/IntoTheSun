@@ -132,6 +132,8 @@
   NoHelp  -> forwardCorridorDeckADoor "door"
     with  name 'automated' 'automatic' 'door' 'bridge',
           before [ w1 w2;
+              Attack:
+                  "You don't need to break it. The door still works. You just need to open it using the panel.";
               Examine:
                   player.advanceGravity = false;
                   if (self.isDoorUnlocked) "The automated door's unlocked. You now have access to the heart of the ship.";

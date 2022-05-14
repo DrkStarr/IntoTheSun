@@ -138,14 +138,15 @@
               Rub:
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
                   "You don't have time for that. You are plunging into the sun.";
+              LookUnder:
+                  if (infirmary.alienWrecked) "The metal has been crushed and then spit on with acid. There's nothing to look under.";
+                  "You see a nasty-looking hole that has burned its way through the deck underneath the table.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
                   "You need to loot the ship, not mess with ", (the) self, ".";
               Push, PushDir, Pull, Remove, Rub, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
                   "You need to loot the ship, not mess with ", (the) self, ".";
-
-
           ],
      has  supporter;
 
@@ -175,6 +176,26 @@
                   "You are already here.";
           ],
      has  pluralname;
+
+! 05/13/22
+
+  StObj   -> infirmaryHole "hole"
+    with  name 'small' 'hole' 'nasty' 'acid',
+          before [;
+              Examine:
+                  player.advanceGravity = false;
+                  "A nasty hole that looks like acid was spilled all over the place has burned itself into the floor, with the solution making its way through to B Deck.";
+              Go:
+                  "You are already here.";
+              Take, Push, Pull, PushDir, Unlock:
+                  "It's a hole. You can't do that.";
+              Open:
+                  "It's a small hole in the deck. You would need more acid.";
+              Enter:
+                   "It's not that big.";
+              Search:
+                  "Looking through the hole, you can't tell if you see B Deck or not. It's too dark down there.";
+          ];
 
 ! 12/28/21
 

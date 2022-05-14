@@ -65,6 +65,12 @@
               Examine:
                   deadflag = 1;
                   "The alien glistens with a metallic shine. His large, bulbous head arched back. There's a long row of sharp teeth that run up the side of his mouth, almost like he's smiling. Eyes burn deep into you. Arm's outstretched and tense.^^Then his mouth opens, the creature lunges, and the jaws come for you. When the beast is done, it doesn't take long before you bleed out and the ship's crushed from the pressure of the sun.";
+              Prod:
+                  if (sledgehammer in player) {
+                          if (sledgehammer.alreadyAttacked) <<Swing sledgehammer cattleProd>>;
+                      print "(not while holding the sledgehammer)^";
+                      <<Attack self sledgehammer>>;
+                  }
               default:
                   deadflag = 1;
                   "Before you can do anything to the creature, the alien arches his bulbous head back. Eyes burning deep into you. Then his mouth opens, the creature lunges, and the jaws come for you. When the beast's done, it doesn't take long before you bleed out and the ship's crushed from the sun's pressure.";
@@ -102,6 +108,7 @@
                   move medkit to infirmary;
               }
               #EndIf;
+              remove infirmaryHole;
               move infirmaryAcid to infirmary;
               give infirmaryCabinet ~container;
               give infirmaryTable ~supporter;
@@ -256,6 +263,7 @@
                   move medkit to infirmary;
               }
               #EndIf;
+              remove infirmaryHole;
               move infirmaryAcid to infirmary;
               give infirmaryCabinet ~container;
               give infirmaryTable ~supporter;
@@ -445,6 +453,7 @@
                     move medkit to infirmary;
                 }
                 #EndIf;
+                remove infirmaryHole;
                 move infirmaryAcid to infirmary;
                 give infirmaryCabinet ~container;
                 give infirmaryTable ~supporter;
@@ -639,6 +648,7 @@
                     move medkit to infirmary;
                 }
                 #EndIf;
+                remove infirmaryHole;
                 move infirmaryAcid to infirmary;
                 give infirmaryCabinet ~container;
                 give infirmaryTable ~supporter;

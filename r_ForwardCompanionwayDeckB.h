@@ -139,6 +139,8 @@
                   if (self.objectUsed) "The access panel is sealed, and there's no need to get inside. Now you're just wasting time.";
                   self.objectUsed = true;
                   "The access panel is sealed, and there's no need to get inside. You don't have time to disassemble the ship. You need to loot what's easily takeable.";
+              SetCode, SetTo:
+                  "There is no input. The panel is designed to be pried off.";
           ],
           objectUsed false,
           objectAttacked false;

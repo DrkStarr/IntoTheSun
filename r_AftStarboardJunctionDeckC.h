@@ -101,7 +101,7 @@
               Push, Pull, PushDir:
                   "You don't need to use the equipment. It can stay right there.";
               Take:
-                  "It's larger than the bag and wouldn't fit through the hole.";
+                  "It's larger than the bag and wouldn't fit.";
               SwitchOn:
                   "You don't need to weld anything. You need to loot the ship.";
               SwitchOff:
@@ -123,7 +123,7 @@
               Push, Pull, PushDir:
                   "You don't need to use the equipment. It can stay right there.";
               Take:
-                  "It's larger than the bag and wouldn't fit through the hole.";
+                  "It's larger than the bag and wouldn't fit.";
               SwitchOn:
                   "You don't need to weld anything. You need to loot the ship.";
               SwitchOff:

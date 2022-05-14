@@ -76,6 +76,10 @@ CompassDirection -> d_obj  with short_name "deck",    door_dir d_to,
                         if (player in forwardCorridorDeckB) "The deck is covered in blood and guts. Whatever hit this guy slammed into him hard. You'll have to walk around it.";
                         if (PlayerInCorridorBDeck()) "The deck is made from grated metal that lets liquids pass through to the deck below.";
                         if (PlayerInCorridorCDeck() || player in forwardCompanionwayDeckC || player in aftCompanionwayDeckC) "The deck is made from grated metal that lets liquids pass through - the shallow space below has a bit of water.";
+                        if (player in infirmary) {
+                            if (infirmary.alienWrecked) "Acid is all over the floor, trying to burn its way through to the hull.";
+                            "The deck has a small hole in it underneath the table - acid having melted its way through.";
+                        }
                         if (player.inCorridor) "The deck is made from grated metal that lets liquids pass through to the decks below.";
                         "There's nothing special about the floor. It's made from irregular metal plating.";
                     ],

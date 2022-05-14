@@ -74,10 +74,10 @@
   Constant GTOTALROOMS=35;
   Constant GTOTALOBJS=27;
   Constant GPLOPCODE=37;  ! Instructions Of Z-Code
-  Constant GOPCPH=4;
-  Constant GOPCSPH=3;
-  Constant GOPCODE=7;
-  Constant GTWORDS=835;   ! Dictionary Entries
+  Constant GOPCPH=6;
+  Constant GOPCSPH=5;
+  Constant GOPCODE=8;
+  Constant GTWORDS=841;   ! Dictionary Entries
   Constant DIALECT_US;
 
 ! ***********************
@@ -1415,6 +1415,10 @@
         rfalse;
   ];
 
+! Amanda got stuck on the code for the door, after it was worked on with Wades suggestions - Objects reworked in the galley
+! She said to cut the part about the alien from the rules, the player figures out what is going on pretty fast
+! Reworked the pod a bit
+
 ! Cody Gaisser said it was easier than he thought to navigate the vessel, ship directions could be confusing
 ! Cody found you could not climb the ladders
 
@@ -1427,9 +1431,12 @@
         ^                 Wade Clarke
         ^                 Drew Cook
         ^                 Cody Gaisser
+        ^                 Amanda Walker
         ^";
 
-        print "^Special Thanks:
+        print "^Cover Art:
+        ^                 Pete Ashford^
+        ^Special Thanks:
         ^                 Graham Nelson
         ^                 Jacqueline Ashwell
         ^                 Mathbrush";
@@ -1583,10 +1590,10 @@
         which has its roots in Captain Verdeterre's Plunder and Sugarlawn. But unlike all of those games,
         I'm not going for a comedic tone.^^";
         ! PageBreak();
-        print "        The game should take no longer than a half hour to play, but be careful. You can
-        die in it. If you read the RULES, you know that you only have so long to loot the ship. So
-        please pay attention to the gravity. It increases over time, but not when you look at something.
-        You can see it in the upper right-hand corner of the interpreter or by typing GRAVITY.^^";
+!        print "        The game should take no longer than a half hour to play, but be careful. You can
+!        die in it. If you read the RULES, you know that you only have so long to loot the ship. So
+!        please pay attention to the gravity. It increases over time, but not when you look at something.
+!        You can see it in the upper right-hand corner of the interpreter or by typing GRAVITY.^^";
         print "Disclaimer:^";
         print "        I do not own Alien or any related characters. The Alien series is created by
         Dan O'Bannon and owned by 20th Century Studios. This story is intended for entertainment purposes
@@ -1646,9 +1653,11 @@
 
   [ KickSub; "You don't want to kick that. You'd scuff up your boots."; ];
 
+  [ ProdSub; <<Attack noun>>; ];
+
   [ ReadSub; <<Examine noun>>; ];
 
-! Amanda B suggested that I pull this text.
+! Amanda W suggested that I pull this text.
 
 ! The twist is there's a xenomorph onboard
 ! that will destroy the loot you're trying to take. In a different take on WUMPUS,
@@ -1658,9 +1667,12 @@
 
   [ RulesSub;
         player.advanceGravity = false;
+        player.gravityVerbAlreadySeen = true;
         "The rules are simple. You're here to loot the ship before you can't escape
-        the gravity well. 9g. No more.^^Random elements are set at the beginning
-        of the game.^^- Good Luck";
+        the gravity well. 9g. No more.^^Gravity increases over time, but not when
+        you look at something, and can be seen in the upper right hand corner of
+        the interpreter or by typing GRAVITY.^^Random elements are set at the
+        beginning of the game.";
   ];
 
   [ ScoreSub;
@@ -1686,10 +1698,10 @@
         player.advanceGravity = false;
         print "Here are the common verbs used in this game.^^";
         style fixed;
-        print "FORWARD      [F]^";
-        print "AFT          [A]^";
-        print "STARBOARD    [S] [SB] (right)^";
-        print "PORT         [P]      (left)^";
+        print "FORWARD      [F]        (front)^";
+        print "AFT          [A]        (back)^";
+        print "PORT         [P]        (left)^";
+        print "STARBOARD    [S] [SB]   (right)^";
         print "UP           [U]^";
         print "DOWN         [D]^";
         print "IN^";
@@ -1749,10 +1761,13 @@ Verb 'ask'
     * topic                                     -> AskAboutTopic;
 
 Verb 'attack' 'break' 'crack' 'destroy'
-     'fight' 'hit' 'kill' 'murder' 'poke' 'prod' 'punch'
+     'fight' 'hit' 'kill' 'murder' 'poke' 'punch'
      'smash' 'tear' 'thump' 'torture' 'wreck'
     * noun                                      -> Attack
     * noun 'with' noun                          -> Attack;
+
+Verb 'prod'
+    * noun                                      -> Prod;
 
 Verb 'blow'
     * noun                                      -> Blow;
@@ -1954,6 +1969,7 @@ Verb 'pray'
     *                                           -> Pray;
 
 Verb 'pry' 'prise' 'prize' 'lever' 'jemmy' 'force'
+    * noun                                      -> Unlock
     * noun 'with' noun                          -> Unlock
     * 'apart'/'open' noun 'with' noun           -> Unlock
     * noun 'apart'/'open' 'with' noun           -> Unlock;
@@ -1995,7 +2011,7 @@ Verb 'search'
 
 Verb 'set' 'adjust'
     * noun                                      -> Set
-    * 'code' 'to' noun                          -> SetCode
+    * 'code' 'to'/'on' noun                     -> SetCode
     * noun 'to' number                          -> SetTo
     * noun 'to' 'code'                          -> SetCode;
 
@@ -2072,7 +2088,7 @@ Verb 'think'
 
 Verb 'tie' 'attach' 'connect' 'fasten' 'fix'
     * noun                                      -> Tie
-    * noun 'to' noun                            -> Tie;
+    * noun 'to'/'into' noun                     -> Tie;
 
 Verb 'touch' 'feel' 'fondle' 'grope'
     * noun                                      -> Touch
@@ -2090,13 +2106,13 @@ Verb 'turn' 'rotate' 'screw' 'twist' 'unscrew'
 
 Verb 'type'
     * 'code'                                    -> EnterDoorCode
-    * number 'in'/'into' noun                   -> SetTo reverse
-    * 'code' 'in'/'into' noun                   -> SetCode;
+    * number 'in'/'into'/'on' noun              -> SetTo reverse
+    * 'code' 'in'/'into'/'on' noun              -> SetCode;
 
 Verb 'unlock'
     * noun 'with' noun                          -> Unlock;
 
-Verb 'verb' 'verbs'
+Verb 'verb' 'verbs' 'v//'
     *                                           -> Verbs;
 
 Verb 'wait' 'z//'

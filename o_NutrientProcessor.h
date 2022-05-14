@@ -35,7 +35,7 @@ Object  nutrientProcessor "nutrient processor"
                 if (second == vortexBag) {
                     galley.takenProcessor = true;
                     move self to vortexBag;
-                    print "It's big and bulky, but you take the nutrient processor cramming it in the hole as the bag pulls it into the vortex.^";
+                    print "It's big and bulky, but you take the nutrient processor cramming it in as the bag pulls it into the vortex.^";
                     return ItemFirstTaken();
                 }
                 if (self in vortexBag && second == vortexBag) "", (The) self, " is already here.";
@@ -51,7 +51,7 @@ Object  nutrientProcessor "nutrient processor"
                 if (self in vortexBag) "You don't need that. You'll be able to sell it later.";
                 galley.takenProcessor = true;
                 move self to vortexBag;
-                print "It's big and bulky, but you take the nutrient processor cramming it in the hole as the bag pulls it into the vortex.^";
+                print "It's big and bulky, but you take the nutrient processor cramming it in as the bag pulls it into the vortex.^";
                 return ItemFirstTaken();
             PutOn:
                 if (self in vortexBag && second has supporter) "You don't want to leave that behind. You'll be able to sell it later once you get off the ship.";

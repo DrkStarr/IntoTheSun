@@ -4,7 +4,7 @@
 !
 
 Object  vortexBag "vortex bag"
-  with  name 'vortex' 'bag' 'pack' 'satchel' 'hole',
+  with  name 'vortex' 'bag' 'pack' 'satchel' 'sack',
         before [;
             Attack:
                 "In this situation, its value is immeasurable, and you would try to break it?";

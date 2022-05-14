@@ -103,18 +103,19 @@ Object  cattleProd "cattle prod"
             PutOn:
                 if (self in player || self in vortexBag) {
                     if (second has supporter) "You don't want to leave that behind.";
-                    if (second == aftStarboardJunctionDeckCBattery || second == aftStarboardJunctionDeckCWelder || second == aftCompanionwayDeckCBattery) <<Tie self second>>;
+                    if (second == aftStarboardJunctionDeckCBattery || second == aftStarboardJunctionDeckCWelder || second == aftCompanionwayDeckCBattery || second == foodLockerCorridorDeckBSensor) <<Tie self second>>;
                 }
             Tie:
                 if (second == aftStarboardJunctionDeckCBattery || second == aftStarboardJunctionDeckCWelder || second == aftCompanionwayDeckCBattery) {
                     print "There's no way to tie the cattle prod into the battery. ";
-                    if (iCattleProdCharge == 0) "You can't charge it. It won't work again.";
+                    if (iCattleProdCharge == 0) "And you can't charge it. It won't work again.";
                     print "You have ";
                     if (iCattleProdCharge == 3) print "3 charges";
                     if (iCattleProdCharge == 2) print "2 charges";
                     if (iCattleProdCharge == 1) print "1 charge";
                     ". Nothing more.";
                 }
+                if (second == foodLockerCorridorDeckBSensor) "The relay isn't a battery. It runs off the ship's power when in use.";
             Push, PushDir, Pull:
                 if (self in forwardCorridorDeckB) "You don't need to do that, but you might want to take it.";
 

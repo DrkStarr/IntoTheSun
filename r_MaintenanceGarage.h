@@ -151,6 +151,7 @@
                       got. Immediately the drawer blows out, hitting the deck with a loud crash as a yellow flashcard
                       falls out with it. You almost drop the crowbar but manage to keep that in hand.";
                   }
+                  if (second == nothing) "You need to pry the bench with something.";
                   "That's not going to fit the lock. You need to find another way to open it.";
               Blow:
                   "You can't blow through your suit. The polymer seals in your environment.";
@@ -167,7 +168,7 @@
 ! 12/18/21
 
   Object  -> maintenanceGaragePanel "panel"
-    with  name 'panel',
+    with  name 'panel' 'square' 'space',
           before [;
               Examine:
                   player.advanceGravity = false;

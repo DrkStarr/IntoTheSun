@@ -165,7 +165,7 @@
               Examine:
                   player.advanceGravity = false;
                   "The crates of coffee are old and covered in soot.";
-              Take:
+              Take, Open:
                   "The coffee's over 100 years old. It's worthless.";
               Rub:
                   "What? You're going to clean up this old relic before she burns up in the sun? You need to loot the ship.";

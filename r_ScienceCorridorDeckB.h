@@ -199,3 +199,33 @@
                       to deliver a lot of voltage but wouldn't handle the pressure from the hatch and only snap.";
           ],
           hatchOpen false;
+
+! 05/13/22
+
+  OutRch  -> scienceCorridorDeckBSensors "sensors"
+    with  name 'sensor' 'sensors',
+          before [;
+              Examine:
+                  "The sensors are in the monitoring stations, and the explosion has blocked
+                  access to all of them. You can't get through the debris.";
+          ],
+      has pluralname;
+
+! 05/13/22
+
+  OutRch  -> scienceCorridorDeckBStaions "stations"
+    with  name 'stations',
+          before [;
+              Examine:
+                  "Blocked off by debris that has filled the corridor, you can't get to the monitoring stations.";
+          ],
+      has pluralname;
+
+! 05/13/22
+
+  OutRch  -> scienceCorridorDeckBStaion "station"
+    with  name 'station' 'monitoring' 'equipment',
+          before [;
+              Examine:
+                  <<Examine scienceCorridorDeckBStaions>>;
+          ];

@@ -23,7 +23,7 @@
               they come around here, starting at the port end and turning aft. ";
               if (iPipesBlown>2) "When you get near the pipes, you hear them cry.";
               if (iPipesBlown>1) "When you get near the pipes, you hear them moan.";
-              "When you get near the pipes, you hear them creek.";
+              "When you get near the pipes, you hear them creak.";
           ],
           s_to [;
               if (alien in self) return PXF();

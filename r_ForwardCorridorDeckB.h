@@ -77,6 +77,8 @@
                   if (second == cattleProd) "If you hit him with the rod, you'd waste a charge. You couldn't bring him back. There's nothing left but bone. He doesn't even have muscles to make him twitch.";
                   if (second == nothing) "There's no need to beat on the skeleton. His bones are brittle, and you would only pulverize them.";
                   "There's no need to hit the skeleton with that. His bones are brittle, and you would only pulverize them.";
+              Prod:
+                  if (cattleProd in player) "If you hit him with the rod, you'd waste a charge. You couldn't bring him back. There's nothing left but bone. He doesn't even have muscles to make him twitch.";
               Examine:
                   player.advanceGravity = false;
                   "Looking closer at the body, it's really a skeleton whose flesh melted off long ago.
@@ -84,10 +86,8 @@
                   the cattle prod but didn't make it.";
               Go:
                   "You are already here.";
-              Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  "He's dead. Leave him be.";
-              Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  "He's dead. Leave him be.";
+              default:
+                  "He's dead. Leave him be.";              
           ],
           life [;
               "He's dead. Leave him be.";
@@ -95,7 +95,7 @@
           orders [;
               "He's dead. Leave him be.";
           ],
-    has   animate male concealed;
+    has   static concealed;
 
 ! 10/13/21
 

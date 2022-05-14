@@ -117,7 +117,7 @@
               Push, Pull, PushDir:
                   "You don't need to use the battery. It can stay right there.";
               Take:
-                  "It's larger than the bag and wouldn't fit through the hole.";
+                  "It's larger than the bag and wouldn't fit.";
               SwitchOn, SwitchOff:
                   "That's not how it works.";
           ];

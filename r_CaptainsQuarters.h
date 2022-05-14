@@ -148,6 +148,7 @@
                       "You cram the crowbar as deep as you can into the lip of the drawer. It pops off with a thud
                       that rings throughout the ship. An orange flashcard bounces out.";
                   }
+                  if (second == nothing) "You need to pry the desk with something.";
                   "That's not going to fit the lock. You need to find another way to open it.";
               Take:
                   if (captainsQuarters.alienWrecked) "The desk is covered in acid, and you'd burn yourself.";
