@@ -15,9 +15,9 @@
               }
               player.inCorridor = false;
               "The crew doesn't have staterooms of their own, only the captain has that privilege, so
-              they share this locker room when not in hypersleep. There are two rows of lockers, eight
-              total, on the fore and aft bulkheads with plenty of room in the middle. A bench runs down
-              the center of them.^^The only way out of the locker room is to the port.";
+              they share this locker room when not in hypersleep. There are two rows of lockers, six
+              total, on the fore and aft bulkheads with plenty of room in between. A bench runs down
+              the center of this room.^^The only way out of the locker room is to the port.";
           ],
           w_to [;
               if (alien in self) return PXF();

@@ -75,9 +75,9 @@
   Constant GTOTALOBJS=27;
   Constant GPLOPCODE=37;  ! Instructions Of Z-Code
   Constant GOPCPH=6;
-  Constant GOPCSPH=5;
-  Constant GOPCODE=8;
-  Constant GTWORDS=841;   ! Dictionary Entries
+  Constant GOPCSPH=6;
+  Constant GOPCODE=7;
+  Constant GTWORDS=843;   ! Dictionary Entries
   Constant DIALECT_US;
 
 ! ***********************
@@ -199,6 +199,7 @@
              Dig:
                  "Not through the deck.";
              Jump:
+                 if (alien.sleeping) "That would make a lot of noise. It's best not to disturb the ship.";
                  "What are you trying to do? Attract the xenomorph?";
              Listen:
                  alienDistance = DistanceToAlien();

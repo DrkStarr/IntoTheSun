@@ -4,7 +4,7 @@
 !
 
 Object  coreAI "core AI"
-  with  name 'core' 'ai' 'brain' 'electric',
+  with  name 'core' 'ai' 'brain' 'electric' 'brains' 'brain^s',
         before [;
             Attack:
                 "Are you really going to break the stuff you're trying to loot?";

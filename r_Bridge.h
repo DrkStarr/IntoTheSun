@@ -142,7 +142,7 @@
                           print "(first taking the crowbar)^";
                           move crowbar to player;
                       }
-                      "The groove around the hatch is thin. The whole thing recessed into the bulkhead. So there's
+                      "The groove around the hatch is thin - the whole thing recessed into the bulkhead. So there's
                       no way to get a grip on it.";
                   }
                   if (second == kabar) {

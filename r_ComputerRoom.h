@@ -27,7 +27,7 @@
               print "It's a strange design, but the room is shaped like a hexagon - with the upper and lower
               portion slanted at a 45-degree angle. In the center is a chair where you have access to a keyboard. ";
               if (self.terminalHasPower) print "The terminal has unusual input, and sits under a central monitor. ";
-              else print "The monitor on top of the terminal is blank. The brains of the ship now gone. ";
+              else print "The monitor on top of the terminal is blank. The brain's of the ship now gone. ";
               if (computerRoomPanel.hasOpen) print "The access panel on the lower aft side is open";
               else print "An access panel on the lower aft side is recessed into the terminal";
               ".^^Behind the chair, there's the hatch that you broke. It will allow you to exit port.";
@@ -190,7 +190,7 @@
               Examine:
                   player.advanceGravity = false;
                   if (self.hasOpen) {
-                      if (coreAI in self) "The panel is open, and the brains of the ship are now at your disposal.";
+                      if (coreAI in self) "The panel is open, and the brain's of the ship are now at your disposal.";
                       "The panel is open and empty - the main computer now gutted.";
                   }
                   "On the lower aft side of the terminal, there's a label covering the access panel to the core A.I. There are symbols that warn of death and high voltage.";
@@ -223,7 +223,7 @@
                       give self open;
                       if (crowbar in vortexBag) move crowbar to player;
                       "You reach down, trying to pry open the edge as you work the crowbar back and forth,
-                      forcing open the panel. Inside sits the brains of the ship - the core A.I.";
+                      forcing open the panel. Inside sits the brain's of the ship - the core A.I.";
                   }
                   if (second == kabar) {
                       "The ka-bar is a relic, not a tool. It will be worth much more unblemished.";

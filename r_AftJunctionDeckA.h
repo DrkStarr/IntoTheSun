@@ -153,8 +153,10 @@
               Examine:
                   player.advanceGravity = false;
                   "The handcart is used to move logistics around quickly. On it, some crates of coffee have been left behind.";
-              Push, Pull:
-                  "You don't need to move the cart around.";
+              Push, Pull, PushDir:
+                  "Moving the cart around won't help you do anything. It's worthless.";
+              Take:
+                  "The handcart is old and used. No one would buy it.";
           ];
 
 ! 02/18/22
@@ -164,7 +166,7 @@
           before [;
               Examine:
                   player.advanceGravity = false;
-                  "The crates of coffee are old and covered in soot.";
+                  "The crates of coffee are old and covered in soot with labels that read ~Weyland Corp.~";
               Take, Open:
                   "The coffee's over 100 years old. It's worthless.";
               Rub:
