@@ -822,7 +822,7 @@
         PageBreak();
         print "^Then something hits the radar, finally. And not a tiny blip like a satellite, but
         a large return that shows a huge ship. Yes. Sitting in the sun's blind spot might have paid off.
-        It looks like a derelict, and she should be full of lootable goods. Drifting like this, it seems like
+        It looks like a derelict, and she should be full of lootable goods. Drifting like this, it seems
         the crew abandoned her. She's fair game this close to the sun.^";
         PageBreak();
         print "^As you hook up to the docking ring, you look over the controls and notice, as expected, that
