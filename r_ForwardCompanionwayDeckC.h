@@ -3,7 +3,7 @@
 !       FORWARD COMPANIONWAY DECK C. 10/28/21
 !
   Room    forwardCompanionwayDeckC "Forward Companionway - Deck C"
-   with   description [;
+   with   description [ iTempLoc;
               if (self.roomCount) {
                   self.roomCount = false;
                   iRoom++;
@@ -23,7 +23,7 @@
                   if (forwardCompanionwayDeckACanister in self)print " A coolant canister is lodged in the deck.";
                   "^^You can enter the garage or climb the ladder well to go to B deck.";
               }
-              print "It's hard to see in the underbelly of the ship. There are few lights and lots of smoke, but electric
+              print "It's hard to see in the underbelly of the ship. There are few lights and lots of smoke. Electric
               scarring on the overload module can be seen. It took a huge power spike. The garage door aft is open but full
               of so much smoke you can't see inside.";
               if (forwardCompanionwayDeckACanister in self)print " A coolant canister is lodged in the deck.";
@@ -44,6 +44,10 @@
                   pipes in the junction blows. Hot steam from the reactor pours out of broken metal, blocking
                   off the starboard corridor";
                   iMonsterDestination = FWDJUNDECKC;
+                  iTempLoc = iMonsterLoc;
+                  iTempLoc++;
+                  if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                  monster_loc-->iTempLoc = FWDJUNDECKC;
                   if (alien.sleeping) {
                       print ".^^";
                       return ItemWake();

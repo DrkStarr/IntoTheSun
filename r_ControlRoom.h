@@ -78,7 +78,7 @@
               if (controlRoomDeckC.takenLaptop == false) " that has a small laptop on top of it.";
               ".";
           ],
-          before [;
+          before [ iTempLoc;
               Attack:
                   if (alien in controlRoomDeckC) "Not with the alien standing in front of it.";
                   if (self.alienWrecked) "You don't want to touch that. It's melting, covered in acid.";
@@ -123,6 +123,11 @@
                       return AlienDestroysRoom(monster_loc-->0);
                   }
                   iMonsterDestination = CONTROLRM;
+                  iTempLoc = iMonsterLoc;
+                  iTempLoc++;
+                  if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                  monster_loc-->iTempLoc = CONTROLRM;
+                  alien.resetLocInControlRoom = true;
                   "Opening the locker, you try to catch a crowbar as it falls to the ground. You miss.";
               Unlock:
                   if (alien in controlRoomDeckC) "Not with the alien standing in front of it.";
@@ -133,7 +138,12 @@
                   if (self.openedFirstTime) {
                       if (second == crowbar) {
                           iMonsterDestination = CONTROLRM;
+                          iTempLoc = iMonsterLoc;
+                          iTempLoc++;
+                          if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                          monster_loc-->iTempLoc = CONTROLRM;
                           move crowbar to player;
+                          alien.resetLocInControlRoom = true;
                           "You put the crowbar into the lip of the closet and push, giving it a good jolt. But the bar breaks free and slips out of your hand.^^As you pick it up, you realize you're making a lot of noise.";
                       }
                       "The door sticks. There is no need to play with it.";

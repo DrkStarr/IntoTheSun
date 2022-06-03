@@ -5,7 +5,7 @@
 
 Object  battery "battery"
   with  name 'battery' 'plug' 'd-cell' 'cell' 'rechargeable',
-        before [;
+        before [ iTempLoc;
             Attack:
                 "Are you really going to break the stuff you're trying to loot?";
             Burn:
@@ -46,6 +46,11 @@ Object  battery "battery"
                     move self to maintenanceGaragePanel;
                     maintenanceGarageDoor.isDoorOpen = true;
                     iMonsterDestination = MAINTNNCGRGE;
+                    iTempLoc = iMonsterLoc;
+                    iTempLoc++;
+                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                    monster_loc-->iTempLoc = MAINTNNCGRGE;
+                    alien.resetLocInGarage = true;
                     "The doors are hotwired because the moment you insert the battery, machinery
                     kicks in, slowly grinding metal on metal as the doors begin to open. Once they
                     crack, more smoke pours into this room. The doors sound

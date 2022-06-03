@@ -110,18 +110,25 @@
 
   StObj   -> logisticsCorridorButton "call button"
     with  name 'call' 'button',
-          before [;
+          before [ iTempLoc;
               Examine:
                   player.advanceGravity = false;
                   "It's a simple button used to call the elevator to this deck.";
               Push, Pull:
                   if (alien in aftJunctionDeckA) return PXF();
-                  if (AlienCloseToElevator() && alien.sleeping == false) iMonsterDestination = AFTJNCTNDECKA;
                   if (maintenanceLiftDeckA.isGateClosed) {
                       maintenanceLiftDeckA.isGateClosed = false;
                       maintenanceLiftDeckB.isGateClosed = true;
                       maintenanceLiftDeckADoors.isDoorOpen = true;
                       maintenanceLiftDeckBDoors.isDoorOpen = false;
+                      if (AlienCloseToElevator()) {
+                          iMonsterDestination = AFTJNCTNDECKA;
+                          monster_loc-->iMonsterLoc = AFTJNCTNDECKA;
+                          iTempLoc = iMonsterLoc;
+                          iTempLoc++;
+                          if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                          monster_loc-->iTempLoc = AFTJNCTNDECKA;
+                      }
                       print "You push the button calling the elevator up to this deck. The ship rubbles
                       around you, the cage shakes, and then with a loud thud, the lift comes to a stop
                       as the vertical doors open.^";

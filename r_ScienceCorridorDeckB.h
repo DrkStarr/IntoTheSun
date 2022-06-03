@@ -115,7 +115,7 @@
 
   NoHelp   -> scienceCorridorDeckBHatch "hatch"
     with  name 'hatch' 'door' 'handle' 'bay' 'room',
-          before [;
+          before [ iTempLoc;
               Attack:
                   if (self.hatchOpen) "You don't need to do that. The hatch has already been forced open.";
                   if (second == sledgehammer) {
@@ -126,6 +126,11 @@
                       }
                       self.hatchOpen = true;
                       iMonsterDestination = SCIENCECRRDR;
+                      iTempLoc = iMonsterLoc;
+                      iTempLoc++;
+                      if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                      monster_loc-->iTempLoc = SCIENCECRRDR;
+                      alien.resetLocInCorridor = true;
                       print "This sledgehammer has to be good for something. Swinging it with all you got, the metal
                       connects with a loud blast that rings throughout the ship. The hatch gives, and you
                       watch it swing open.^^";
@@ -189,6 +194,11 @@
                       }
                       self.hatchOpen = true;
                       iMonsterDestination = SCIENCECRRDR;
+                      iTempLoc = iMonsterLoc;
+                      iTempLoc++;
+                      if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                      monster_loc-->iTempLoc = SCIENCECRRDR;
+                      alien.resetLocInCorridor = true;
                       "You put the crowbar between the hatch and bulkhead, trying with all your might to open it.
                       The metal doesn't want to give, so you lean into it, pushing as hard as you can. Then a loud
                       crack sounds throughout the ship. The door gives, finally allowing access to the bay.";

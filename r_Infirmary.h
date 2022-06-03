@@ -16,12 +16,12 @@
               player.inCorridor = false;
               if (self.alienWrecked) {
                   "The smoke in the infirmary is thick, colliding with the lights, so the room is doused in
-                  an orange glow. The operating table in the middle has been destroyed, broken in half, and
+                  an orange glow. The examination table in the middle has been destroyed, broken in half, and
                   covered in acid, along with the cabinets that have been shattered.^^The alien wrecked this
                   room. There's only one way out with the cabinets torn off the walls, starboard.";
               }
               "The infirmary is barely lit with lots of smoke here - the room doused in an orange glow.
-              There is an operating table in the middle of the room. The light above it creates god rays
+              There is an examination table in the middle of the room. The light above it creates god rays
               looking down.^^The walls are lined with cabinets. There's only one way out, starboard.";
           ],
           e_to [;
@@ -64,14 +64,14 @@
 ! 12/28/21
 
   Object   -> infirmaryCabinet "cabinet"
-    with  name 'cabinet' 'utility' 'closet' 'locker' 'door' 'pressboard' 'wood',
+    with  name 'cabinet' 'utility' 'closet' 'locker' 'door' 'plastic' 'wood',
           before [;
               Close, Search:
                   if (infirmary.alienWrecked) "You can't do that. The cabinets have been smashed and spit on. There's nothing left.";
               Examine:
                   player.advanceGravity = false;
-                  if (infirmary.alienWrecked) "Smashed by a heavy impact, all that's left of the cabinets are pieces of pressboard.";
-                  print "Cabinets line the room. They are made from cheap pressboards to look like wood";
+                  if (infirmary.alienWrecked) "Smashed by a heavy impact, all that's left of the cabinets are pieces of plastic.";
+                  print "Cabinets line the room. They are made from plastic and molded to look like wood";
                   if (self has open) {
                       if (medkit in self) ". One of them is open with a medkit inside.";
                       ". One of them is open with nothing inside.";
@@ -95,7 +95,7 @@
 ! 12/28/21
 
   Object   -> infirmaryCabinets "cabinets"
-    with  name 'cabinets' 'pressboards',
+    with  name 'cabinets',
           before [;
               Close:
                   <<Close infirmaryCabinet>>;
@@ -121,16 +121,16 @@
 ! 01/10/22
 
   StObj   -> infirmaryTable "table"
-    with  name 'operating' 'table' 'metal',
+    with  name 'operating' 'table' 'metal' 'examination',
           before [;
               Examine:
                   player.advanceGravity = false;
                   if (infirmary.alienWrecked)
                       "Something heavy slammed into the table. It broke where it was attached to the deck.
                       Then it's been topped off with a layer of acid that slowly burns through the metal.";
-                  print "Used during examinations, the table is big enough to hold a crew member. But, looking
-                  around the room, you can see the ship isn't equipped to do any actual surgery";
-                  if (knitter in infirmary)". A tissue knitter has been left out on top of it.";
+                  print "The table is only big enough to hold a single crew member. Along with the auto-doc,
+                  it's used during crew examinations. Underneath it is an acid stain";
+                  if (knitter in infirmary)", while a tissue knitter has been left out on top of it.";
                   ".";
               Take, Push, Pull, PushDir, Remove, Turn:
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
@@ -149,6 +149,46 @@
                   "You need to loot the ship, not mess with ", (the) self, ".";
           ],
      has  supporter;
+
+! 06/02/22
+
+  StObj   -> infirmaryAutoDoc "auto-doc"
+    with  name 'auto' 'doc' 'auto-doc',
+          before [;
+              Examine:
+                  player.advanceGravity = false;
+                  if (infirmary.alienWrecked)
+                      "The auto-doc is covered in a layer of acid. As it slowly burns away, smoke comes of it.";
+                  "The auto-doc is used to examine crew members but is limited in treatment abilities. When
+                  diagnosing any patient, it can only treat them with anti-biotics.";
+              Take, Push, Pull, PushDir, Remove, Turn:
+                  if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
+                  "The auto-doc isn't going anywhere. It's built into the side of the ship.";
+              Enter:
+                  if (alien.sleeping) "The machine's not working. You have no reason to crawl in there.";
+                  "The machine's not working. And if you're trying to hide, that's an awful spot.";
+              Rub:
+                  if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
+                  "You don't have time for that. You are plunging into the sun.";
+              SwitchOn, SwitchOff:
+                  if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
+                  "There's no power going to the auto-doc. It's not working.";
+              Close:
+                  if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
+                  "That's already closed.";
+              Open:
+                  if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
+                  "There's no need to open the auto-doc. It's not working.";
+              LookUnder:
+                  if (infirmary.alienWrecked) "The metal has been crushed and then spit on with acid. There's nothing to look under.";
+                  "There is no space to look under. The auto-doc sits firmly on the deck.";
+              Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
+                  if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
+                  "You need to loot the ship, not mess with ", (the) self, ".";
+              Push, PushDir, Pull, Remove, Rub, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
+                  if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
+                  "You need to loot the ship, not mess with ", (the) self, ".";
+          ];
 
 ! 01/10/22
 

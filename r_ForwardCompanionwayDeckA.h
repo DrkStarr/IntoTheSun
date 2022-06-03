@@ -110,7 +110,7 @@
 
   StObj   -> forwardCompanionwayDeckACanister "coolant canister"
     with  name 'coolant' 'canister' 'large' 'cylinder' 'seal' 'hole',
-          before [;
+          before [ iTempLoc;
               Examine:
                   player.advanceGravity = false;
                   if (self in forwardCompanionwayDeckC) "The coolant canister slammed into the deck and found a hole in the metal grating, getting stuck in the spit-on deck.";
@@ -128,6 +128,10 @@
                   print "Grabbing the canister by the edge, you push it into the ladder well";
                   if (forwardStarboardJunctionDeckC.pipesBlown) ", but fail to hear it crash into the deck. The sound of venting gas from below is too loud.";
                   iMonsterDestination = FWDCOMPDECKC;
+                  iTempLoc = iMonsterLoc;
+                  iTempLoc++;
+                  if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                  monster_loc-->iTempLoc = FWDCOMPDECKC;
                   ". It bounces off metal a few times on the way down before hitting bottom. That should attract the xenomorph to the lowest parts of the ship.";
               Open:
                   "At the top of the canister, the seal's cracked. The gas has already been vented.";

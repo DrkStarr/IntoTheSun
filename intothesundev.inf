@@ -1,6 +1,9 @@
 
-! Warnings about gravity that get pushed out should say something about the broken pipe if the player is on C deck
-! If player is within steam sound
+! Changes: 06/02/2022
+! Changed the way the alien is called to misc. rooms, added the destination to the next index of monster_loc
+! This calls the alien twice to the location. Once in the iMonsterDestination, and the other in the array monster_loc
+! In the case where iMonsterDestination changes, monster_loc will send the alien to the correct room
+! Shortened the game to 146 turns
 
 ! Changes: 05/06/2022
 ! TYPE CODE / ENTER CODE / UNLOCK DOOR WITH CODE / SET CODE TO DOOR / SET DOOR TO CODE all work
@@ -29,8 +32,9 @@
 ! Cleaned up text, fixed bugs
 
 ! ---------------------------------------------------------------------------- !
-! Turns To Complete (old): 262
-! Turns To Complete (now): 171
+! Turns To Complete (og): 262
+! Turns To Complete (old): 170
+! Turns To Complete (now): 146
 !
 ! INTO THE SUN
 ! PROGRAMMER: Dark Star
@@ -150,6 +154,7 @@
 
   Array door_code --> 4;
   Array monster_loc --> 11;
+  Array monster_retore --> 11;
   Array monster_move --> 99;
 
 ! Global Variables - 61 left / Max 233 - 172           Entangled: 219(14)
@@ -603,6 +608,7 @@
                 else ofail = false;
             }
             monster_loc-->iap = iran;
+            monster_retore-->iap = iran;
             iap++;
         }
 
@@ -716,8 +722,8 @@
         monster_move-->98 = 58;
 
         ! Monster Path
-        monster_loc-->0 = INFRMRY;
-        monster_loc-->1 = MAINTNNCGRGE;
+        monster_loc-->0 = MAINTNNCGRGE;
+        monster_loc-->1 = INFRMRY;
         monster_loc-->2 = CONTROLRM;
         monster_loc-->3 = WEAPONSLCKER;
         monster_loc-->4 = STARBRDSHTTLBY;
@@ -727,6 +733,19 @@
         monster_loc-->8 = LOUNGE;
         monster_loc-->9 = SCIENCECRRDR;
         monster_loc-->10 = FOODLCKER;
+
+        monster_retore-->0 = MAINTNNCGRGE;
+        monster_retore-->1 = INFRMRY;
+        monster_retore-->2 = CONTROLRM;
+        monster_retore-->3 = WEAPONSLCKER;
+        monster_retore-->4 = STARBRDSHTTLBY;
+        monster_retore-->5 = PORTSHTTLBY;
+        monster_retore-->6 = HYPRSLPVLT;
+        monster_retore-->7 = CAPTQRTRS;
+        monster_retore-->8 = LOUNGE;
+        monster_retore-->9 = SCIENCECRRDR;
+        monster_retore-->10 = FOODLCKER;
+
         #EndIf;
 
         #Ifdef PRINTMONSTERLOC;
@@ -1518,6 +1537,8 @@
                     print "Weapon's Locker^";
                 FOODLCKER:
                     print "Food Locker^";
+                AFTJNCTNDECKA:
+                    print "Aft Junction Deck A^";
             }
             iap++;
         }

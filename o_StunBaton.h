@@ -12,7 +12,7 @@ Object  stunBaton "baton"
             if (weaponsLocker.takenBaton == false) "^Next to the pallet is a stun baton.";
             rtrue;
         ],
-        before [;
+        before [ iTempLoc;
             Attack:
                 if (self.spitOn) "It melts in a pool of acid. There's no need to do that.";
                 if (weaponsLocker.takenBaton == false) "That could be a useful weapon, and you're going to try and break it?";
@@ -47,6 +47,10 @@ Object  stunBaton "baton"
                     if (self.alreadyAttacked == false) "That still works. You don't want to lose it.";
                     move self to aftCompanionwayDeckC;
                     iMonsterDestination = AFTCOMPDECKC;
+                    iTempLoc = iMonsterLoc;
+                    iTempLoc++;
+                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                    monster_loc-->iTempLoc = AFTCOMPDECKC;
                     print "You drop the stun baton into the ladder well";
                     if (iCattleProdCharge > 0) {
                         move cattleProd to player;
@@ -66,6 +70,10 @@ Object  stunBaton "baton"
                     print ". It clangs, reaching the bottom. But ";
                     if (forwardStarboardJunctionDeckC.pipesBlown) "you fail to hear it hit the deck. The sound of venting gas from below is too loud.";
                     iMonsterDestination = FWDCOMPDECKC;
+                    iTempLoc = iMonsterLoc;
+                    iTempLoc++;
+                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                    monster_loc-->iTempLoc = FWDCOMPDECKC;
                     "it's not loud, no bigger than the ship's creaking. You're not sure if the xenomorph heard it.";
                 }
                 if (second == forwardCompanionwayDeckBLadder) {
@@ -79,6 +87,10 @@ Object  stunBaton "baton"
                     print ". It clangs, reaching the bottom. But ";
                     if (forwardStarboardJunctionDeckC.pipesBlown) "you fail to hear it hit the deck. The sound of venting gas from below is too loud.";
                     iMonsterDestination = FWDCOMPDECKC;
+                    iTempLoc = iMonsterLoc;
+                    iTempLoc++;
+                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                    monster_loc-->iTempLoc = FWDCOMPDECKC;
                     "it's not loud, no bigger than the ship's creaking. You're not sure if the xenomorph heard it.";
                 }
                 if (second == dataReader || second == musicBox || second == maintenanceGaragePanel || second == computerRoomPanel) {

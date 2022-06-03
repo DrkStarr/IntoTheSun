@@ -3,7 +3,7 @@
 !       AFT-STARBOARD JUNCTION DECK C. 10/30/21
 !
   Room    aftStarboardJunctionDeckC "Aft-Starboard Junction - Deck C"
-   with   description [;
+   with   description [ iTempLoc;
               if (self.roomCount) {
                   self.roomCount = false;
                   iRoom++;
@@ -38,6 +38,10 @@
                   pipes in the junction blows. Hot steam from the reactor pours out of the broken metal, blocking
                   off the forward corridor";
                   iMonsterDestination = FWDJUNDECKC;
+                  iTempLoc = iMonsterLoc;
+                  iTempLoc++;
+                  if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                  monster_loc-->iTempLoc = FWDJUNDECKC;
                   if (alien.sleeping) {
                       print ".^^";
                       return ItemWake();

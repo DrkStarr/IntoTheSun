@@ -61,15 +61,15 @@
                           ! **********************
                           ! Warnings About Gravity
                           ! **********************
-                          if (iGravityForce == 3 && self.firstGravityIncrease) {
+                          if (iGravityForce == 1 && self.firstGravityIncrease) {
                               self.firstGravityIncrease = false;
                               iProgressiveGravity = iProgressiveGravity - 1;
                               print "^You feel the sun pull harder on the ship. A deep groan is expelled from the pressure.^";
                           }
-                          if (iGravityForce == 5 && self.gravityIncrease) {
+                          if (iGravityForce == 4 && self.gravityIncrease) {
                               self.gravityIncrease = false;
                               iProgressiveGravity = iProgressiveGravity - 1;
-                              print "^With a sharp crack, the creaking and groaning stops for a moment as something breaks under pressure.^";
+                              print "^With a sharp crack, the creaking and groaning stop for a moment as something breaks under pressure.^";
                           }
                           if (iGravityForce == 8 && self.gravityWarning) {
                               self.gravityWarning = false;

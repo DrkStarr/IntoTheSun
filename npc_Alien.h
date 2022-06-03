@@ -19,6 +19,7 @@
                   player.firstItemTaken = false;
                   player.firstRanIntoAlien = true;
                   cattleProd.firstTime = false;
+                  ResetMonsterLoc();
                   if (second == sledgehammer) {
                       if (sledgehammer in vortexBag) {
                           print "The sledgehammer is in the vortex bag and would take too long to pull out.^^";
@@ -90,7 +91,19 @@
           hitFirstTime false,
           creatureMoving false,
           destroysFirstRoom true,
+          resetLocInControlRoom false,
+          resetLocInGarage false,
+          resetLocInCaptiansQuarters false,
+          resetLocInCorridor false,
     has   animate male concealed;
+
+  [ ResetMonsterLoc iap;
+        iap = 0;
+        while (iap < 11) {
+            monster_loc-->iap = monster_retore-->iap;
+            iap++;
+        }
+  ];
 
   [ AlienDestroysFirstRoom monsterLoc;
       alien.destroysFirstRoom = true;
@@ -460,9 +473,9 @@
                 infirmary.alienWrecked = true;
                 infirmary.destroyedYet = true;
                 player.firstItemTaken = false;
-                "From somewhere above you, you hear the sound of wood and plastic crashing into one another. Then a
-                pause, only to hear wood break and pop-off in succession. After the last beam is snapped, a
-                high-pitched cry rings out. You have a feeling you're not alone.";
+                "From somewhere above you, you hear plastic and metal crashing into one another.
+                Then a pause, only to hear more plastic break and pop off in succession. After the
+                last snap, a high-pitched cry rings out. You have a feeling you're not alone.";
 
             HYPRSLPVLT:
                 move alien to hypersleepVault;
@@ -915,6 +928,10 @@
             portShuttleBay:
                 move alien to aftJunctionDeckB;
             scienceCorridorDeckB:
+                if (alien.resetLocInCorridor) {
+                    alien.resetLocInCorridor = false;
+                    ResetMonsterLoc();
+                }
                 iMonsterLoc++;
                 if (iMonsterLoc > MONSTERTOTAL) iMonsterLoc = 0;
                 iMonsterDestination = monster_loc-->iMonsterLoc;
@@ -945,6 +962,10 @@
             aftStarboardJunctionDeckC:
                 move alien to forwardStarboardJunctionDeckC;
             captainsQuarters:
+                if (alien.resetLocInCaptiansQuarters) {
+                    alien.resetLocInCaptiansQuarters = false;
+                    ResetMonsterLoc();
+                }
                 iMonsterLoc++;
                 if (iMonsterLoc > MONSTERTOTAL) iMonsterLoc = 0;
                 iMonsterDestination = monster_loc-->iMonsterLoc;
@@ -1039,6 +1060,10 @@
             infirmary:
                 move alien to forwardCompanionwayDeckA;
             maintenanceGarage:
+                if (alien.resetLocInGarage) {
+                    alien.resetLocInGarage = false;
+                    ResetMonsterLoc();
+                }
                 iMonsterLoc++;
                 if (iMonsterLoc > MONSTERTOTAL) iMonsterLoc = 0;
                 iMonsterDestination = monster_loc-->iMonsterLoc;
@@ -1082,6 +1107,10 @@
             captainsQuarters:
                 move alien to galley;
             controlRoomDeckC:
+                if (alien.resetLocInControlRoom) {
+                    alien.resetLocInControlRoom = false;
+                    ResetMonsterLoc();
+                }
                 iMonsterLoc++;
                 if (iMonsterLoc > MONSTERTOTAL) iMonsterLoc = 0;
                 iMonsterDestination = monster_loc-->iMonsterLoc;
@@ -1376,6 +1405,7 @@
                     ! *******************************************************************
                     if (alien.waitOneTurn) {
                         alien.waitOneTurn = false;
+                        ResetMonsterLoc();
                         iMonsterDestination = monster_loc-->iMonsterLoc;
                         move alien to galley;
                     }
@@ -1456,6 +1486,7 @@
             forwardStarboardJunctionDeckB:
                 move alien to foodLockerCorridorDeckB;
             forwardStarboardJunctionDeckC:
+                ResetMonsterLoc();
                 iMonsterDestination = monster_loc-->iMonsterLoc;
                 iAlienMovement = 0;
                 #Ifdef PRINTBACKEND;
@@ -1512,6 +1543,7 @@
             forwardCompanionwayDeckB:
                 move alien to forwardCompanionwayDeckC;
             forwardCompanionwayDeckC:
+                ResetMonsterLoc();
                 iMonsterDestination = monster_loc-->iMonsterLoc;
                 iAlienMovement = 0;
                 #Ifdef PRINTBACKEND;
@@ -1552,6 +1584,7 @@
             aftCompanionwayDeckB:
                 move alien to aftCompanionwayDeckC;
             aftCompanionwayDeckC:
+                ResetMonsterLoc();
                 iMonsterDestination = monster_loc-->iMonsterLoc;
                 iAlienMovement = 0;
                 #Ifdef PRINTBACKEND;
@@ -1656,6 +1689,7 @@
             weaponsLocker:
                 move alien to passagewayDeckB;
             aftJunctionDeckA:
+                ResetMonsterLoc();
                 iMonsterDestination = monster_loc-->iMonsterLoc;
                 iAlienMovement = 0;
                 #Ifdef PRINTBACKEND;
@@ -1676,9 +1710,8 @@
                     print "^From somewhere above you, towards the front of the ship";
                 }
             }
-            print ", you hear the sound of wood and plastic crashing into one another. Then a
-            pause, only to hear wood break and pop-off in succession. After the last beam is snapped, a
-            high-pitched cry rings out";
+            print ", you hear plastic and metal crashing into one another. Then a pause, only to hear more plastic
+            break and pop off in succession. After the last snap, a high-pitched cry rings out";
             if (player.firstItemTaken) {
                 player.firstItemTaken = false;
                 ". You have a feeling you're not alone.";
@@ -2817,6 +2850,7 @@
         if (alien in forwardCompanionwayDeckA) rtrue;
         if (alien in galley) rtrue;
         if (alien in infirmary) rtrue;
+        if (alien in hypersleepVault) rtrue;
         if (alien in forwardCompanionwayDeckB) rtrue;
         if (alien in captainsQuarters) rtrue;
         if (alien in scienceCorridorDeckB) rtrue;

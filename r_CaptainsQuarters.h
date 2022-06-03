@@ -97,7 +97,7 @@
 
   NoHelp  -> captainsQuartersDesk "desk"
     with  name 'bench' 'desk' 'lock' 'drawer',
-          before [;
+          before [ iTempLoc;
               Attack:
                   if (captainsQuarters.alienWrecked) "The alien beat you to it.";
                   if (self.isLocked == false) "You've already forced open the desk.";
@@ -144,6 +144,11 @@
                       }
                       self.isLocked = false;
                       iMonsterDestination = CAPTQRTRS;
+                      iTempLoc = iMonsterLoc;
+                      iTempLoc++;
+                      if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                      monster_loc-->iTempLoc = CAPTQRTRS;
+                      alien.resetLocInCaptiansQuarters = true;
                       move redFlashcard to captainsQuarters;
                       "You cram the crowbar as deep as you can into the lip of the drawer. It pops off with a thud
                       that rings throughout the ship. An orange flashcard bounces out.";

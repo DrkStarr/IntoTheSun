@@ -9,7 +9,7 @@ Object  crowbar "crowbar"
             if (self in controlRoomDeckC) "^On the ground in front of the cabinet is a crowbar.";
             rfalse;
         ],
-        before [;
+        before [ iTempLoc;
             Attack:
                 "Made of thick metal, you're not going to be able to break the crowbar.";
             Burn:
@@ -40,6 +40,10 @@ Object  crowbar "crowbar"
                 if (second == aftCompanionwayDeckBLadder) {
                     move self to aftCompanionwayDeckC;
                     iMonsterDestination = AFTCOMPDECKC;
+                    iTempLoc = iMonsterLoc;
+                    iTempLoc++;
+                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                    monster_loc-->iTempLoc = AFTCOMPDECKC;
                     "You drop the crowbar into the ladder well. Then, with a sharp clang, it reaches the bottom.
                     That should attract the xenomorph to the lower part of the ship.";
                 }
@@ -48,6 +52,10 @@ Object  crowbar "crowbar"
                     print "You drop the crowbar into the ladder well";
                     if (forwardStarboardJunctionDeckC.pipesBlown) ", but fail to hear it crash into the deck. The sound of venting gas from below is too loud.";
                     iMonsterDestination = FWDCOMPDECKC;
+                    iTempLoc = iMonsterLoc;
+                    iTempLoc++;
+                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                    monster_loc-->iTempLoc = FWDCOMPDECKC;
                     ". Then, with a sharp clang, it reaches the bottom. That should attract the xenomorph to the lowest parts of the ship.";
                 }
                 if (second == forwardCompanionwayDeckBLadder) {
@@ -55,6 +63,10 @@ Object  crowbar "crowbar"
                     print "You drop the crowbar into the ladder well";
                     if (forwardStarboardJunctionDeckC.pipesBlown) ", but fail to hear it crash into the deck. The sound of venting gas from below is too loud.";
                     iMonsterDestination = FWDCOMPDECKC;
+                    iTempLoc = iMonsterLoc;
+                    iTempLoc++;
+                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                    monster_loc-->iTempLoc = FWDCOMPDECKC;
                     ". Then, with a sharp clang, it reaches the bottom. That should attract the xenomorph to the lower part of the ship.";
                 }
             Examine, Search:

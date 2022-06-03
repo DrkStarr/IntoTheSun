@@ -95,7 +95,7 @@
               if (maintenanceGarage.takenHammer == false) print ". Leaning against the door is a sledgehammer";
               ".";
           ],
-          before [;
+          before [ iTempLoc;
               Attack:
                   if (maintenanceGarage.alienWrecked) "The alien beat you to it.";
                   if (self.isLocked == false) "You've already forced open the bench.";
@@ -144,6 +144,11 @@
                       }
                       self.isLocked = false;
                       iMonsterDestination = MAINTNNCGRGE;
+                      iTempLoc = iMonsterLoc;
+                      iTempLoc++;
+                      if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                      monster_loc-->iTempLoc = MAINTNNCGRGE;
+                      alien.resetLocInGarage = true;
                       move yellowFlashcard to maintenanceGarage;
                       move maintenanceGarageBench to maintenanceGarage;
                       "Putting the crowbar between the lip of the drawer, you work it back and forth, forcing

@@ -71,13 +71,17 @@
 
   NoHelp  -> bridgeHatch "hatch"
     with  name 'hatch' 'groove' 'door',
-          before [;
+          before [ iTempLoc;
               Attack:
                   if (self.hatchOpen) "You don't need to do that. The hatch has already been forced open.";
                   if (second == sledgehammer) {
                       if (stunBaton in player) move stunBaton to vortexBag;
                       self.hatchOpen = true;
                       iMonsterDestination = BRDG;
+                      iTempLoc = iMonsterLoc;
+                      iTempLoc++;
+                      if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                      monster_loc-->iTempLoc = BRDG;
                       if (sledgehammer in vortexBag) {
                           move sledgehammer to player;
                           if (stunBaton in player) move stunBaton to vortexBag;
@@ -96,11 +100,21 @@
                   }
                   if (second == crowbar) {
                       iMonsterDestination = BRDG;
+                      iTempLoc = iMonsterLoc;
+                      iTempLoc++;
+                      if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                      monster_loc-->iTempLoc = BRDG;
                       "Hitting the hatch with the crowbar does no damage. But the hollow sound rings
                       throughout the ship, attracting the alien.";
                   }
                   if (second == cattleProd) {
-                      if (AlienOnADeck()) iMonsterDestination = BRDG;
+                      if (AlienOnADeck()) {
+                          iMonsterDestination = BRDG;
+                          iTempLoc = iMonsterLoc;
+                          iTempLoc++;
+                          if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                          monster_loc-->iTempLoc = BRDG;
+                      }
                       "Hitting the hatch with the cattle prod does no damage, but it might attract the alien.";
                   }
                   if (second == dataReader) "The hatch is sealed. It isn't going to open that easily.";
