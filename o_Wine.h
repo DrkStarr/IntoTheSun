@@ -52,7 +52,7 @@ Object  wine "rare wine"
                 }
             Examine, Search:
                 player.advanceGravity = false;
-                if (self.spitOn) "The rare case already melted halfway through sitting in the pool of acid, draining the bottles of wine. They're worthless now and can't even be carried easily.";
+                if (self.spitOn) "The rare case has already melted halfway through sitting in the pool of acid, draining the bottles of wine. They're worthless.";
                 "The wine is from Italy and might be worth something if you can get it off this tug in one piece. The labeling all over the case is in Italian.";
             Read:
                 if (self.spitOn) "It's too hard to read now. Acid damaged the writing.";

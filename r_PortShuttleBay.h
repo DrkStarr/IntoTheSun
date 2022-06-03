@@ -128,7 +128,7 @@
           before [;
               Examine, Search:
                   player.advanceGravity = false;
-                  if (extinguisher.spitOn) "Acid mixes with the foam from the extinguisher but still tries to melt all the way through the floor.";
+                  if (extinguisher.spitOn) "Acid mixes with the foam from the extinguisher, but that does little to stop it from trying to melt through the deck.";
                   "The acid burns everything it touches, trying to melt all the way through the airlock.";
               Go:
                   "You are already here.";

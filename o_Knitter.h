@@ -10,7 +10,7 @@ Object  knitter "tissue knitter"
                 if (medkit in infirmary) "^Next to the broken table, a tissue knitter and a medkit melt in a pool of acid.";
                 "^Next to the broken table, a tissue knitter melts in a pool of acid.";
             }
-            if (self in infirmary) "^On the operation table, a tissue knitter has been left out.";
+            if (self in infirmary) "^On the examination table, a tissue knitter has been left out.";
             rtrue;
         ],
         before [;

@@ -77,11 +77,20 @@ CompassDirection -> d_obj  with short_name "deck",    door_dir d_to,
                         if (PlayerInCorridorBDeck()) "The deck is made from grated metal that lets liquids pass through to the deck below.";
                         if (PlayerInCorridorCDeck() || player in forwardCompanionwayDeckC || player in aftCompanionwayDeckC) "The deck is made from grated metal that lets liquids pass through - the shallow space below has a bit of water.";
                         if (player in infirmary) {
-                            if (infirmary.alienWrecked) "Acid is all over the floor, trying to burn its way through to the hull.";
+                            if (infirmary.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
                             "The deck has a small hole in it underneath the table - acid having melted its way through.";
                         }
+                        if (player in hypersleepVault && hypersleepVault.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
+                        if (player in captainsQuarters && captainsQuarters.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
+                        if (player in weaponsLocker && weaponsLocker.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
+                        if (player in foodStorage && foodStorage.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
+                        if (player in crewLounge && crewLounge.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
+                        if (player in portShuttleBay && portShuttleBay.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
+                        if (player in starboardShuttleBay && starboardShuttleBay.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
+                        if (player in controlRoomDeckC && controlRoomDeckC.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
+                        if (player in maintenanceGarage && maintenanceGarage.alienWrecked) "Acid is all over the deck, trying to burn its way through to the hull.";
                         if (player.inCorridor) "The deck is made from grated metal that lets liquids pass through to the decks below.";
-                        "There's nothing special about the floor. It's made from irregular metal plating.";
+                        "There's nothing special about the deck. It's made from irregular metal plating.";
                     ],
                     before [;
                         Climb:
@@ -90,6 +99,8 @@ CompassDirection -> d_obj  with short_name "deck",    door_dir d_to,
                             if (player in forwardCompanionwayDeckC) "You're already on the bottom deck.";
                             if (player in aftCompanionwayDeckB) return PlayerTo(aftCompanionwayDeckC,2);
                             if (player in aftCompanionwayDeckC) "You're already on the bottom deck.";
+                        Drink:
+                             if (PlayerOnCDeck()) "Even if you could get your mouth past the grates, that's disgusting.";
                     ];
 #Endif; ! WITHOUT_DIRECTIONS
 

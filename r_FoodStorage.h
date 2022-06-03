@@ -170,8 +170,8 @@
           before [;
               Examine, Search:
                   player.advanceGravity = false;
-                  if (wine.spitOn) "Acid mixes with the red liquid but does nothing to dilute the strength of the secretion. It still tries to melt through the floor.";
-                  "The acid burns everything it touches, trying to melt all the way through the floor.";
+                  if (wine.spitOn) "Acid mixes with the red liquid but does nothing to dilute the strength of the secretion. It still tries to melt through the deck.";
+                  "The acid burns everything it touches, trying to melt all the way through the deck.";
               Go:
                   "You are already here.";
           ];

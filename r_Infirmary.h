@@ -22,7 +22,7 @@
               }
               "The infirmary is barely lit with lots of smoke here - the room doused in an orange glow.
               There is an examination table in the middle of the room. The light above it creates god rays
-              looking down.^^The walls are lined with cabinets. There's only one way out, starboard.";
+              looking down.^^The bulkheads are lined with cabinets. There's only one way out, starboard.";
           ],
           e_to [;
               if (alien in self) return PXF();
@@ -140,7 +140,7 @@
                   "You don't have time for that. You are plunging into the sun.";
               LookUnder:
                   if (infirmary.alienWrecked) "The metal has been crushed and then spit on with acid. There's nothing to look under.";
-                  "You see a nasty-looking hole that has burned its way through the deck underneath the table.";
+                  "You see a nasty-looking hole that has burned through to the deck below.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
                   "You need to loot the ship, not mess with ", (the) self, ".";
@@ -153,7 +153,7 @@
 ! 06/02/22
 
   StObj   -> infirmaryAutoDoc "auto-doc"
-    with  name 'auto' 'doc' 'auto-doc',
+    with  name 'auto' 'doc' 'auto-doc' 'machine',
           before [;
               Examine:
                   player.advanceGravity = false;
@@ -165,6 +165,7 @@
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
                   "The auto-doc isn't going anywhere. It's built into the side of the ship.";
               Enter:
+                  if (infirmary.alienWrecked) "Like everything else in this room, the auto-doc has been covered in acid. You would burn yourself if you tried to get inside.";
                   if (alien.sleeping) "The machine's not working. You have no reason to crawl in there.";
                   "The machine's not working. And if you're trying to hide, that's an awful spot.";
               Rub:
@@ -220,11 +221,11 @@
 ! 05/13/22
 
   StObj   -> infirmaryHole "hole"
-    with  name 'small' 'hole' 'nasty' 'acid',
+    with  name 'small' 'hole' 'nasty' 'acid' 'stain',
           before [;
               Examine:
                   player.advanceGravity = false;
-                  "A nasty hole that looks like acid was spilled all over the place has burned itself into the floor, with the solution making its way through to B Deck.";
+                  "A hole burned itself into the deck as acid spilled all over the place - the solution making its way through to B Deck.";
               Go:
                   "You are already here.";
               Take, Push, Pull, PushDir, Unlock:
@@ -244,7 +245,7 @@
           before [;
               Examine, Search:
                   player.advanceGravity = false;
-                  "The acid burns everything it touches, trying to melt all the way through the floor.";
+                  "The acid burns everything it touches, trying to melt all the way through the deck.";
               Go:
                   "You are already here.";
           ];

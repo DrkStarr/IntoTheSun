@@ -77,11 +77,11 @@
   Constant MAX_CARRIED=50;
   Constant GTOTALROOMS=35;
   Constant GTOTALOBJS=27;
-  Constant GPLOPCODE=37;  ! Instructions Of Z-Code
-  Constant GOPCPH=6;
-  Constant GOPCSPH=6;
-  Constant GOPCODE=7;
-  Constant GTWORDS=843;   ! Dictionary Entries
+  Constant GPLOPCODE=38;  ! Instructions Of Z-Code
+  Constant GOPCPH=1;
+  Constant GOPCSPH=2;
+  Constant GOPCODE=8;
+  Constant GTWORDS=848;   ! Dictionary Entries
   Constant DIALECT_US;
 
 ! ***********************
@@ -154,10 +154,10 @@
 
   Array door_code --> 4;
   Array monster_loc --> 11;
-  Array monster_retore --> 11;
+  Array monster_restore --> 11;
   Array monster_move --> 99;
 
-! Global Variables - 61 left / Max 233 - 172           Entangled: 219(14)
+! Global Variables - 59 left / Max 233 - 174           Entangled: 219(14)
 
   Global iRoom=0;               ! counts the number of rooms
   Global iCattleProdCharge=3;   ! number of charges in the cattle prod
@@ -608,7 +608,7 @@
                 else ofail = false;
             }
             monster_loc-->iap = iran;
-            monster_retore-->iap = iran;
+            monster_restore-->iap = iran;
             iap++;
         }
 
@@ -734,17 +734,17 @@
         monster_loc-->9 = SCIENCECRRDR;
         monster_loc-->10 = FOODLCKER;
 
-        monster_retore-->0 = MAINTNNCGRGE;
-        monster_retore-->1 = INFRMRY;
-        monster_retore-->2 = CONTROLRM;
-        monster_retore-->3 = WEAPONSLCKER;
-        monster_retore-->4 = STARBRDSHTTLBY;
-        monster_retore-->5 = PORTSHTTLBY;
-        monster_retore-->6 = HYPRSLPVLT;
-        monster_retore-->7 = CAPTQRTRS;
-        monster_retore-->8 = LOUNGE;
-        monster_retore-->9 = SCIENCECRRDR;
-        monster_retore-->10 = FOODLCKER;
+        monster_restore-->0 = MAINTNNCGRGE;
+        monster_restore-->1 = INFRMRY;
+        monster_restore-->2 = CONTROLRM;
+        monster_restore-->3 = WEAPONSLCKER;
+        monster_restore-->4 = STARBRDSHTTLBY;
+        monster_restore-->5 = PORTSHTTLBY;
+        monster_restore-->6 = HYPRSLPVLT;
+        monster_restore-->7 = CAPTQRTRS;
+        monster_restore-->8 = LOUNGE;
+        monster_restore-->9 = SCIENCECRRDR;
+        monster_restore-->10 = FOODLCKER;
 
         #EndIf;
 

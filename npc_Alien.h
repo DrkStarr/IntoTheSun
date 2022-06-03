@@ -100,7 +100,7 @@
   [ ResetMonsterLoc iap;
         iap = 0;
         while (iap < 11) {
-            monster_loc-->iap = monster_retore-->iap;
+            monster_loc-->iap = monster_restore-->iap;
             iap++;
         }
   ];

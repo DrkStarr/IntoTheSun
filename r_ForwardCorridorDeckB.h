@@ -87,7 +87,7 @@
               Go:
                   "You are already here.";
               default:
-                  "He's dead. Leave him be.";              
+                  "He's dead. Leave him be.";
           ],
           life [;
               "He's dead. Leave him be.";
@@ -193,7 +193,7 @@
 ! 10/17/21
 
   StObj   forwardCorridorDeckBSmoke "smoke"
-    with  name 'smoke' 'air' 'haze' 'hazy' 'thick' 'gloom' 'dark' 'cloud' 'smog' 'dense' 'muck',
+    with  name 'smoke' 'air' 'haze' 'hazy' 'thick' 'gloom' 'dark' 'cloud' 'smog' 'dense' 'muck' 'acidic',
           before [;
               Examine:
                   player.advanceGravity = false;
@@ -284,7 +284,7 @@
 ! 11/07/21
 
   StObj   frwrdCrrdrDckBSmk "smoke"
-    with  name 'smoke' 'air' 'haze' 'hazy' 'thick' 'gloom' 'dark' 'cloud' 'smog' 'dense' 'muck',
+    with  name 'smoke' 'air' 'haze' 'hazy' 'thick' 'gloom' 'dark' 'cloud' 'smog' 'dense' 'muck' 'acidic',
           before [;
               Examine:
                   player.advanceGravity = false;

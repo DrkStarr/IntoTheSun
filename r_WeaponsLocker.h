@@ -165,7 +165,7 @@
           before [;
               Examine, Search:
                   player.advanceGravity = false;
-                  "The acid burns everything it touches, trying to melt all the way through the floor.";
+                  "The acid burns everything it touches, trying to melt all the way through the deck.";
               Go:
                   "You are already here.";
           ];

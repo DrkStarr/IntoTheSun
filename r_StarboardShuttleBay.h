@@ -75,8 +75,7 @@
               Examine:
                   player.advanceGravity = false;
                   if (starboardShuttleBay.alienWrecked)
-                      "For a door already damaged, it held up well for the second beating.
-                      But the alien spewed acid on it. Now it's weak under pressure.";
+                      "It held up well during the second beating for a door already damaged. But the alien spewed acid on it. Now it's weak under pressure.";
                   "The airlock's dented from something beating on it, trying to get to the shuttle. But the door held under pressure.";
               Go:
                   "You are already here.";

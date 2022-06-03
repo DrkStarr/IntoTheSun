@@ -15,9 +15,9 @@
               }
               player.inCorridor = false;
               if (self.alienWrecked) {
-                  "There's more smoke than you'd like to see in this room, and the lights fail to help. But in
-                  all this gloom, you can see the controls for the engines have been laid into - all the gauges
-                  that monitor the vessel are covered in acid. The only way out is forward.";
+                  "There's more smoke than usual in this room, and the lights fail to help. But through this acidic haze,
+                  you see the controls have been laid into - all the gauges that monitor the vessel are covered in acid,
+                  adding to the thick smoke in the room. The only way out is forward.";
               }
               "There's smoke, and the lights struggle to get through it. But, in this gloom, you can at least see the
               aft bulkhead and the controls for the engines - with gauges and screens that monitor the vessel when under
