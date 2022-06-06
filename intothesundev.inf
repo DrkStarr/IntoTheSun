@@ -1,5 +1,6 @@
 
-! Changes: 06/02/2022
+! Changes: 06/04/2022
+! If you open the locker in the Control Room, the alien comes whether hiding or not
 ! Changed the way the alien is called to misc. rooms, added the destination to the next index of monster_loc
 ! This calls the alien twice to the location. Once in the iMonsterDestination, and the other in the array monster_loc
 ! In the case where iMonsterDestination changes, monster_loc will send the alien to the correct room
@@ -68,10 +69,10 @@
 !  Constant NO_SCORE;
 !  Constant SETMONSTERLOC;
 !  Constant PRINTMONSTERLOC;
-!  Constant PRINTBACKEND;  !    *** Prints Debug Information ***
-!  Constant PRINTPATH;     !    *** Prints the Alien's Path in game *** New Command: PATH
-!  Constant ALIENLOC;      !    *** Prints the Alien's Location *** New Command: ALIEN LOC / MONSTER LOC
-!  Constant TESTING;       !    Locks in a path for the Alien, so the game can be Debugged
+!  Constant PRINTBACKEND;      !    *** Prints Debug Information ***
+!  Constant PRINTPATH;         !    *** Prints the Alien's Path in game *** New Command: PATH
+!  Constant ALIENLOC;          !    *** Prints the Alien's Location *** New Command: ALIEN LOC / MONSTER LOC
+!  Constant TESTING;           !    Locks in a path for the Alien, so the game can be Debugged
   Constant DESTROYOBJECTS;
   Constant MAX_SCORE=25;
   Constant MAX_CARRIED=50;
@@ -79,8 +80,8 @@
   Constant GTOTALOBJS=27;
   Constant GPLOPCODE=38;  ! Instructions Of Z-Code
   Constant GOPCPH=1;
-  Constant GOPCSPH=2;
-  Constant GOPCODE=8;
+  Constant GOPCSPH=6;
+  Constant GOPCODE=0;
   Constant GTWORDS=848;   ! Dictionary Entries
   Constant DIALECT_US;
 
@@ -1537,6 +1538,8 @@
                     print "Weapon's Locker^";
                 FOODLCKER:
                     print "Food Locker^";
+                BRDG:
+                    print "Bridge^";
                 AFTJNCTNDECKA:
                     print "Aft Junction Deck A^";
             }

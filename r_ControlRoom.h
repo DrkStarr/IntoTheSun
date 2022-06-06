@@ -126,6 +126,7 @@
                   iTempLoc = iMonsterLoc;
                   iTempLoc++;
                   if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                  monster_loc-->iMonsterLoc = CONTROLRM;
                   monster_loc-->iTempLoc = CONTROLRM;
                   alien.resetLocInControlRoom = true;
                   "Opening the locker, you try to catch a crowbar as it falls to the ground. You miss.";
@@ -141,6 +142,7 @@
                           iTempLoc = iMonsterLoc;
                           iTempLoc++;
                           if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                          monster_loc-->iMonsterLoc = CONTROLRM;
                           monster_loc-->iTempLoc = CONTROLRM;
                           move crowbar to player;
                           alien.resetLocInControlRoom = true;

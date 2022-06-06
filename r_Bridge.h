@@ -38,6 +38,8 @@
               "You can exit aft.";
           ],
           before [;
+              EnterDoorCode:
+                  "You don't need to do that. The doors are already unlocked.";
               Exit:
                   if (alien in self) return PXF();
                   print "The doors quickly close behind you as you enter the galley.^";
@@ -81,6 +83,7 @@
                       iTempLoc = iMonsterLoc;
                       iTempLoc++;
                       if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                      monster_loc-->iMonsterLoc = BRDG;
                       monster_loc-->iTempLoc = BRDG;
                       if (sledgehammer in vortexBag) {
                           move sledgehammer to player;
@@ -174,7 +177,7 @@
                   "They're already closed.";
               Examine:
                   player.advanceGravity = false;
-                  "The automated doors to the bridge are unlocked and react to anyone who wants in or out.";
+                  "The automated doors to the bridge are unlocked and react to you.";
               Enter:
                   if (alien in bridge) return PXF();
                   print "The doors quickly close behind you as you enter the galley.^";
@@ -187,6 +190,8 @@
                   "You are already here.";
               Unlock:
                   "The doors are already unlocked. If you want to use them, enter them.";
+              SetTo, SetCode:
+                  "You don't need to do that. The doors are already unlocked.";
           ],
      has  pluralname;
 

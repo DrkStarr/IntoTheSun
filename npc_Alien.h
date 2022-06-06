@@ -443,6 +443,10 @@
                   move crowbar to controlRoomDeckC;
                   move controlRoomDeckCCabinet to controlRoomDeckC;
               }
+              if (alien.resetLocInControlRoom) {
+                  alien.resetLocInControlRoom = false;
+                  ResetMonsterLoc();
+              }
               move controlRoomDeckCAcid to controlRoomDeckC;
               controlRoomDeckC.closetOpen = true;
               controlRoomDeckC.alienWrecked = true;

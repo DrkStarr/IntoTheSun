@@ -174,6 +174,9 @@
               Examine:
                   player.advanceGravity = false;
                   "The crates of coffee are old and covered in soot with labels that read ~Weyland Corp.~";
+              Read:
+                  player.advanceGravity = false;
+                  "The crates are labeled ~Weyland Corp.~";
               Take, Open:
                   "The coffee's over 100 years old. It's worthless.";
               Rub:
