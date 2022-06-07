@@ -81,7 +81,7 @@
   Constant GPLOPCODE=38;  ! Instructions Of Z-Code
   Constant GOPCPH=1;
   Constant GOPCSPH=6;
-  Constant GOPCODE=0;
+  Constant GOPCODE=5;
   Constant GTWORDS=848;   ! Dictionary Entries
   Constant DIALECT_US;
 
@@ -332,11 +332,19 @@
                          if (player.printCloseBy) {
                              if (player.printFirstStop) {
                                  player.printFirstStop = false;
-                                 "Did it stop? You don't hear the noise, but you know it's still there.";
+                                 "Something is out there, but it's not moving. Quiet and probably listening.";
                              } else {
                                  if (DistanceToAlien() > 3) {
+                                     if (player.firstPrintStop){
+                                         player.firstPrintStop = false;
+                                         "You hear a noise, something crawling, but then it stops - lurking.";
+                                     }
                                      "You don't hear the noise anymore, but it's still lurking.";
                                  } else {
+                                     if (player.firstPrintStop){
+                                         player.firstPrintStop = false;
+                                         "You hear a noise, something crawling, but then it stops - it's close.";
+                                     }
                                      "You don't hear the noise anymore, but you feel it's close.";
                                  }
                              }
@@ -842,8 +850,8 @@
         PageBreak();
         print "^Then something hits the radar, finally. And not a tiny blip like a satellite, but
         a large return that shows a huge ship. Yes. Sitting in the sun's blind spot might have paid off.
-        It looks like a derelict, and she should be full of lootable goods. Drifting like this, it seems
-        the crew abandoned her. She's fair game this close to the sun.^";
+        It looks like a derelict. Drifting, it seems the crew abandoned her. She's fair game this close to
+        the sun.^";
         PageBreak();
         print "^As you hook up to the docking ring, you look over the controls and notice, as expected, that
         you are still drifting. It's time to loot this vessel before you can't get out of the gravity well.^";

@@ -100,7 +100,7 @@ CompassDirection -> d_obj  with short_name "deck",    door_dir d_to,
                             if (player in aftCompanionwayDeckB) return PlayerTo(aftCompanionwayDeckC,2);
                             if (player in aftCompanionwayDeckC) "You're already on the bottom deck.";
                         Drink:
-                             if (PlayerOnCDeck()) "Even if you could get your mouth past the grates, that's disgusting.";
+                             if (PlayerOnCDeck()) "Forget the polymer bodysuit. Even if you could get your mouth past the grates, that's disgusting.";
                     ];
 #Endif; ! WITHOUT_DIRECTIONS
 

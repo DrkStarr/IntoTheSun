@@ -112,7 +112,7 @@
               move alien to infirmary;
               if (player in infirmary) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (knitter in infirmary) knitter.spitOn = true;
@@ -132,7 +132,7 @@
               move alien to hypersleepVault;
               if (player in hypersleepVault) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (necklace in hypersleepVault) necklace.spitOn = true;
@@ -146,7 +146,7 @@
               move alien to portShuttleBay;
               if (player in portShuttleBay) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (extinguisher in portShuttleBay) extinguisher.spitOn = true;
@@ -159,7 +159,7 @@
               move alien to starboardShuttleBay;
               if (player in starboardShuttleBay) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (spacesuit in starboardShuttleBay) {
@@ -174,7 +174,7 @@
               move alien to scienceCorridorDeckB;
               if (player in scienceCorridorDeckB) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               return IsScienceCorridorDestroyed();
 
@@ -182,7 +182,7 @@
               move alien to captainsQuarters;
               if (player in captainsQuarters) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (kabar in captainsQuarters) kabar.spitOn = true;
@@ -201,7 +201,7 @@
               move alien to maintenanceGarage;
               if (player in maintenanceGarage) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
 
@@ -222,7 +222,7 @@
               move alien to crewLounge;
               if (player in crewLounge) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (crewLounge.takenMusicBox == false) musicBox.spitOn = true;
@@ -235,7 +235,7 @@
               move alien to controlRoomDeckC;
               if (player in controlRoomDeckC) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               if (laptop in controlRoomDeckCBench) {
                   #Ifdef DESTROYOBJECTS;
@@ -267,7 +267,7 @@
               move alien to infirmary;
               if (player in infirmary) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (knitter in infirmary) knitter.spitOn = true;
@@ -287,7 +287,7 @@
               move alien to hypersleepVault;
               if (player in hypersleepVault) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (necklace in hypersleepVault) necklace.spitOn = true;
@@ -301,7 +301,7 @@
               move alien to portShuttleBay;
               if (player in portShuttleBay) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (extinguisher in portShuttleBay) extinguisher.spitOn = true;
@@ -314,7 +314,7 @@
               move alien to starboardShuttleBay;
               if (player in starboardShuttleBay) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (spacesuit in starboardShuttleBay) {
@@ -329,7 +329,7 @@
               move alien to scienceCorridorDeckB;
               if (player in scienceCorridorDeckB) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               return IsScienceCorridorDestroyed();
 
@@ -337,7 +337,7 @@
               move alien to captainsQuarters;
               if (player in captainsQuarters) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (kabar in captainsQuarters) kabar.spitOn = true;
@@ -356,7 +356,7 @@
               move alien to maintenanceGarage;
               if (player in maintenanceGarage) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
 
@@ -377,7 +377,7 @@
               move alien to crewLounge;
               if (player in crewLounge) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (crewLounge.takenMusicBox == false) musicBox.spitOn = true;
@@ -390,7 +390,7 @@
               move alien to weaponsLocker;
               if (player in weaponsLocker) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (weaponsLocker.takenBaton == false) stunBaton.spitOn = true;
@@ -407,7 +407,7 @@
               move alien to foodStorage;
               if (player in foodStorage) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               #Ifdef DESTROYOBJECTS;
               if (foodStorage.takenWine == false) wine.spitOn = true;
@@ -426,7 +426,7 @@
               move alien to controlRoomDeckC;
               if (player in controlRoomDeckC) {
                   StartDaemon(alien);
-                  "^The alien crawls out of the ventilation system and hisses at the sight of you. Then, dropping down from above, his hands reach out.";
+                  return PAD();
               }
               if (laptop in controlRoomDeckCBench) {
                   #Ifdef DESTROYOBJECTS;
@@ -491,7 +491,7 @@
                 hypersleepVault.alienWrecked = true;
                 hypersleepVault.destroyedYet = true;
                 player.firstItemTaken = false;
-                "From somewhere above you, a shattering crash rings throughout the ship. It's followed by
+                "From somewhere above you, a crash rings throughout the ship. It's followed by
                 the sound of containers being thrown around one of the rooms. When the thudding stops, a
                 high-pitched cry follows. You have a feeling you're not alone.";
 
@@ -1741,7 +1741,7 @@
                     print "^From somewhere above you, towards the front of the ship";
                 }
             }
-            print ", a shattering crash rings throughout the ship. It's followed by the sound of containers
+            print ", a crash rings throughout the ship. It's followed by the sound of containers
             being thrown around one of the rooms. When the thudding stops, a high-pitched cry follows";
             if (player.firstItemTaken) {
                 player.firstItemTaken = false;
@@ -2902,4 +2902,8 @@
         if (alien in forwardCompanionwayDeckA) rtrue;
         if (alien in hypersleepVault) rtrue;
         rfalse;
+  ];
+
+  [ PAD;
+        "^The alien crawls out of the ventilation system as its body twists and contorts, hissing at the sight of you. Then, dropping down from above, the beast eyes you for a moment, hands reaching out.";
   ];

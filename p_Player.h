@@ -160,7 +160,7 @@
                               if (self.suppressAlienCloseBy == false) {
                                   if (alienDistance ~= 0) {
                                       self.printCloseBy = true;
-                                      self.printFirstStop = true;
+!                                      self.printFirstStop = true;
                                       if (alienDistance == 1) {
                                           if (self.printAlienClose) {
                                               self.printAlienClose = false;
@@ -292,12 +292,22 @@
                                       if (self.printCloseBy) {
                                           if (self.printFirstStop) {
                                               self.printFirstStop = false;
-                                              print "^Did it stop? You don't hear the noise, but you know it's still there.^";
+                                              print "^Something is out there, but it's not moving. Quiet and probably listening.^";
                                           } else {
                                               if (DistanceToAlien() > 3) {
-                                                  print "^You don't hear the noise anymore, but it's still lurking.^";
+                                                  if (self.firstPrintStop){
+                                                      self.firstPrintStop = false;
+                                                      print "^You hear a noise, something crawling, but then it stops - lurking.^";
+                                                  } else {
+                                                      print "^You don't hear the noise anymore, but it's still lurking.^";
+                                                  }
                                               } else {
-                                                  print "^You don't hear the noise anymore, but you feel it's close.^";
+                                                  if (self.firstPrintStop){
+                                                      self.firstPrintStop = false;
+                                                      print "^You hear a noise, something crawling, but then it stops - it's close.^";
+                                                  } else {
+                                                      print "^You don't hear the noise anymore, but you feel it's close.^";
+                                                  }
                                               }
                                           }
                                       }
@@ -335,12 +345,13 @@
                       if (self.alienHide) {
                           iAlienHiding = iAlienHiding + 1;
                           ! ***********
-                          ! Spawn Alien
+                          ! Spawn Alien / Comes out of hiding
                           ! ***********
                           if (iAlienHiding > 6) {
                               iAlienHiding = 0;
                               self.alienHide = false;
                               self.alienMove = true;
+                              self.firstPrintStop = true;
                               oldMonsterDes = iMonsterLoc;
                               iMonsterLoc++;
                               if (iMonsterLoc > MONSTERTOTAL) iMonsterLoc = 0;
@@ -400,6 +411,7 @@
           firstWarningTriggered false,
           gravityVerbAlreadySeen false,
           xenomorphKnows false,
+          firstPrintStop true,
     has   animate concealed proper;
 
   [ PXF;
