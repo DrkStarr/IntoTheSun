@@ -71,14 +71,14 @@
 ! 10/13/21
 
   Object  -> forwardCorridorDeckBBody "dead body"
-    with  name 'dead' 'body' 'guy' 'man' 'dude' 'gut' 'guts' 'skeleton' 'entrails',
+    with  name 'dead' 'body' 'guy' 'man' 'dude' 'gut' 'guts' 'skeleton' 'entrails' 'bone' 'bones',
           before [;
               Attack:
-                  if (second == cattleProd) "If you hit him with the rod, you'd waste a charge. You couldn't bring him back. There's nothing left but bone. He doesn't even have muscles to make him twitch.";
-                  if (second == nothing) "There's no need to beat on the skeleton. His bones are brittle, and you would only pulverize them.";
-                  "There's no need to hit the skeleton with that. His bones are brittle, and you would only pulverize them.";
+                  if (second == cattleProd) "If you hit the skeleton, you'd waste a charge. There's nothing left but bone. The skeleton doesn't even have muscles to make it twitch.";
+                  if (second == nothing) "There's no need to beat on the skeleton. The bones are brittle, and you would only pulverize them.";
+                  "There's no need to hit the skeleton with that. The bones are brittle, and you would only pulverize them.";
               Prod:
-                  if (cattleProd in player) "If you hit him with the rod, you'd waste a charge. You couldn't bring him back. There's nothing left but bone. He doesn't even have muscles to make him twitch.";
+                  if (cattleProd in player) "If you hit the skeleton, you'd waste a charge. There's nothing left but bone. The skeleton doesn't even have muscles to make it twitch.";
               Examine:
                   player.advanceGravity = false;
                   "Looking closer at the body, it's really a skeleton whose flesh melted off long ago.
@@ -87,13 +87,13 @@
               Go:
                   "You are already here.";
               default:
-                  "He's dead. Leave him be.";
+                  "The skeleton's dead. Leave him be.";
           ],
           life [;
-              "He's dead. Leave him be.";
+              "The skeleton's dead. Leave him be.";
           ],
           orders [;
-              "He's dead. Leave him be.";
+              "The skeleton's dead. Leave him be.";
           ],
     has   static concealed;
 

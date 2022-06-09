@@ -14,7 +14,7 @@
           ],
           each_turn [ oldMonsterDes alienDistance;
               ! ***************************************************
-              ! Resets PFX - The xenomorph's faster than that.
+              ! Resets PXF - The xenomorph's faster than that.
               !            - But the xenomorph knows where you are.
               ! ***************************************************
               if (self.xenomorphKnows) {

@@ -79,9 +79,9 @@
   Constant GTOTALROOMS=35;
   Constant GTOTALOBJS=27;
   Constant GPLOPCODE=38;  ! Instructions Of Z-Code
-  Constant GOPCPH=1;
-  Constant GOPCSPH=6;
-  Constant GOPCODE=5;
+  Constant GOPCPH=2;
+  Constant GOPCSPH=0;
+  Constant GOPCODE=2;
   Constant GTWORDS=848;   ! Dictionary Entries
   Constant DIALECT_US;
 
@@ -1502,7 +1502,7 @@
         iap = 0;
         print "^^Intruder Location: ";
         while (iap < 11) {
-            switch (monster_loc-->iap) {
+            switch (monster_restore-->iap) {
                 INFRMRY: print "!";
                 HYPRSLPVLT: print "[";
                 PORTSHTTLBY: print "#";

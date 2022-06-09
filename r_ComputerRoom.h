@@ -302,6 +302,8 @@
               Go:
                   "You are already here.";
               Read:
+                  player.advanceGravity = false;
+                  if (coreAI.takenSelf) "All the lights in this room died the moment you removed the core AI.";
                   "There's nothing to read, just strange shapes shifting in front of you.";
           ],
      has  pluralname;

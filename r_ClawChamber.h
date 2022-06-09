@@ -127,7 +127,7 @@
     with  name 'skeleton' 'body' 'dead' 'bone' 'decayed' 'spine' 'dust',
           before [;
               Attack:
-                  "That's not fair. He can't even put up a fight.";
+                  "That's not fair. The skeleton can't even put up a fight.";
               Examine:
                   player.advanceGravity = false;
                   "The bones of the skeleton have fallen away, brittle from age. Now there's
@@ -136,15 +136,15 @@
               Go:
                   "You are already here.";
               Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  "He's dead. Leave him be.";
+                  "The skeleton's dead. Leave him be.";
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  "He's dead. Leave him be.";
+                  "The skeleton's dead. Leave him be.";
           ],
           life [;
-              "He's dead. Leave him be.";
+              "The skeleton's dead. Leave him be.";
           ],
           orders [;
-              "He's dead. Leave him be.";
+              "The skeleton's dead. Leave him be.";
           ];
 !    has   animate male concealed;
 
@@ -154,29 +154,29 @@
     with  name 'bones',
           before [;
               Attack:
-                  "That's not fair. He can't even put up a fight.";
+                  "That's not fair. The skeleton can't even put up a fight.";
               Examine:
                   player.advanceGravity = false;
                   "Bones lie around the spine that leans against the piston. They're brittle. Some of them have already turned to dust.";
               Go:
                   "You are already here.";
               Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  "He's dead. Leave him be.";
+                  "The skeleton's dead. Leave him be.";
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  "He's dead. Leave him be.";
+                  "The skeleton's dead. Leave him be.";
           ],
           life [;
-              "He's dead. Leave him be.";
+              "The skeleton's dead. Leave him be.";
           ],
           orders [;
-              "He's dead. Leave him be.";
+              "The skeleton's dead. Leave him be.";
           ],
     has   pluralname;
 
 ! 01/20/22
 
   StObj   -> clawChamberDoors "doors"
-    with  name 'doors' 'tall',
+    with  name 'doors' 'tall' 'door',
           before [;
               Examine:
                   player.advanceGravity = false;

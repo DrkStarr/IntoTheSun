@@ -169,7 +169,7 @@
               Examine:
                   player.advanceGravity = false;
                   if (self.hatchOpen) "You forced open the hatch and now smoke slowly spills into the room.";
-                              "The explosion did a number on everything in this hallway, scarring the door and blowing off the handle.
+                  "The explosion did a number on everything in this hallway, scarring the door and blowing off the handle.
                   It doesn't look like there's an easy way to open it.";
               Enter:
                   if (alien in scienceCorridorDeckB) return PXF();
@@ -216,6 +216,7 @@
     with  name 'sensor' 'sensors',
           before [;
               Examine:
+                  player.advanceGravity = false;
                   "The sensors are in the monitoring stations, and the explosion has blocked
                   access to all of them. You can't get through the debris.";
           ],
@@ -227,6 +228,7 @@
     with  name 'stations',
           before [;
               Examine:
+                  player.advanceGravity = false;
                   "Blocked off by debris that has filled the corridor, you can't get to the monitoring stations.";
           ],
       has pluralname;

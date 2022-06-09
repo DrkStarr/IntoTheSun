@@ -44,10 +44,19 @@ Object  sledgehammer "sledgehammer"
                         remove alien;
                         player.alienHide = true;
                         player.alienMove = false;
-                        print "You drop the hammer, grabbing the cattle prod and rolling to one side. Turning, you stick the
-                        alien with the rod as hard as you can. The creature screams and hisses, but you push the rod harder
-                        into its chest. Swinging its arm, it knocks the rod out of your hand before spitting at you and then
-                        jumping into the ventilation system";
+                        if (self.hammerAlreadyUsed == false) {
+                            self.hammerAlreadyUsed = true;
+                            print "You drop the hammer, grabbing the cattle prod and rolling to one side. Turning, you stick the
+                            alien with the rod as hard as you can. The creature screams and hisses, but you push the rod harder
+                            into its chest. Swinging its arm, it knocks the rod out of your hand before spitting at you and then
+                            jumping into the ventilation system";
+                        } else {
+                            self.hammerAlreadyUsed = false;
+                            print "You drop the hammer, grabbing the cattle prod a second time. The alien tries to anticipate your
+                            movement, but you swing the rod instead of rolling to one side. The creature fails to get out of the
+                            way and cries out in pain. Hissing, it tries to spit on you. Then it jumps for the ventilation system
+                            as it knocks the pole out of your hand again";
+                        }
                         if (iCattleProdCharge == 0) ".^^Picking up the rod, you look at the handle. You're out of juice.";
                         ".^^After its gone, you pick up the cattle prod.";
                     }
@@ -152,4 +161,5 @@ Object  sledgehammer "sledgehammer"
         ],
         taken true,
         alreadyAttacked false,
+        hammerAlreadyUsed false,
         cleaned false;

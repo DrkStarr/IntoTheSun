@@ -235,6 +235,7 @@
     with  name 'counter',
           before [;
               Examine:
+                  player.advanceGravity = false;
                   if (nutrientProcessor in self)
                       "Looking over the counter, you see a nutrient processor - a large device that takes up the corner of this room.";
                   "Looking over the counter, you see only dust, a layer of soot that has settled in.";
