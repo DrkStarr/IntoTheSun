@@ -100,7 +100,7 @@
                   "That would only make a lot of noise. What are you trying to do? Attract the xenomorph?";
               Examine:
                   player.advanceGravity = false;
-                  "It's a laser welder that gets it power from the large battery next to it. Engineering uses
+                  "It's a laser welder that gets its power from the large battery next to it. Engineering uses
                   it sparingly on the ship, but it does fire a cold laser when activated.";
               Push, Pull, PushDir:
                   "You don't need to use the equipment. It can stay right there.";

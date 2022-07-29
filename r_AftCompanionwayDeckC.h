@@ -121,3 +121,18 @@
               SwitchOn, SwitchOff:
                   "That's not how it works.";
           ];
+
+! 07/23/22
+
+  OutRch  -> aftCompanionwayDeckCWelder "welding equipment"
+    with  name 'welding' 'equipment' 'cold' 'laser' 'welder',
+          before [;
+              Examine:
+                  player.advanceGravity = false;
+                  "The laser welder is in the port corridor next to you. But it's hard to make out clearly
+                  through all the smoke filling the ship.";
+              Enter, Go:
+                  aftCompanionwayDeckC.firstTime = true;
+                  PlayerTo(aftStarboardJunctionDeckC, 2);
+                  rtrue;
+          ];

@@ -47,8 +47,8 @@
 ! Treaty of Babel
 ! command line: bable -ifid "GAMENAME.z8"
 
-! Array UUID_ARRAY string "UUID://ZCODE-1-220928-E691//";
-! #ifdef UUID_ARRAY; #endif;
+ Array UUID_ARRAY string "UUID://ZCODE-1-220701-8535//";
+ #ifdef UUID_ARRAY; #endif;
 
   Constant Story "Into The Sun";
   Constant Headline "^A Text Adventure by Dark Star
@@ -80,7 +80,7 @@
   Constant GTOTALOBJS=27;
   Constant GPLOPCODE=38;  ! Instructions Of Z-Code
   Constant GOPCPH=2;
-  Constant GOPCSPH=0;
+  Constant GOPCSPH=1;
   Constant GOPCODE=2;
   Constant GTWORDS=848;   ! Dictionary Entries
   Constant DIALECT_US;
@@ -853,7 +853,7 @@
         It looks like a derelict. Drifting, it seems the crew abandoned her. She's fair game this close to
         the sun.^";
         PageBreak();
-        print "^As you hook up to the docking ring, you look over the controls and notice, as expected, that
+        print "^As you hook up to the docking tube, you look over the controls and notice, as expected, that
         you are still drifting. It's time to loot this vessel before you can't get out of the gravity well.^";
         PageBreak();
         rtrue;
@@ -1890,8 +1890,8 @@ Verb 'fill'
     * noun 'from' noun                          -> Fill;
 
 Verb 'get'
-    * 'out'/'off'/'up' 'of'/'from' noun         -> Exit
     * multi                                     -> Take
+    * 'out'/'off'/'up' 'of'/'from' noun         -> Exit
     * 'in'/'into'/'on'/'onto' noun              -> Enter
     * 'off' noun                                -> GetOff
     * multiinside 'from'/'off' noun             -> Remove;
