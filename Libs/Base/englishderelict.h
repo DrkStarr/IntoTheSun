@@ -44,13 +44,13 @@ Object Compass "compass" has concealed;
 
 #Ifndef WITHOUT_DIRECTIONS;
 CompassDirection -> n_obj  with short_name "fore",      door_dir n_to,
-                                name 'f//' 'fore' 'forward' 'foreward';
+                                name 'f//' 'fore' 'forward' 'foreward' 'front';
 CompassDirection -> s_obj  with short_name "aft",       door_dir s_to,
-                                name 'a//' 'aft';
+                                name 'a//' 'aft' 'back';
 CompassDirection -> e_obj  with short_name "starboard", door_dir e_to,
-                                name 's//' 'sb' 'starboard' 'star';
+                                name 's//' 'sb' 'starboard' 'star' 'right';
 CompassDirection -> w_obj  with short_name "port",      door_dir w_to,
-                                name 'p//' 'port';
+                                name 'p//' 'port' 'left';
 CompassDirection -> u_obj  with short_name "up above",  door_dir u_to,
                                 name 'u//' 'up' 'ceiling' 'above' 'sky',
                     description [;
@@ -1188,7 +1188,8 @@ Constant LIBRARYV__TX   = " Library v";
         10: "I beg your pardon?";
         11: "[You can't ~undo~ what hasn't been done!]";
         12: "[Can't ~undo~ twice in succession. Sorry!]";
-        13: "[Previous turn undone.]";
+        13: player.didUndo = true;
+            "[Previous turn undone.]";
         14: "Sorry, that can't be corrected.";
         15: "Think nothing of it.";
         16: "~Oops~ can only correct a single word.";
@@ -1379,7 +1380,8 @@ Constant LIBRARYV__TX   = " Library v";
     }
   Restore: switch (n) {
         1:  "Restore failed.";
-        2:  "Ok.";
+        2:  player.didLoad = true;
+            "Ok.";
     }
   Rub: switch (n) {
         1:  CSubjectVerb(actor,true,false,"achieve",0,"achieves","achieved");
@@ -1418,7 +1420,8 @@ Constant LIBRARYV__TX   = " Library v";
     print " **";
   Save: switch (n) {
         1:  "Save failed.";
-        2:  "Ok.";
+        2:  player.didSave = true;
+            "Ok.";
     }
   Score: switch (n) {
         1:  if (deadflag) print "In that game you scored "; else print "You have so far scored ";

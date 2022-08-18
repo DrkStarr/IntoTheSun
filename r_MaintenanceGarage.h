@@ -24,12 +24,13 @@
                   is melting in here.";
               }
               print "If the bridge is the brains of the ship, then the garage is its heart. Maintenance worked
-              hard down here to keep this thing running, and it shows with grease all over the place. The room
-              is full of smoke, and it flows out the open garage door. Through the gloom, ";
+              hard down here to keep things running, and it shows with a layer of grease covering everything.
+              The room is full of smoke, and it flows out the open garage door. Through the gloom, ";
               if (maintenanceGarageDoor.isDoorOpen) print "the set of tall doors to the aft are open";
               else print "you see a set of tall doors to the aft";
               ".^^Over by an industrial pallet is a land crawler made of gold. Every significant piece of
-              equipment has been anodized with the stuff, giving all of it a longer life span.";
+              equipment has been anodized with the stuff, giving all of it a longer life span in the harsh
+              space environment.";
           ],
           n_to [;
               if (alien in self) return PXF();
@@ -190,7 +191,11 @@
               Open:
                   if (battery in self) "The panel is already open. Pushing on it, you see the D-Cell battery you inserted.";
                   self.firstSeen = true;
-                  "The panel is already open. Inside is a square space that should hold a D-Cell battery.";
+                  "The panel is already open. Inside is a square space that will hold a D-Cell battery.";
+              Push:
+                  if (battery in self) "You push the panel and see the D-Cell battery you inserted.";
+                  self.firstSeen = true;
+                  "You push the panel, looking inside. It has room to hold a D-Cell battery.";
               Blow:
                   "You can't blow through your suit. The polymer seals in your environment.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
@@ -228,6 +233,9 @@
               Open, Pull:
                   if (self.isDoorOpen) "The doors are already open as smoke pours out of the aft chamber.";
                   "You can't pull them open. Maybe you should take a closer look at the panel next to the doors.";
+              Push:
+                  if (self.isDoorOpen) "The doors are already open as smoke pours out of the aft chamber.";
+                  "The doors are closed and won't push open. Maybe you should take a closer look at the panel next to them.";
               Close:
                   if (self.isDoorOpen) "But you worked so hard to open them.";
                   "They're already closed.";
@@ -266,7 +274,7 @@
               Examine, Search:
                   player.advanceGravity = false;
                   if (maintenanceGarage.alienWrecked)
-                      "The pallet and the survey equipment are covered in alien's secretions. Even though the equipment is made from anodized gold, the acid cuts straight through.";
+                      "The pallet and the survey equipment are covered in the alien's secretions. Even though the equipment is made from anodized gold, the acid cuts straight through.";
                   "On the pallet, there's a lot of survey equipment that's been left behind. It's old. None of it's needed on a tug.";
               Take:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
@@ -311,7 +319,7 @@
                   player.advanceGravity = false;
                   if (maintenanceGarage.alienWrecked)
                       "There is very little grease in the room, the acid boiling it away.";
-                  "Grease is all over the workbench, land crawler, pallet, even the large aft doors.";
+                  "Grease is all over the workbench, land crawler, pallet, and even the large aft doors.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
                   "You need to loot the ship, not mess with ", (the) self, ".";

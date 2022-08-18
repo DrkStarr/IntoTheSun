@@ -47,7 +47,7 @@
 ! Treaty of Babel
 ! command line: bable -ifid "GAMENAME.z8"
 
- Array UUID_ARRAY string "UUID://ZCODE-1-220701-8535//";
+ Array UUID_ARRAY string "UUID://ZCODE-1-220804-8535//";
  #ifdef UUID_ARRAY; #endif;
 
   Constant Story "Into The Sun";
@@ -80,9 +80,9 @@
   Constant GTOTALOBJS=27;
   Constant GPLOPCODE=38;  ! Instructions Of Z-Code
   Constant GOPCPH=2;
-  Constant GOPCSPH=1;
-  Constant GOPCODE=2;
-  Constant GTWORDS=848;   ! Dictionary Entries
+  Constant GOPCSPH=3;
+  Constant GOPCODE=6;
+  Constant GTWORDS=852;   ! Dictionary Entries
   Constant DIALECT_US;
 
 ! ***********************
@@ -845,7 +845,7 @@
         ! INTRO TEXT
         print "^^October, 2268. Two months sitting on the cold side of Mercury, using battery power to stay
         in the shade, but the radar has failed to find anything. Nothing to scavenge. Nothing to pay the
-        bills. Satellites make some of the best salvage. The stuff you can pull off might have value. But
+        bills. Satellites make some of the best salvage. Any stuff you can pull off might have value. But
         since you don't have enough to repair and refuel the Kratos, you'll take whatever's out there.^";
         PageBreak();
         print "^Then something hits the radar, finally. And not a tiny blip like a satellite, but
@@ -1227,24 +1227,24 @@
             if (tempPayout >= 3000) {
                 deadflag = 2;
                 tempPayout = tempPayout - 3000;
-                if (tempPayout == 0) "You made a total of 3,000 adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
-                if (tempPayout < 100) "You made a total of 3,0", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
-                "You made a total of 3,", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                if (tempPayout == 0) print "You made a total of 3,000 adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                if (tempPayout < 100) print "You made a total of 3,0", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                if (tempPayout >= 100) print "You made a total of 3,", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
             } else {
                 if (tempPayout >= 2000) {
                     deadflag = 2;
                     tempPayout = tempPayout - 2000;
-                    if (tempPayout == 0) "You made a total of 2,000 adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
-                    if (tempPayout < 100) "You made a total of 2,0", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
-                    "You made a total of 2,", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                    if (tempPayout == 0) print "You made a total of 2,000 adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                    if (tempPayout < 100) print "You made a total of 2,0", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
+                    if (tempPayout >= 100) print "You made a total of 2,", tempPayout, " adjusted dollars from that run and will be able to repair and refuel the Kratos. It looks like you're one of the few scavengers that have made it work. You might even upgrade your ship.";
                 } else {
                     if (tempPayout >= 1000) {
                         deadflag = 2;
                         tempPayout = tempPayout - 1000;
-                        if (tempPayout == 0) "You made a total of 1,000 adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
-                        if (tempPayout < 100) "You made a total of 1,0", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
-                        if (tempPayout < 500) "You made a total of 1,", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
-                        "You made a total of 1,", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. You even pocketed some extra cash for a beer or two. You still live the scavenger's life.";
+                        if (tempPayout == 0) print "You made a total of 1,000 adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
+                        if (tempPayout < 100) print "You made a total of 1,0", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
+                        if (tempPayout < 500) print "You made a total of 1,", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
+                        if (tempPayout >= 500) print "You made a total of 1,", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. You even pocketed some extra cash for a beer or two. You still live the scavenger's life.";
                     } else {
                         deadflag = 3;
                         if (tempPayout > 500) {
@@ -1253,6 +1253,11 @@
                         "You made a total of ", tempPayout, " adjusted dollars from that run and won't be able to repair the Kratos. Your life as a scavenger is over.";
                     }
                 }
+            }
+            if (DidPlayerLoad() == false) {
+                "^^You finished the game in RIDLEY MODE because you didn't save, restore, or undo any move.";
+            } else {
+                "";
             }
         } else {
             deadflag = 3;
@@ -1657,6 +1662,14 @@
         player.advanceGravity = false;
         "This game does not use standard compass directions. Please check the VERBS.";
   ];
+
+  [ DidPlayerLoad;
+        if (player.didLoad) rtrue;
+        if (player.didSave) rtrue;
+        if (player.didUndo) rtrue;
+        rfalse;
+  ];
+
 
   [ EnterDoorCodeSub;
         if (dataReader.knowDoorCode) "You can't do that here.";

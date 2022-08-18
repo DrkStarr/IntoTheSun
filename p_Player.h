@@ -277,7 +277,7 @@
                                       self.printAlienClose = true;
                                       self.printCloseBy = false;
                                       iOldAlienDistance=5;
-!                                      iAlienCloseBy=1;
+!                                     iAlienCloseBy=1;
                                   }
                               } else {
                                   self.suppressAlienCloseBy = false;
@@ -412,6 +412,9 @@
           gravityVerbAlreadySeen false,
           xenomorphKnows false,
           firstPrintStop true,
+          didUndo false,
+          didSave false,
+          didLoad false,
     has   animate concealed proper;
 
   [ PXF;
