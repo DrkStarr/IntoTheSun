@@ -101,4 +101,4 @@
               Push, PushDir, Pull, Remove, Rub, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
                   "That's not going to help.";
           ],
-     has  static concealed container openable ~open;
+     has  static concealed container openable ~open pluralname;
