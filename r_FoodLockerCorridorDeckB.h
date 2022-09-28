@@ -244,7 +244,7 @@
                   <<Climb foodLockerCorridorDeckBSensor>>;
               Examine, Search:
                   player.advanceGravity = false;
-		  "The receiver is capped with lead to limit radiation bleed through. Along the top, it says High Output.";
+		          "The receiver is capped with lead to limit radiation bleed through. Along the top, it says High Output.";
               Read:
                   "At the top, it says High Output.";
               Go:

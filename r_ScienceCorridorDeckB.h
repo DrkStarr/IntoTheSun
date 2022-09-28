@@ -131,9 +131,8 @@
                       if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
                       monster_loc-->iTempLoc = SCIENCECRRDR;
                       alien.resetLocInCorridor = true;
-                      print "This sledgehammer has to be good for something. Swinging it with all you got, the metal
-                      connects with a loud blast that rings throughout the ship. The hatch gives, and you
-                      watch it swing open.^^";
+                      print "Swinging it with all you got, the metal connects with a loud blast that rings throughout the ship.
+                      The hatch gives, and you watch it swing open.^^";
                       if (AlienOnADeck()) "A cry from the deck above answers as you open the hatch.";
                       if (AlienOnBDeck()) "A cry from the aft portion of this deck answers as you open the hatch.";
                       if (AlienOnCDeck()) "A cry from below answers as you open the hatch.";

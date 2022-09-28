@@ -47,7 +47,7 @@
 ! Treaty of Babel
 ! command line: bable -ifid "GAMENAME.z8"
 
- Array UUID_ARRAY string "UUID://ZCODE-1-220902-2582//";
+ Array UUID_ARRAY string "UUID://ZCODE-1-220928-2582//";
  #ifdef UUID_ARRAY; #endif;
 
   Constant Story "Into The Sun";
@@ -80,8 +80,8 @@
   Constant GTOTALOBJS=27;
   Constant GPLOPCODE=38;  ! Instructions Of Z-Code
   Constant GOPCPH=2;
-  Constant GOPCSPH=3;
-  Constant GOPCODE=6;
+  Constant GOPCSPH=5;
+  Constant GOPCODE=3;
   Constant GTWORDS=852;   ! Dictionary Entries
   Constant DIALECT_US;
 

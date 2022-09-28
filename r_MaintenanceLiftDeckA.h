@@ -53,7 +53,7 @@
 
   StObj   -> maintenanceLiftDeckAPanel "panel"
     with  name 'panel' 'switch' 'grease',
-          before [;
+          before [ iTempLoc;
               Examine:
                   player.advanceGravity = false;
                   "Grease covers the panel that operates the lift. It has two dirty buttons on it.
@@ -62,6 +62,14 @@
                   if (maintenanceLiftDeckADoors.isDoorOpen) {
                       maintenanceLiftDeckADoors.isDoorOpen = false;
                       print "(first closing the doors)^";
+                  }
+                  if (AlienCloseToElevator()) {
+                      iMonsterDestination = AFTJNCTNDECKA;
+                      monster_loc-->iMonsterLoc = AFTJNCTNDECKA;
+                      iTempLoc = iMonsterLoc;
+                      iTempLoc++;
+                      if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+                      monster_loc-->iTempLoc = AFTJNCTNDECKA;
                   }
                   print "You flip the switch to Deck B as the lift trembles in return. It takes a
                   moment as the chain slips and the cage jolts, but then you slowly descend.
