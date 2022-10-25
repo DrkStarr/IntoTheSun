@@ -30,30 +30,21 @@ Object  cattleProd "cattle prod"
                     "You swing the rod back and forth, cutting the air. If this rod hit someone, they would feel it.";
                 }
                 "You are not holding that.";
+            UseItem:
+                if (self in player) {
+                    if (second == alien) <<Attack alien>>;
+                    if (second == player) "Hitting yourself with that would make you piss uncontrollably.";
+                    if (second == forwardCorridorDeckBBody) <<Attack forwardCorridorDeckBBody self>>;
+                    if (second == pod) <<Prod pod>>;
+                    if (second == forwardPortJunctionDeckBDust) <<Attack forwardPortJunctionDeckBDust>>;
+                    return InsertCattleProd();
+                } else {
+                    "You need to be holding the object before you can use it.";
+                }
             Go:
                 "You are already here.";
             Insert:
-                if (second == vortexBag) {
-                    if (self in vortexBag) "", (The) self, " is already here.";
-                    if (sledgehammer in vortexBag) {
-                        move sledgehammer to player;
-                        move self to vortexBag;
-                        "You put the cattle prod into the vortex bag, pulling out the sledgehammer. You need something to protect yourself.";
-                    }
-                    "You don't want to do that. How could you defend yourself?";
-                }
-                if (second == dataReader) {
-                    "That doesn't fit in there.";
-                }
-                if (second == musicBox || second == maintenanceGaragePanel || second == computerRoomPanel) {
-                    "That doesn't fit in there.";
-                }
-                if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
-                    "That doesn't belong in there.";
-                }
-                if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
-                    "You don't want to lose that.";
-                }
+                return InsertCattleProd();
             Examine, Search:
                 player.advanceGravity = false;
                 print "The pole is a meter in length with electric spikes at the end. Looking at the grip, ";
@@ -78,7 +69,9 @@ Object  cattleProd "cattle prod"
             Touch:
                 if (second == aftStarboardJunctionDeckCBattery || second == aftStarboardJunctionDeckCWelder || second == aftCompanionwayDeckCBattery) <<Tie self second>>;
                 if (self in player) "Touching the end would make you piss yourself.";
-                "If you touched the wrong end, the jolt would make you piss yourself.";
+                self.taken = false;
+                move self to player;
+                "Careful not to take it by the wrong end, you pick up the rod. What did this guy encounter?";
             Rub:
                 "The cattle prod is as clean as it's going to get.";
             SwitchOn:
@@ -123,3 +116,28 @@ Object  cattleProd "cattle prod"
         taken true,
         isHidden true,
         firstTime true;
+
+  [ InsertCattleProd;
+        if (second == vortexBag) {
+            if (cattleProd in vortexBag) "", (The) cattleProd, " is already here.";
+            if (sledgehammer in vortexBag) {
+                move sledgehammer to player;
+                move cattleProd to vortexBag;
+                "You put the cattle prod into the vortex bag, pulling out the sledgehammer. You need something to protect yourself.";
+            }
+            "You don't want to do that. How could you defend yourself?";
+        }
+        if (second == dataReader) {
+            "That doesn't fit in there.";
+        }
+        if (second == musicBox || second == maintenanceGaragePanel || second == computerRoomPanel) {
+            "That doesn't fit in there.";
+        }
+        if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
+            "That doesn't belong in there.";
+        }
+        if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
+            "You don't want to lose that.";
+        }
+        rfalse;
+  ];

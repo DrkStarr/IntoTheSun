@@ -35,6 +35,7 @@ Object  pod "pod"
             Drop:
 
             Dig:
+                if (self.touchedAlready) "The pod's broken. But there's nothing to dig.";
                 "The pod is a dry, brittle husk. You'd break it if you tried that.";
             Go:
                 "You are already here.";
@@ -62,7 +63,7 @@ Object  pod "pod"
                 so dry, your fingers break through the surface. Instinctively, you pull
                 back your hand.";
              Prod:
-                "The pod looks dry and brittle. There's no need to waste a charge.";
+                "The pod's dry and brittle. There's no need to waste a charge.";
         ],
         brokenPod false,
         touchedAlready false,

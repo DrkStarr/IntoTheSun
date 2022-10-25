@@ -95,7 +95,7 @@
           resetLocInGarage false,
           resetLocInCaptiansQuarters false,
           resetLocInCorridor false,
-    has   animate male concealed;
+    has   animate male;
 
   [ ResetMonsterLoc iap;
         iap = 0;

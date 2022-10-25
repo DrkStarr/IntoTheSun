@@ -5,7 +5,7 @@
 
 Object  battery "battery"
   with  name 'battery' 'plug' 'd-cell' 'cell' 'rechargeable',
-        before [ iTempLoc;
+        before [ ;
             Attack:
                 "Are you really going to break the stuff you're trying to loot?";
             Burn:
@@ -26,45 +26,12 @@ Object  battery "battery"
                     }
                 }
             Insert:
-                if (self in vortexBag && second == vortexBag) "", (The) self, " is already here.";
-                if (second == vortexBag) {
-                    move self to vortexBag;
-                    print "You put the battery into the vortex bag.^";
-                    return ItemFirstTaken();
-                }
-                if (second == dataReader && self in player) {
-                    "That doesn't fit in there, so you hold on to it.";
-                }
-                if (second == dataReader && self in vortexBag) {
-                    "That doesn't fit in there, so you leave it in the bag.";
-                }
-                if (second == maintenanceGaragePanel) {
-                    if (maintenanceGarageDoor.isDoorOpen) {
-                        if (self in maintenanceGaragePanel) "The battery is already in the panel.";
-                        "You don't need to reinsert it. The doors are already open.";
-                    }
-                    move self to maintenanceGaragePanel;
-                    maintenanceGarageDoor.isDoorOpen = true;
-                    iMonsterDestination = MAINTNNCGRGE;
-                    iTempLoc = iMonsterLoc;
-                    iTempLoc++;
-                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
-                    monster_loc-->iTempLoc = MAINTNNCGRGE;
-                    alien.resetLocInGarage = true;
-                    "The doors are hotwired because the moment you insert the battery, machinery
-                    kicks in, slowly grinding metal on metal as the doors begin to open. Once they
-                    crack, more smoke pours into this room. The doors sound
-                    like they could get stuck with gears that haven't been oiled in decades, but
-                    they fully open, giving you access to the room in the back.";
-                }
-                if (second == computerRoomPanel) {
-                    "That doesn't fit in there.";
-                }
-                if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
-                    "That doesn't belong in there.";
-                }
-                if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
-                    "You don't want to lose that.";
+                return InsertBattery();
+            UseItem:
+                if (self in player) {
+                    if (second == musicBox) <<Insert self musicBox>>;
+                } else {
+                    "You need to be holding the object before you can use it.";
                 }
             Examine, Search:
                 player.advanceGravity = false;
@@ -88,3 +55,47 @@ Object  battery "battery"
                 }
         ],
         alreadyTaken false;
+
+  [ InsertBattery iTempLoc;
+        if (self in vortexBag && second == vortexBag) "", (The) self, " is already here.";
+        if (second == vortexBag) {
+            move self to vortexBag;
+            print "You put the battery into the vortex bag.^";
+            return ItemFirstTaken();
+        }
+        if (second == dataReader && self in player) {
+            "That doesn't fit in there, so you hold on to it.";
+        }
+        if (second == dataReader && self in vortexBag) {
+            "That doesn't fit in there, so you leave it in the bag.";
+        }
+        if (second == maintenanceGaragePanel) {
+            if (maintenanceGarageDoor.isDoorOpen) {
+                if (self in maintenanceGaragePanel) "The battery is already in the panel.";
+                "You don't need to reinsert it. The doors are already open.";
+            }
+            move self to maintenanceGaragePanel;
+            maintenanceGarageDoor.isDoorOpen = true;
+            iMonsterDestination = MAINTNNCGRGE;
+            iTempLoc = iMonsterLoc;
+            iTempLoc++;
+            if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+            monster_loc-->iTempLoc = MAINTNNCGRGE;
+            alien.resetLocInGarage = true;
+            "The doors are hotwired because the moment you insert the battery, machinery
+            kicks in, slowly grinding metal on metal as the doors begin to open. Once they
+            crack, more smoke pours into this room. The doors sound
+            like they could get stuck with gears that haven't been oiled in decades, but
+            they fully open, giving you access to the room in the back.";
+        }
+        if (second == computerRoomPanel) {
+            "That doesn't fit in there.";
+        }
+        if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
+            "That doesn't belong in there.";
+        }
+        if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
+            "You don't want to lose that.";
+        }
+        rfalse;
+  ];

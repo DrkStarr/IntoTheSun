@@ -122,10 +122,10 @@
                   if (self.isLocked) "It's locked using an old fashion key. You're going to have to find a way around it.";
                   "You already forced it open.";
               Push, PushDir, Turn:
-                  if (captainsQuarters.alienWrecked) "The desk is covered in acid, and you'd burn yourself.";
+                  if (captainsQuarters.alienWrecked) return PDC();
                   "You don't need to push the desk around. That's not going to help.";
               Pull:
-                  if (captainsQuarters.alienWrecked) "The desk is covered in acid, and you'd burn yourself.";
+                  if (captainsQuarters.alienWrecked) return PDC();
                   "You can pull as hard as you like, but it's not going to open.";
               Unlock:
                   if (captainsQuarters.alienWrecked) "It's been broken in half. There's nothing to unlock, and it's covered in acid.";
@@ -156,14 +156,14 @@
                   if (second == nothing) "You need to pry the desk with something.";
                   "That's not going to fit the lock. You need to find another way to open it.";
               Take:
-                  if (captainsQuarters.alienWrecked) "The desk is covered in acid, and you'd burn yourself.";
+                  if (captainsQuarters.alienWrecked) return PDC();
                   "Even though it's big and bulky and would fit into your bag, it's worthless.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  if (captainsQuarters.alienWrecked) "The desk is covered in acid, and you'd burn yourself.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (captainsQuarters.alienWrecked) return PDC();
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  if (captainsQuarters.alienWrecked) "The desk is covered in acid, and you'd burn yourself.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (captainsQuarters.alienWrecked) return PDC();
+                  return PNL();
           ],
           isLocked true,
      has  supporter;
@@ -183,7 +183,7 @@
               Go:
                   "You are already here.";
               Take:
-                  if (captainsQuarters.alienWrecked) "Covered in acid, you'd burn yourself if you tried.";
+                  if (captainsQuarters.alienWrecked) return PCA();
                   "The bed is bulky and not worth anything.";
               Blow:
                   "You can't blow through your suit. The polymer seals in your environment.";
@@ -193,14 +193,14 @@
                   "You look under the rack, but the captain didn't stash anything here.";
               Enter:
                   if (alien in captainsQuarters) "This is no time to relax. You are about to be eaten.";
-                  if (captainsQuarters.alienWrecked) "Covered in acid, you'd burn yourself if you tried.";
+                  if (captainsQuarters.alienWrecked) return PCA();
                   "This is no time to relax. You are plunging into the sun.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  if (captainsQuarters.alienWrecked) "Covered in acid, you'd burn yourself if you tried.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (captainsQuarters.alienWrecked) return PCA();
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  if (captainsQuarters.alienWrecked) "Covered in acid, you'd burn yourself if you tried.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (captainsQuarters.alienWrecked) return PCA();
+                  return PNL();
           ],
      has  concealed static;
 
@@ -249,3 +249,11 @@
                   "They're worthless.";
           ],
      has  static concealed pluralname;
+
+  [ PCA;
+        "Covered in acid, you'd burn yourself if you tried.";
+  ];
+
+  [ PDC;
+        "The desk is covered in acid, and you'd burn yourself.";
+  ];

@@ -143,10 +143,10 @@
                   "You see a nasty-looking hole that has burned through to the deck below.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
           ],
      has  supporter;
 
@@ -185,10 +185,10 @@
                   "There is no space to look under. The auto-doc sits firmly on the deck.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
                   if (infirmary.alienWrecked) "Really? It's covered in acid, and you'd burn yourself.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
           ];
 
 ! 01/10/22

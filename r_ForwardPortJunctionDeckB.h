@@ -188,7 +188,7 @@
               Blow:
                   "You can't blow through your suit. The polymer seals in your environment.";
               Attack, Blow, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
           ];

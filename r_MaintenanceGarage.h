@@ -281,10 +281,10 @@
                   "None of it has any value. It's too old and not even anodized with gold.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
           ];
 
 ! 01/20/22
@@ -304,10 +304,10 @@
                   "It's too big to take. It's not going anywhere.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
           ];
 
 ! 03/28/22
@@ -322,10 +322,10 @@
                   "Grease is all over the workbench, land crawler, pallet, and even the large aft doors.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
           ];
 
 ! 11/07/21

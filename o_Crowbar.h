@@ -9,7 +9,7 @@ Object  crowbar "crowbar"
             if (self in controlRoomDeckC) "^On the ground in front of the cabinet is a crowbar.";
             rfalse;
         ],
-        before [ iTempLoc;
+        before [;
             Attack:
                 "Made of thick metal, you're not going to be able to break the crowbar.";
             Burn:
@@ -37,38 +37,7 @@ Object  crowbar "crowbar"
                 if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
                     "That doesn't belong in there.";
                 }
-                if (second == aftCompanionwayDeckBLadder) {
-                    move self to aftCompanionwayDeckC;
-                    iMonsterDestination = AFTCOMPDECKC;
-                    iTempLoc = iMonsterLoc;
-                    iTempLoc++;
-                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
-                    monster_loc-->iTempLoc = AFTCOMPDECKC;
-                    "You drop the crowbar into the ladder well. Then, with a sharp clang, it reaches the bottom.
-                    That should attract the xenomorph to the lower part of the ship.";
-                }
-                if (second == forwardCompanionwayDeckALadder) {
-                    move self to forwardCompanionwayDeckC;
-                    print "You drop the crowbar into the ladder well";
-                    if (forwardStarboardJunctionDeckC.pipesBlown) ", but fail to hear it crash into the deck. The sound of venting gas from below is too loud.";
-                    iMonsterDestination = FWDCOMPDECKC;
-                    iTempLoc = iMonsterLoc;
-                    iTempLoc++;
-                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
-                    monster_loc-->iTempLoc = FWDCOMPDECKC;
-                    ". Then, with a sharp clang, it reaches the bottom. That should attract the xenomorph to the lowest parts of the ship.";
-                }
-                if (second == forwardCompanionwayDeckBLadder) {
-                    move self to forwardCompanionwayDeckC;
-                    print "You drop the crowbar into the ladder well";
-                    if (forwardStarboardJunctionDeckC.pipesBlown) ", but fail to hear it crash into the deck. The sound of venting gas from below is too loud.";
-                    iMonsterDestination = FWDCOMPDECKC;
-                    iTempLoc = iMonsterLoc;
-                    iTempLoc++;
-                    if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
-                    monster_loc-->iTempLoc = FWDCOMPDECKC;
-                    ". Then, with a sharp clang, it reaches the bottom. That should attract the xenomorph to the lower part of the ship.";
-                }
+                return CheckLadderWellCrowbar();
             Examine, Search:
                 player.advanceGravity = false;
                 "The crowbar is nothing more than a simple piece of metal used to pry things open.";
@@ -87,6 +56,7 @@ Object  crowbar "crowbar"
             Swing:
                 if (parent(player) == parent(alien)) {
                     deadflag = 1;
+                    if (self in vortexBag) print "(first taking the crowbar)^";
                     "You swing the crowbar at the alien, but it bats it away, breaking your arm. Then
                     the creature hits you in the chest, sending you flying back into the bulkhead and
                     breaking your ribs. When the alien's done, you bleed out before the ship's crushed
@@ -103,5 +73,54 @@ Object  crowbar "crowbar"
                         "You hurl the crowbar, but it just bounces off the creature.^^A growl from inside the beast grows before it jumps straight at you, tackling you to the deck. Then the claws come down, tearing into flesh. It doesn't take long before you bleed out, only to be crushed from the pressure of the sun.";
                     }
                 }
+            UseItem:
+                if (self in player) {
+                    if (second == alien) <<Swing self>>;
+                    if (second == portShuttleBayAirlock) <<Unlock portShuttleBayAirlock>>;
+                    if (second == starboardShuttleBayAirlock) <<Unlock starboardShuttleBayAirlock>>;
+                    if (second == bridgeHatch) <<Unlock bridgeHatch self>>;
+                    if (second == captainsQuartersDesk) <<Unlock captainsQuartersDesk self>>;
+                    if (second == maintenanceGarageBench) <<Unlock maintenanceGarageBench self>>;
+                    if (second == scienceCorridorDeckBHatch) <<Unlock scienceCorridorDeckBHatch self>>;
+                    return CheckLadderWellCrowbar();
+                } else {
+                    "You need to be holding the object before you can use it.";
+                }
         ],
         alreadyTaken false;
+
+  [ CheckLadderWellCrowbar iTempLoc;
+        if (second == aftCompanionwayDeckBLadder) {
+            move self to aftCompanionwayDeckC;
+            iMonsterDestination = AFTCOMPDECKC;
+            iTempLoc = iMonsterLoc;
+            iTempLoc++;
+            if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+            monster_loc-->iTempLoc = AFTCOMPDECKC;
+            "You drop the crowbar into the ladder well. Then, with a sharp clang, it reaches the bottom.
+            That should attract the xenomorph to the lower part of the ship.";
+        }
+        if (second == forwardCompanionwayDeckALadder) {
+            move self to forwardCompanionwayDeckC;
+            print "You drop the crowbar into the ladder well";
+            if (forwardStarboardJunctionDeckC.pipesBlown) ", but fail to hear it crash into the deck. The sound of venting gas from below is too loud.";
+            iMonsterDestination = FWDCOMPDECKC;
+            iTempLoc = iMonsterLoc;
+            iTempLoc++;
+            if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+            monster_loc-->iTempLoc = FWDCOMPDECKC;
+            ". Then, with a sharp clang, it reaches the bottom. That should attract the xenomorph to the lowest parts of the ship.";
+        }
+        if (second == forwardCompanionwayDeckBLadder) {
+            move self to forwardCompanionwayDeckC;
+            print "You drop the crowbar into the ladder well";
+            if (forwardStarboardJunctionDeckC.pipesBlown) ", but fail to hear it crash into the deck. The sound of venting gas from below is too loud.";
+            iMonsterDestination = FWDCOMPDECKC;
+            iTempLoc = iMonsterLoc;
+            iTempLoc++;
+            if (iTempLoc > MONSTERTOTAL) iTempLoc = 0;
+            monster_loc-->iTempLoc = FWDCOMPDECKC;
+            ". Then, with a sharp clang, it reaches the bottom. That should attract the xenomorph to the lower part of the ship.";
+        }
+        rfalse;
+  ];

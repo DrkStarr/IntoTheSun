@@ -101,10 +101,10 @@
                   "The pallet is big and isn't worth anything. You leave it alone.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (weaponsLocker.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
                   if (weaponsLocker.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
           ];
 
 ! 01/16/22

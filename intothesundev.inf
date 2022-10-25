@@ -1,3 +1,9 @@
+! Post Comp:
+! Changes: 10/24/2022
+! Added the USE verb to the Cattle Prod / Sledgehammer / Crowbar / Flashcards / Battery / Data Reader / Stun Baton
+
+! -------------------
+! Release: 09/28/2022
 
 ! Changes: 06/04/2022
 ! If you open the locker in the Control Room, the alien comes whether hiding or not
@@ -192,7 +198,6 @@
 ! ---------------------------------------------------------------------------- !
 !       ABBREVIATIONS
 !
-
 
 ! ---------------------------------------------------------------------------- !
 !       CLASSES
@@ -1242,8 +1247,10 @@
                         deadflag = 2;
                         tempPayout = tempPayout - 1000;
                         if (tempPayout == 0) print "You made a total of 1,000 adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
-                        if (tempPayout < 100) print "You made a total of 1,0", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
-                        if (tempPayout < 500) print "You made a total of 1,", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
+                        if (tempPayout < 500) {
+                            if (tempPayout < 100) print "You made a total of 1,0", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
+                            else print "You made a total of 1,", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. So even though you just scrapped by, you still live the scavenger's life.";
+                        }
                         if (tempPayout >= 500) print "You made a total of 1,", tempPayout, " adjusted dollars from that run and will at least be able to repair and refuel the Kratos. You even pocketed some extra cash for a beer or two. You still live the scavenger's life.";
                     } else {
                         deadflag = 3;
@@ -1773,6 +1780,10 @@
         "";
   ];
 
+  [ UseItemSub;
+        if (parent(noun) == vortexBag) "You'll be able to sell that in the future. So you should leave it in the vortex bag.";
+        "You can't use ", (the) noun, " on ", (the) second, ".";
+  ];
 
   [ XyzzySub;
         "You think you hear a fizzle and a pop, but being in space for so long has played tricks on your mind.";
@@ -2157,6 +2168,9 @@ Verb 'type'
 
 Verb 'unlock'
     * noun 'with' noun                          -> Unlock;
+
+Verb 'use'
+    * noun 'on'/'with' noun                     -> UseItem;
 
 Verb 'verb' 'verbs' 'v//'
     *                                           -> Verbs;

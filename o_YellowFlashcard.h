@@ -19,38 +19,12 @@ Object  yellowFlashcard "yellow flashcard"
             Go:
                 "You are already here.";
             Insert:
-                if (second == dataReader) {
-                    if (self in dataReader) "The yellow flashcard is already in the data reader.";
-                    if (dataReader in player) {
-                        move self to dataReader;
-                        if (redFlashcard in dataReader) {
-                            move redFlashcard to player;
-                            print "(first removing the orange flashcard)^";
-                        }
-                    } else {
-                        move dataReader to player;
-                        print "(first taking the data reader)^";
-                        move self to dataReader;
-                        if (redFlashcard in dataReader) {
-                            move redFlashcard to player;
-                            print "(next removing the orange flashcard)^";
-                        }
-                    }
-                    self.takenYellowcard = true;
-                    dataReader.&name-->5 = 'information';
-                    "You insert the yellow flashcard into the data reader. Immediately information pops up on the screen.";
-                }
-                if (second == vortexBag) {
-                    self.takenYellowcard = true;
-                }
-                if (second == musicBox || second == maintenanceGaragePanel || second == computerRoomPanel) {
-                    "That doesn't properly fit in there.";
-                }
-                if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
-                    "That doesn't belong in there.";
-                }
-                if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
-                    "You don't want to lose that.";
+                return InsertYellowCard();
+            UseItem:
+                if (self in player) {
+                    return InsertYellowCard();
+                } else {
+                    "You need to be holding the object before you can use it.";
                 }
             Examine, Search:
                 player.advanceGravity = false;
@@ -83,3 +57,40 @@ Object  yellowFlashcard "yellow flashcard"
                 }
         ],
         takenYellowcard false;
+
+  [ InsertYellowCard;
+        if (second == dataReader) {
+            if (self in dataReader) "The yellow flashcard is already in the data reader.";
+            if (dataReader in player) {
+                move self to dataReader;
+                if (redFlashcard in dataReader) {
+                    move redFlashcard to player;
+                    print "(first removing the orange flashcard)^";
+                }
+            } else {
+                move dataReader to player;
+                print "(first taking the data reader)^";
+                move self to dataReader;
+                if (redFlashcard in dataReader) {
+                    move redFlashcard to player;
+                    print "(next removing the orange flashcard)^";
+                }
+            }
+            self.takenYellowcard = true;
+            dataReader.&name-->5 = 'information';
+            "You insert the yellow flashcard into the data reader. Immediately information pops up on the screen.";
+        }
+        if (second == vortexBag) {
+            self.takenYellowcard = true;
+        }
+        if (second == musicBox || second == maintenanceGaragePanel || second == computerRoomPanel) {
+            "That doesn't properly fit in there.";
+        }
+        if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
+            "That doesn't belong in there.";
+        }
+        if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
+            "You don't want to lose that.";
+        }
+        rfalse;
+  ];

@@ -16,61 +16,25 @@ Object  sledgehammer "sledgehammer"
             Burn:
 
             Swing:
-                if (parent(player) == parent(alien)) {
-                    if (self.alreadyAttacked) {
-                        if (second == cattleProd) {
-                        } else {
-                            print "A slow attack like that would miss the alien a second time";
-                            if (iCattleProdCharge == 0) {
-                                print ". ";
-                            } else {
-                                print ".^^";
-                            }
-                        }
-                        if (iCattleProdCharge == 0) {
-                            ! What If The Player Has The Baton? I don't care. Player still dies.
-                            if (cattleProd in vortexBag || cattleProd in player) {
-                                deadflag = 1;
-                                "You drop the hammer, grabbing the cattle prod and rolling to one side. Then you try to stick
-                                the alien with the rod, but nothing happens. You realize all too late that the rod is out
-                                of power. When the alien's done, you bleed out before the ship's crushed from the pressure of
-                                the sun.";
-                            }
-                        }
-                        iCattleProdCharge--;
-                        move self to vortexBag;
-                        move cattleProd to player;
-                        StopDaemon(alien);
-                        remove alien;
-                        player.alienHide = true;
-                        player.alienMove = false;
-                        if (self.hammerAlreadyUsed == false) {
-                            self.hammerAlreadyUsed = true;
-                            print "You drop the hammer, grabbing the cattle prod and rolling to one side. Turning, you stick the
-                            alien with the rod as hard as you can. The creature screams and hisses, but you push the rod harder
-                            into its chest. Swinging its arm, it knocks the rod out of your hand before spitting at you and then
-                            jumping into the ventilation system";
-                        } else {
-                            self.hammerAlreadyUsed = false;
-                            print "You drop the hammer, grabbing the cattle prod a second time. The alien tries to anticipate your
-                            movement, but you swing the rod instead of rolling to one side. The creature fails to get out of the
-                            way and cries out in pain. Hissing, it tries to spit on you. Then it jumps for the ventilation system
-                            as it knocks the pole out of your hand again";
-                        }
-                        if (iCattleProdCharge == 0) ".^^Picking up the rod, you look at the handle. You're out of juice.";
-                        ".^^After its gone, you pick up the cattle prod.";
-                    }
-                    self.alreadyAttacked = true;
-                    StopDaemon(alien);
-                    remove alien;
-                    player.alienHide = true;
-                    player.alienMove = false;
-                    "You swing the hammer for all it's worth, connecting with the skull of the xenomorph. It cries
-                    out in high-pitched pain before jumping up into the ventilation system, getting away from you.^
-                    ^You got away with it this time, but the alien is intelligent and won't let a slow attack like
-                    that through again.";
-                }
+                if (parent(player) == parent(alien)) return SwingHammer();
                 if (self in player) "You swing the hammer back and forth like a club through the air. It should do some damage.";
+            UseItem:
+                if (self in player) {
+                    if (second == alien) {
+                        if (sledgehammer in vortexBag) {
+                            print "The sledgehammer is in the vortex bag and would take too long to pull out.^^";
+                            deadflag = 1;
+                            "You swing helplessly at the alien, arms flailing like an angry schoolgirl. The creature reacts by plunging his talons deep into your flesh. When the beast is done, it doesn't take long before you bleed out and the ship's crushed from the sun's pressure.";
+                        } else {
+                            <<Swing sledgehammer>>;
+                        }
+                    }
+                    if (second == maintenanceGarageBench) <<Attack maintenanceGarageBench>>;
+                    if (second == portShuttleBayAirlock) <<Attack portShuttleBayAirlock>>;
+                    if (second == starboardShuttleBayAirlock) <<Attack starboardShuttleBayAirlock>>;
+                } else {
+                    "You need to be holding the object before you can use it.";
+                }
             Go:
                 "You are already here.";
             Insert:
@@ -163,3 +127,58 @@ Object  sledgehammer "sledgehammer"
         alreadyAttacked false,
         hammerAlreadyUsed false,
         cleaned false;
+
+  [ SwingHammer;
+        if (sledgehammer.alreadyAttacked) {
+            if (second == cattleProd) {
+            } else {
+                print "A slow attack like that would miss the alien a second time";
+                if (iCattleProdCharge == 0) {
+                    print ". ";
+                } else {
+                    print ".^^";
+                }
+            }
+            if (iCattleProdCharge == 0) {
+                ! What If The Player Has The Baton? I don't care. Player still dies.
+                if (cattleProd in vortexBag || cattleProd in player) {
+                    deadflag = 1;
+                    "You drop the hammer, grabbing the cattle prod and rolling to one side. Then you try to stick
+                    the alien with the rod, but nothing happens. You realize all too late that the rod is out
+                    of power. When the alien's done, you bleed out before the ship's crushed from the pressure of
+                    the sun.";
+                }
+            }
+            iCattleProdCharge--;
+            move sledgehammer to vortexBag;
+            move cattleProd to player;
+            StopDaemon(alien);
+            remove alien;
+            player.alienHide = true;
+            player.alienMove = false;
+            if (sledgehammer.hammerAlreadyUsed == false) {
+                sledgehammer.hammerAlreadyUsed = true;
+                print "You drop the hammer, grabbing the cattle prod and rolling to one side. Turning, you stick the
+                alien with the rod as hard as you can. The creature screams and hisses, but you push the rod harder
+                into its chest. Swinging its arm, it knocks the rod out of your hand before spitting at you and then
+                jumping into the ventilation system";
+            } else {
+                sledgehammer.hammerAlreadyUsed = false;
+                print "You drop the hammer, grabbing the cattle prod a second time. The alien tries to anticipate your
+                movement, but you swing the rod instead of rolling to one side. The creature fails to get out of the
+                way and cries out in pain. Hissing, it tries to spit on you. Then it jumps for the ventilation system
+                as it knocks the pole out of your hand again";
+            }
+            if (iCattleProdCharge == 0) ".^^Picking up the rod, you look at the handle. You're out of juice.";
+            ".^^After its gone, you pick up the cattle prod.";
+        }
+        sledgehammer.alreadyAttacked = true;
+        StopDaemon(alien);
+        remove alien;
+        player.alienHide = true;
+        player.alienMove = false;
+        "You swing the hammer for all it's worth, connecting with the skull of the xenomorph. It cries
+        out in high-pitched pain before jumping up into the ventilation system, getting away from you.^
+        ^You got away with it this time, but the alien is intelligent and won't let a slow attack like
+        that through again.";
+  ];

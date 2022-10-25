@@ -70,7 +70,7 @@
     with  name 'airlock' 'door' 'damage' 'damaged',
           before [;
               Attack:
-                  if (starboardShuttleBay.alienWrecked) "The door's covered in acid, and you'd only burn yourself if you tried that.";
+                  if (starboardShuttleBay.alienWrecked) return PCinA();
                   "The door is damaged and wouldn't hold if you forced it open. You'd end up in deep space.";
               Examine:
                   player.advanceGravity = false;
@@ -79,19 +79,18 @@
                   "The airlock's dented from something beating on it, trying to get to the shuttle. But the door held under pressure.";
               Go:
                   "You are already here.";
-              Enter, Open:
+              Attack, Enter, Open, Unlock:
                   if (alien in starboardShuttleBay) return PXF();
-                  if (starboardShuttleBay.alienWrecked)
-                      "The door's covered in acid, and you'd only burn yourself if you tried that.";
+                  if (starboardShuttleBay.alienWrecked) return PCinA();
                   "The door's damaged and wouldn't hold if you forced it open. You'd end up in deep space.";
               Close:
                   "That's already closed.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  if (starboardShuttleBay.alienWrecked) "The door's covered in acid, and you'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (starboardShuttleBay.alienWrecked) return PCinA();
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  if (starboardShuttleBay.alienWrecked) "The door's covered in acid, and you'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (starboardShuttleBay.alienWrecked) return PCinA();
+                  return PNL();
           ];
 
 ! 03/23/22
@@ -100,7 +99,7 @@
     with  name 'protective' 'observation' 'window' 'tempered' 'glass',
           before [;
               Attack:
-                  if (starboardShuttleBay.alienWrecked) "The window has acid on it, and you'd only burn yourself if you tried that.";
+                  if (starboardShuttleBay.alienWrecked) return PWA();
                   "You could lay into the window, taking out your aggression, but you'd end up in deep space if it broke.";
               Examine:
                   player.advanceGravity = false;
@@ -116,11 +115,11 @@
               Close:
                   "That's already closed.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  if (starboardShuttleBay.alienWrecked) "The window has acid on it, and you'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (starboardShuttleBay.alienWrecked) return PWA();
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  if (starboardShuttleBay.alienWrecked) "The window has acid on it, and you'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (starboardShuttleBay.alienWrecked) return PWA();
+                  return PNL();
           ];
 
 ! 10/27/21
@@ -149,3 +148,11 @@
               Go:
                   "You are already here.";
           ];
+
+  [ PWA;
+        "The window has acid on it, and you'd only burn yourself if you tried that.";
+  ];
+
+  [ PCinA;
+        "The door's covered in acid, and you'd only burn yourself if you tried that.";
+  ];

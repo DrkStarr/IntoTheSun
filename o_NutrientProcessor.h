@@ -4,7 +4,7 @@
 !
 
 Object  nutrientProcessor "nutrient processor"
-  with  name 'nutrient' 'processor' 'bulky' 'unit',
+  with  name 'nutrient' 'processor' 'bulky' 'unit' 'processer',
         before [;
             Attack:
                 "Are you really going to break the stuff you're trying to loot?";

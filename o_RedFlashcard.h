@@ -22,38 +22,12 @@ Object  redFlashcard "orange flashcard"
             Go:
                 "You are already here.";
             Insert:
-                if (second == dataReader) {
-                    if (self in dataReader) "The orange flashcard is already in the data reader.";
-                    if (dataReader in player) {
-                        move self to dataReader;
-                        if (yellowFlashCard in dataReader) {
-                            move yellowFlashCard to player;
-                            print "(first removing the yellow flashcard)^";
-                        }
-                    } else {
-                        move dataReader to player;
-                        print "(first taking the data reader)^";
-                        move self to dataReader;
-                        if (yellowFlashCard in dataReader) {
-                            move yellowFlashCard to player;
-                            print "(next removing the yellow flashcard)^";
-                        }
-                    }
-                    captainsQuarters.takenRedCard = true;
-                    dataReader.&name-->5 = 'information';
-                    "You insert the orange flashcard into the data reader. Immediately information pops up on the screen.";
-                }
-                if (second == vortexBag) {
-                    captainsQuarters.takenRedCard = true;
-                }
-                if (second == musicBox || second == maintenanceGaragePanel || second == computerRoomPanel) {
-                    "That doesn't properly fit in there.";
-                }
-                if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
-                    "That doesn't belong in there.";
-                }
-                if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
-                    "You don't want to lose that.";
+                return InsertRedCard();
+            UseItem:
+                if (self in player) {
+                    return InsertRedCard();
+                } else {
+                    "You need to be holding the object before you can use it.";
                 }
             Examine, Search:
                 player.advanceGravity = false;
@@ -88,3 +62,40 @@ Object  redFlashcard "orange flashcard"
                     }
                 }
         ];
+
+  [ InsertRedCard;
+        if (second == dataReader) {
+            if (redFlashcard in dataReader) "The orange flashcard is already in the data reader.";
+            if (dataReader in player) {
+                move redFlashcard to dataReader;
+                if (yellowFlashCard in dataReader) {
+                    move yellowFlashCard to player;
+                    print "(first removing the yellow flashcard)^";
+                }
+            } else {
+                move dataReader to player;
+                print "(first taking the data reader)^";
+                move redFlashcard to dataReader;
+                if (yellowFlashCard in dataReader) {
+                    move yellowFlashCard to player;
+                    print "(next removing the yellow flashcard)^";
+                }
+            }
+            captainsQuarters.takenRedCard = true;
+            dataReader.&name-->5 = 'information';
+            "You insert the orange flashcard into the data reader. Immediately information pops up on the screen.";
+        }
+        if (second == vortexBag) {
+            captainsQuarters.takenRedCard = true;
+        }
+        if (second == musicBox || second == maintenanceGaragePanel || second == computerRoomPanel) {
+            "That doesn't properly fit in there.";
+        }
+        if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
+            "That doesn't belong in there.";
+        }
+        if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
+            "You don't want to lose that.";
+        }
+        rfalse;
+  ];

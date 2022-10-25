@@ -229,10 +229,10 @@
                   "There's no power running through the control room. Messing with the gauges won't help.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (controlRoomDeckC.alienWrecked) "The gauges are covered in acid. You'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
                   if (controlRoomDeckC.alienWrecked) "The gauges are covered in acid. You'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  return PNL();
           ],
      has  pluralname;
 
@@ -264,17 +264,17 @@
                   if (controlRoomDeckC.alienWrecked) "The cables coming out of the engineering panel melted when the acid hit them, while the rest of the panel was also covered.";
                   "Different colored cables coil out from the engineering panel, plugging into the back of the laptop.";
               Pull:
-                  if (controlRoomDeckC.alienWrecked) "The panel is covered in acid. You'd only burn yourself if you tried that.";
+                  if (controlRoomDeckC.alienWrecked) return PPC();
                   "You don't need to unplug the laptop. Take what you want.";
               Push, SwitchOn:
-                  if (controlRoomDeckC.alienWrecked) "The panel is covered in acid. You'd only burn yourself if you tried that.";
+                  if (controlRoomDeckC.alienWrecked) return PPC();
                   "There's no power running through the control room. Messing with the panel won't help.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  if (controlRoomDeckC.alienWrecked) "The panel is covered in acid. You'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (controlRoomDeckC.alienWrecked) return PPC();
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  if (controlRoomDeckC.alienWrecked) "The panel is covered in acid. You'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (controlRoomDeckC.alienWrecked) return PPC();
+                  return PNL();
           ];
 
 ! 01/05/22
@@ -288,3 +288,11 @@
               Go:
                   "You are already here.";
           ];
+
+  [ PPC;
+        "The panel is covered in acid. You'd only burn yourself if you tried that.";
+  ];
+
+  [ PNL;
+        "You need to loot the ship, not mess with ", (the) self, ".";
+  ];

@@ -19,21 +19,14 @@ Object  dataReader "data reader"
             Go:
                 "You are already here.";
             Insert:
-                if (self in vortexBag && second == vortexBag) "", (The) self, " is already here.";
-                if (second == vortexBag) {
-                    move self to vortexBag;
-                    personalLockerRoom.takenDataReader = true;
-                    print "You put the data reader into the vortex bag. Even though it contracts, you can still read the screen.^";
-                    return ItemFirstTaken();
-                }
-                if (second == musicBox || second == maintenanceGaragePanel || second == computerRoomPanel) {
-                    "That doesn't fit in there.";
-                }
-                if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
-                    "That doesn't belong in there.";
-                }
-                if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
-                    "You don't want to lose that.";
+                return InsertDataReader();
+            UseItem:
+                if (self in player) {
+                    if (second == redFlashcard) <<Insert redFlashcard self>>;
+                    if (second == yellowFlashcard) <<Insert yellowFlashcard self>>;
+                    return InsertDataReader();
+                } else {
+                    "You need to be holding the object before you can use it.";
                 }
             Examine, Search:
                 player.advanceGravity = false;
@@ -108,3 +101,23 @@ Object  dataReader "data reader"
         ],
         knowDoorCode false,
    has  container open;
+
+  [ InsertDataReader;
+        if (self in vortexBag && second == vortexBag) "", (The) self, " is already here.";
+        if (second == vortexBag) {
+            move self to vortexBag;
+            personalLockerRoom.takenDataReader = true;
+            print "You put the data reader into the vortex bag. Even though it contracts, you can still read the screen.^";
+            return ItemFirstTaken();
+        }
+        if (second == musicBox || second == maintenanceGaragePanel || second == computerRoomPanel) {
+            "That doesn't fit in there.";
+        }
+        if (second == infirmaryCabinet || second == personalLockerRoomLocker) {
+            "That doesn't belong in there.";
+        }
+        if (second == aftCompanionwayDeckBLadder || second == forwardCompanionwayDeckALadder || second == forwardCompanionwayDeckBLadder) {
+            "You don't want to lose that.";
+        }
+        rfalse;
+  ];

@@ -70,20 +70,20 @@
                   player.advanceGravity = false;
                   if (portShuttleBay.alienWrecked) "The airlock's been beaten on, but the alien didn't get very far before spewing acid all over it.";
                   "The airlock door's closed - sealing you in from death in deep space.";
-              Enter, Open:
+              Attack, Enter, Open, Unlock:
                   if (alien in portShuttleBay) return PXF();
-                  if (portShuttleBay.alienWrecked) "The door's covered in acid, and you'd only burn yourself if you tried that.";
+                  if (portShuttleBay.alienWrecked) return PCinA();
                   "The airlock's seal. The shuttle is gone. If you breached the door, you'd be sucked into the cold void.";
               Go:
                   "You are already here.";
               Close:
                   "That's already closed.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  if (portShuttleBay.alienWrecked) "The door's covered in acid, and you'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (portShuttleBay.alienWrecked) return PCinA();
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  if (portShuttleBay.alienWrecked) "The door's covered in acid, and you'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (portShuttleBay.alienWrecked) return PCinA();
+                  return PNL();
           ];
 
 ! 10/28/21
@@ -102,7 +102,7 @@
     with  name 'protective' 'observation' 'window' 'tempered' 'glass' 'soot' 'scar' 'scarring',
           before [;
               Attack:
-                  if (portShuttleBay.alienWrecked) "The window has acid on it, and you'd only burn yourself if you tried that.";
+                  if (portShuttleBay.alienWrecked) return PWA();
                   "The door is damaged and wouldn't hold if you forced it open. You'd end up in deep space.";
               Examine, Search:
                   player.advanceGravity = false;
@@ -114,11 +114,11 @@
               Close:
                   "That's already closed.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
-                  if (portShuttleBay.alienWrecked) "The window has acid on it, and you'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (portShuttleBay.alienWrecked) return PWA();
+                  return PNL();
               Push, PushDir, Pull, Remove, Rub, Search, Set, SetTo, Smell, Squeeze, Swing, SwitchOn, SwitchOff, Take, Talk, Taste, Tie, Touch, Transfer, Turn, Unlock, Wave:
-                  if (portShuttleBay.alienWrecked) "The window has acid on it, and you'd only burn yourself if you tried that.";
-                  "You need to loot the ship, not mess with ", (the) self, ".";
+                  if (portShuttleBay.alienWrecked) return PWA();
+                  return PNL();
           ];
 
 ! 01/05/22
