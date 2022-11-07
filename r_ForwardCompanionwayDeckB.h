@@ -163,7 +163,7 @@
 ! 01/05/22
 
   NoHelp  forwardCompanionwayDeckBDebris "debris"
-    with  name 'debris' 'rubble' 'blockage',
+    with  name 'debris' 'rubble' 'blockage' 'junk',
           before [;
               Examine:
                   player.advanceGravity = false;

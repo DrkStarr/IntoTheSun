@@ -37,6 +37,16 @@ Object  cattleProd "cattle prod"
                     if (second == forwardCorridorDeckBBody) <<Attack forwardCorridorDeckBBody self>>;
                     if (second == pod) <<Prod pod>>;
                     if (second == forwardPortJunctionDeckBDust) <<Attack forwardPortJunctionDeckBDust>>;
+                    if (second == aftStarboardJunctionDeckCBattery || second == aftStarboardJunctionDeckCWelder || second == aftCompanionwayDeckCBattery) {
+                        print "There's no way to tie the cattle prod into the battery. ";
+                        if (iCattleProdCharge == 0) "And you can't charge it. It won't work again.";
+                        print "You have ";
+                        if (iCattleProdCharge == 3) print "3 charges";
+                        if (iCattleProdCharge == 2) print "2 charges";
+                        if (iCattleProdCharge == 1) print "1 charge";
+                        ". Nothing more.";
+                    }
+                    if (second == foodLockerCorridorDeckBSensor) "The relay isn't a battery. It runs off the ship's power when in use.";
                     return InsertCattleProd();
                 } else {
                     "You need to be holding the object before you can use it.";
@@ -76,9 +86,9 @@ Object  cattleProd "cattle prod"
                 "The cattle prod is as clean as it's going to get.";
             SwitchOn:
                 if (iCattleProdCharge < 1) "It doesn't work like that. The pole is out of power.";
-                "It doesn't work like that. But the pole is charged and will shock whatever it touches.";
+                "It doesn't operate like that. The pole is charged and will shock whatever it touches.";
             SwitchOff:
-                "It doesn't work like that. Instead, it's hotwired and will work until it runs out of power.";
+                "It doesn't operate like that. Instead, it's hotwired and will work until it runs out of power.";
             Take:
                 if (self.taken) {
                     self.taken = false;

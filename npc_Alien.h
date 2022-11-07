@@ -35,6 +35,14 @@
                   if (second == stunBaton) {
                       <<Swing stunBaton>>;
                   }
+                  if (second == kabar) {
+                      deadflag = 1;
+                      if (kabar in vortexBag) print "You try to pull the old relic out of the bag";
+                      else print "You try to pick up the old relic";
+                      ", but the alien doesn't give you a chance. Instead, he slams into you, pinning
+                      you to the deck. Then the jaws come for your face. When the beast is done, it
+                      doesn't take long before you bleed out and the ship's crushed from the sun's pressure.";
+                  }
                   if (sledgehammer in player) {
                       if (second == cattleProd && sledgehammer.alreadyAttacked == false) print "The cattle prod is in the vortex bag and would take too long to pull out.^^";
                       <<Swing sledgehammer second>>;

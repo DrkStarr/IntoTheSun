@@ -1,6 +1,7 @@
 ! Post Comp:
 ! Changes: 10/24/2022
 ! Added the USE verb to the Cattle Prod / Sledgehammer / Crowbar / Flashcards / Battery / Data Reader / Stun Baton
+! Added verb SCREAM
 
 ! -------------------
 ! Release: 09/28/2022
@@ -1728,6 +1729,10 @@
         beginning of the game.";
   ];
 
+  [ ScreamSub;
+        "In space no one can hear you scream.";
+  ];
+
   [ ScoreSub;
         if (iRoom == 1) {
             if (sline2 == 1) "There is no score in this game, but if you're keeping track, you've been to ", iRoom, " room in ", sline2, " turn.";
@@ -1804,7 +1809,7 @@ Verb 'alien' 'monster'
     * 'loc'                                     -> AlienLocation;
 #EndIf;
 
-Verb 'answer' 'say' 'shout' 'speak'
+Verb 'answer' 'say' 'speak'
     * topic 'to' creature                       -> Answer;
 
 Verb 'ask'
@@ -1823,7 +1828,7 @@ Verb 'attack' 'break' 'crack' 'destroy'
     * noun                                      -> Attack
     * noun 'with' noun                          -> Attack;
 
-Verb 'prod'
+Verb 'prod' 'stun'
     * noun                                      -> Prod;
 
 Verb 'blow'
@@ -1934,6 +1939,10 @@ Verb 'go' 'run' 'walk'
     * 'into'/'in'/'inside'/'through' noun       -> Enter
     * 'to' noun                                 -> Go;
 
+Verb 'grab'
+    * multi                                     -> Take
+    * multiinside 'from'/'off' noun             -> Remove;
+
 Verb 'gravity'
     *                                           -> Gravity;
 
@@ -2013,7 +2022,6 @@ Verb 'path'
     *                                           -> Path;
 #EndIf;
 
-
 Verb 'peel'
     * noun                                      -> Take
     * 'off' noun                                -> Take;
@@ -2062,6 +2070,9 @@ Verb 'rub' 'clean' 'dust' 'polish' 'scrub'
 
 Verb 'rules'
     *                                           -> Rules;
+
+Verb 'scream' 'shout'
+    *                                           -> Scream;
 
 Verb 'search'
     * noun                                      -> Search;

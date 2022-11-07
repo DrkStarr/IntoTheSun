@@ -302,6 +302,9 @@
               Take:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
                   "It's too big to take. It's not going anywhere.";
+              Enter:
+                  if (maintenanceGarage.alienWrecked) "Even if you could drive it. It's covered in acid.";
+                  "You can't drive the crawler. It's chained in place and isn't going anywhere.";
               Attack, Burn, Climb, Close, Cut, Dig, Drink, Eat, Empty, Enter, Exit, GetOff, Go, GoIn, JumpOver, Kick, Listen, LookUnder, Open:
                   if (maintenanceGarage.alienWrecked) "It's covered in acid, and you'd burn yourself if you tried that.";
                   return PNL();

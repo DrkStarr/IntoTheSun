@@ -90,7 +90,7 @@
           before [;
               Examine:
                   player.advanceGravity = false;
-                  "Dirt and Grease are smudged against the red button.";
+                  "Dirt and grease are smudged against the red button.";
               Push, SwitchOn, Turn:
                   "You push the button, but it does nothing. You're already on A deck.";
               Set, SetTo:

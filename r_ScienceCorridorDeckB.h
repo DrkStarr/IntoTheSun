@@ -85,7 +85,7 @@
 ! 10/23/21
 
   StObj   -> scienceCorridorDeckBBulkhead "bulkhead"
-    with  name 'debris' 'rubble' 'trash' 'metal' 'reinforced' 'support' 'supports' 'shrapnel' 'blast' 'bulkhead' 'wall' 'explosion' 'scrap',
+    with  name 'debris' 'rubble' 'trash' 'metal' 'reinforced' 'support' 'supports' 'shrapnel' 'blast' 'bulkhead' 'wall' 'explosion' 'scrap' 'junk',
           before [;
               Examine:
                   player.advanceGravity = false;
@@ -226,7 +226,7 @@
   OutRch  -> scienceCorridorDeckBStaions "stations"
     with  name 'stations',
           before [;
-              Examine:
+              Examine, Search:
                   player.advanceGravity = false;
                   "Blocked off by debris that has filled the corridor, you can't get to the monitoring stations.";
           ],
