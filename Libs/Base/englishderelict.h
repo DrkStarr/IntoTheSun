@@ -44,7 +44,7 @@ Object Compass "compass" has concealed;
 
 #Ifndef WITHOUT_DIRECTIONS;
 CompassDirection -> n_obj  with short_name "fore",      door_dir n_to,
-                                name 'f//' 'fore' 'forward' 'foreward' 'front';
+                                name 'f//' 'for' 'fore' 'forward' 'foreward' 'front';
 CompassDirection -> s_obj  with short_name "aft",       door_dir s_to,
                                 name 'a//' 'aft' 'back';
 CompassDirection -> e_obj  with short_name "starboard", door_dir e_to,
@@ -52,7 +52,7 @@ CompassDirection -> e_obj  with short_name "starboard", door_dir e_to,
 CompassDirection -> w_obj  with short_name "port",      door_dir w_to,
                                 name 'p//' 'port' 'left';
 CompassDirection -> u_obj  with short_name "up above",  door_dir u_to,
-                                name 'u//' 'up' 'ceiling' 'above' 'sky',
+                                name 'u//' 'up' 'ceiling' 'above',
                     description [;
                         if (player in forwardCompanionwayDeckC || player in aftCompanionwayDeckC) "In the center of the ceiling, a ladder well will take you to the deck above.";
                         if (player in forwardCompanionwayDeckB) "In the center of the ceiling, a ladder well gives you access to the ship.";
